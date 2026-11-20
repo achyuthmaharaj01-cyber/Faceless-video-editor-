@@ -1,6 +1,6 @@
 # Implementation Plan — Faceless Video Studio
 
-Status: **Phase 1 complete (audit). Awaiting your decisions and Google Cloud access.**
+Status: **Phase 1 complete and re-verified with live render and analysis tests (see the audit). Awaiting your decisions and Google Cloud access.**
 
 ## 1. Architecture
 
@@ -34,6 +34,10 @@ Status: **Phase 1 complete (audit). Awaiting your decisions and Google Cloud acc
 1. **No separate orchestrator.** Cloud Workflows or Pub/Sub would add moving parts. Instead, each job runs the stage list for one project and checkpoints every stage to Firestore and GCS. A retry or resume skips completed stages.
 2. **Keyless CI/CD.** After a one-time bootstrap, no Google credential ever has to exist in a Claude session. Code deploys through GitHub Actions with Workload Identity Federation. I debug through Actions logs and an authenticated `/admin/logs` API endpoint.
 
+**Where the Skill lives:** `.claude/skills/faceless-video-studio/` inside this repo. Any Claude Code session opened on this repo, from the phone app or the web, gets `/faceless-video-studio` automatically. Nothing needs to be installed per device. The same folder can also be zipped and uploaded as a claude.ai Skill.
+
+**Rendering throughput (measured, not assumed):** ≈17 fps for 2D motion graphics and ≈12 fps for Three.js with software GL on 4 vCPU. A 10-minute video is 18,000 frames, so one 8-vCPU task takes roughly 15–40 minutes depending on scene complexity. Long renders are split into frame-range chunks across parallel Cloud Run Job tasks (Remotion `frameRange`), then joined losslessly with FFmpeg. A failed chunk re-renders alone.
+
 ## 2. Production pipeline (resumable stages)
 
 | # | Stage (status) | What runs | Output (GCS `projects/<id>/`) |
@@ -55,7 +59,7 @@ Long-form and short-form are **separate storyboards** from the same beats. Short
 
 ## 3. Reference analysis (one-off, re-runnable)
 
-Per video: download → PySceneDetect (content + adaptive) → shot list → representative frames, contact sheets and short sequential frame strips around cuts → OpenCV optical flow (zoom/pan/static classification) → audio: ebur128, Demucs separation (voice vs. music/SFX), onset detection for SFX hits relative to cuts → Claude vision via **Batch API (50% off)** on sheets and strips. Results go into the searchable reference library (Firestore + JSONL in GCS, frames in the private bucket). Claude then synthesises `STYLE_BIBLE.md` and the five companion guides. **No frames or media go into the public repo**, only derived text.
+Per video: download → scene-detector ensemble (PySceneDetect adaptive + histogram + low-threshold content, confirmed by frame differencing; the default single detector demonstrably misses hue-only cuts) → shot list → representative frames, contact sheets and short sequential frame strips around cuts → OpenCV optical flow (zoom/pan/static classification) → audio: ebur128, Demucs separation (voice vs. music/SFX), onset detection for SFX hits relative to cuts → Claude vision via **Batch API (50% off)** on sheets and strips. Results go into the searchable reference library (Firestore + JSONL in GCS, frames in the private bucket). Claude then synthesises `STYLE_BIBLE.md` and the five companion guides. **No frames or media go into the public repo**, only derived text.
 
 ## 4. Phases — what I do vs. what you do
 
