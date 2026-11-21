@@ -1,0 +1,35 @@
+[
+ {
+  "id": 1,
+  "t": 10.016666666666667,
+  "frame": 300,
+  "kind": "visual",
+  "text": "[SIMULATED TEST NOTE] The flat red background feels empty here. Put the 1950s truck photo behind the words (dimmed) so we see the trailer.",
+  "region": [
+   0.0625,
+   0.203645844893022,
+   0.9375,
+   0.8330965909090909
+  ],
+  "status": "fixed",
+  "reply": "sc04 now shows the 1950s truck photo, dimmed, behind the words (slow push-in).",
+  "history": [
+   {
+    "at": "2026-11-21T14:47:39.881Z",
+    "status": "open",
+    "by": "user"
+   },
+   {
+    "at": "2026-11-21T14:48:09.122Z",
+    "status": "claude",
+    "by": "claude"
+   },
+   {
+    "at": "2026-11-21T14:48:27.101Z",
+    "status": "fixed",
+    "by": "claude",
+    "note": "sc04 now shows the 1950s truck photo, dimmed, behind the words (slow push-in)."
+   }
+  ]
+ }
+]

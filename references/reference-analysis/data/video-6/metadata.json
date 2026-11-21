@@ -1,0 +1,19 @@
+{
+ "file": "video-6.mp4",
+ "size_bytes": 235514616,
+ "duration_sec": 975.679,
+ "width": 1280,
+ "height": 720,
+ "aspect_ratio": "16:9",
+ "fps": 60.0,
+ "video_codec": "h264",
+ "video_profile": "Main",
+ "pix_fmt": "yuv420p",
+ "video_bitrate_kbps": 1797,
+ "audio_codec": "aac",
+ "audio_channels": 2,
+ "audio_sample_rate": 44100,
+ "audio_bitrate_kbps": 128,
+ "overall_bitrate_kbps": 1931,
+ "label": "6"
+}

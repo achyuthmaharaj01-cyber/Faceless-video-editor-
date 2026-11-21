@@ -1,0 +1,6 @@
+# Python side of faceless-video-studio (analysis, alignment, QC, sound synthesis)
+numpy>=1.26
+opencv-python-headless>=4.9
+Pillow>=10
+faster-whisper>=1.0
+python-docx>=1.1

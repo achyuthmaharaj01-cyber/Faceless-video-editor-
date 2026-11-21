@@ -1,0 +1,236 @@
+{
+ "duration_sec": 44.41,
+ "asr_model": "small.en",
+ "script_words": 102,
+ "matched_ratio": 0.9314,
+ "words_per_minute": 139.0,
+ "sentences": [
+  {
+   "index": 0,
+   "paragraph": 0,
+   "text": "In 1956, a trucking businessman named Malcom McLean had a simple idea.",
+   "start": 0.0,
+   "end": 5.74,
+   "duration": 5.74,
+   "words": [
+    0,
+    11
+   ],
+   "match_ratio": 0.917,
+   "emphasis": [
+    "1956,",
+    "trucking"
+   ]
+  },
+  {
+   "index": 1,
+   "paragraph": 0,
+   "text": "Why load a ship one sack at a time, when you could lift the whole trailer on board?",
+   "start": 6.56,
+   "end": 10.94,
+   "duration": 4.38,
+   "words": [
+    12,
+    29
+   ],
+   "match_ratio": 1.0,
+   "emphasis": [
+    "load",
+    "whole"
+   ],
+   "pause_before": 0.82
+  },
+  {
+   "index": 2,
+   "paragraph": 1,
+   "text": "On April 26th, the Ideal X left Newark carrying fifty-eight metal boxes.",
+   "start": 11.64,
+   "end": 16.94,
+   "duration": 5.3,
+   "words": [
+    30,
+    41
+   ],
+   "match_ratio": 0.833,
+   "emphasis": [
+    "X",
+    "26th,"
+   ],
+   "pause_before": 0.7
+  },
+  {
+   "index": 3,
+   "paragraph": 1,
+   "text": "Five days later, it arrived in Houston.",
+   "start": 17.7,
+   "end": 20.32,
+   "duration": 2.62,
+   "words": [
+    42,
+    48
+   ],
+   "match_ratio": 1.0,
+   "emphasis": [
+    "Five",
+    "arrived"
+   ],
+   "pause_before": 0.76
+  },
+  {
+   "index": 4,
+   "paragraph": 2,
+   "text": "Loading loose cargo cost about $5.86 per ton.",
+   "start": 21.14,
+   "end": 24.62,
+   "duration": 3.48,
+   "words": [
+    49,
+    56
+   ],
+   "match_ratio": 0.875,
+   "emphasis": [
+    "Loading",
+    "$5.86"
+   ],
+   "pause_before": 0.82
+  },
+  {
+   "index": 5,
+   "paragraph": 2,
+   "text": "With containers, it dropped to roughly sixteen cents.",
+   "start": 25.2,
+   "end": 28.4,
+   "duration": 3.2,
+   "words": [
+    57,
+    64
+   ],
+   "match_ratio": 0.875,
+   "emphasis": [
+    "dropped",
+    "containers,"
+   ],
+   "pause_before": 0.58
+  },
+  {
+   "index": 6,
+   "paragraph": 3,
+   "text": "Ports that refused to change slowly emptied.",
+   "start": 28.4,
+   "end": 31.74,
+   "duration": 3.34,
+   "words": [
+    65,
+    71
+   ],
+   "match_ratio": 1.0,
+   "emphasis": [
+    "Ports"
+   ],
+   "pause_before": 0.0
+  },
+  {
+   "index": 7,
+   "paragraph": 3,
+   "text": "Ports that adapted became giants.",
+   "start": 32.44,
+   "end": 34.3,
+   "duration": 1.86,
+   "words": [
+    72,
+    76
+   ],
+   "match_ratio": 1.0,
+   "emphasis": [
+    "Ports"
+   ],
+   "pause_before": 0.7
+  },
+  {
+   "index": 8,
+   "paragraph": 4,
+   "text": "Today, the biggest ships carry more than twenty-four thousand containers.",
+   "start": 35.14,
+   "end": 39.08,
+   "duration": 3.94,
+   "words": [
+    77,
+    86
+   ],
+   "match_ratio": 0.8,
+   "emphasis": [
+    "Today,",
+    "biggest"
+   ],
+   "pause_before": 0.84
+  },
+  {
+   "index": 9,
+   "paragraph": 4,
+   "text": "And almost everything you own spent part of its life inside one of those boxes.",
+   "start": 39.7,
+   "end": 44.02,
+   "duration": 4.32,
+   "words": [
+    87,
+    101
+   ],
+   "match_ratio": 1.0,
+   "emphasis": [
+    "almost",
+    "own"
+   ],
+   "pause_before": 0.62
+  }
+ ],
+ "mismatches": [
+  {
+   "script": "Malcom",
+   "heard": "Malcolm",
+   "start": 3.24,
+   "end": 3.74,
+   "kind": "different",
+   "benign": "spelling / transcription variant"
+  },
+  {
+   "script": "X",
+   "heard": "ex",
+   "start": 14.0,
+   "end": 14.28,
+   "kind": "different",
+   "benign": "letter name"
+  },
+  {
+   "script": "fifty-eight",
+   "heard": "58",
+   "start": 15.44,
+   "end": 16.06,
+   "kind": "different",
+   "benign": "number written differently"
+  },
+  {
+   "script": "$5.86",
+   "heard": "$5 .86",
+   "start": 22.58,
+   "end": 24.02,
+   "kind": "different",
+   "benign": "number written differently"
+  },
+  {
+   "script": "sixteen",
+   "heard": "16",
+   "start": 27.46,
+   "end": 28.0,
+   "kind": "different",
+   "benign": "number written differently"
+  },
+  {
+   "script": "twenty-four thousand",
+   "heard": "24 ,000",
+   "start": 37.34,
+   "end": 38.52,
+   "kind": "different",
+   "benign": "number written differently"
+  }
+ ]
+}

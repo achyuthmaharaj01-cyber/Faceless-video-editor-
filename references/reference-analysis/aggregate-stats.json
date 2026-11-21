@@ -1,0 +1,310 @@
+{
+ "per_video": {
+  "1": {
+   "shots": 315,
+   "cuts_per_minute": 24.81,
+   "shot_sec": {
+    "mean": 2.41,
+    "median": 1.83,
+    "p10": 0.68,
+    "p90": 4.69,
+    "max": 16.47
+   },
+   "camera_motion_share": {
+    "static": 0.606,
+    "internal-motion": 0.133,
+    "push-in": 0.095,
+    "pull-out": 0.07,
+    "pan-left": 0.054,
+    "pan-right": 0.022,
+    "tilt-down": 0.013,
+    "tilt-up": 0.006
+   },
+   "words_per_minute": 204.8,
+   "cuts_on_word_boundary_250ms": 0.882,
+   "cuts_near_sentence_end_400ms": 0.271,
+   "cuts_per_sentence": 1.74,
+   "cuts_with_audio_transient_within_100ms": 0.239,
+   "rms_db_speech_seconds": -21.1,
+   "rms_db_non_speech_seconds": -36.1,
+   "dissolve_like_transitions": 113,
+   "luma_mean": 132.9,
+   "sat_mean": 72.7,
+   "audio": {
+    "integrated_lufs": -14.1,
+    "lra_lu": 3.9,
+    "true_peak_dbtp": -0.3
+   },
+   "duration": 759.316
+  },
+  "2": {
+   "shots": 220,
+   "cuts_per_minute": 23.11,
+   "shot_sec": {
+    "mean": 2.58,
+    "median": 1.98,
+    "p10": 0.6,
+    "p90": 5.0,
+    "max": 27.17
+   },
+   "camera_motion_share": {
+    "static": 0.636,
+    "internal-motion": 0.141,
+    "push-in": 0.1,
+    "pull-out": 0.055,
+    "pan-left": 0.036,
+    "pan-right": 0.018,
+    "tilt-up": 0.009,
+    "tilt-down": 0.005
+   },
+   "words_per_minute": 176.9,
+   "cuts_on_word_boundary_250ms": 0.941,
+   "cuts_near_sentence_end_400ms": 0.269,
+   "cuts_per_sentence": 1.58,
+   "cuts_with_audio_transient_within_100ms": 0.301,
+   "rms_db_speech_seconds": -22.9,
+   "rms_db_non_speech_seconds": -28.0,
+   "dissolve_like_transitions": 82,
+   "luma_mean": 153.7,
+   "sat_mean": 65.5,
+   "audio": {
+    "integrated_lufs": -14.2,
+    "lra_lu": 4.4,
+    "true_peak_dbtp": -0.4
+   },
+   "duration": 568.657
+  },
+  "3": {
+   "shots": 641,
+   "cuts_per_minute": 32.67,
+   "shot_sec": {
+    "mean": 1.83,
+    "median": 1.4,
+    "p10": 0.53,
+    "p90": 2.67,
+    "max": 94.2
+   },
+   "camera_motion_share": {
+    "static": 0.404,
+    "push-in": 0.195,
+    "internal-motion": 0.156,
+    "pull-out": 0.129,
+    "pan-right": 0.048,
+    "pan-left": 0.031,
+    "tilt-up": 0.019,
+    "tilt-down": 0.017
+   },
+   "words_per_minute": 153.6,
+   "cuts_on_word_boundary_250ms": 0.748,
+   "cuts_near_sentence_end_400ms": 0.163,
+   "cuts_per_sentence": 3.39,
+   "cuts_with_audio_transient_within_100ms": 0.195,
+   "rms_db_speech_seconds": -22.2,
+   "rms_db_non_speech_seconds": -42.6,
+   "dissolve_like_transitions": 339,
+   "luma_mean": 123.5,
+   "sat_mean": 77.5,
+   "audio": {
+    "integrated_lufs": -15.3,
+    "lra_lu": 4.2,
+    "true_peak_dbtp": -0.1
+   },
+   "duration": 1175.301
+  },
+  "4": {
+   "shots": 657,
+   "cuts_per_minute": 20.88,
+   "shot_sec": {
+    "mean": 2.87,
+    "median": 1.97,
+    "p10": 0.5,
+    "p90": 5.1,
+    "max": 114.43
+   },
+   "camera_motion_share": {
+    "static": 0.659,
+    "internal-motion": 0.14,
+    "push-in": 0.076,
+    "pull-out": 0.068,
+    "pan-right": 0.023,
+    "pan-left": 0.021,
+    "tilt-down": 0.009,
+    "tilt-up": 0.003
+   },
+   "words_per_minute": 160.4,
+   "cuts_on_word_boundary_250ms": 0.788,
+   "cuts_near_sentence_end_400ms": 0.178,
+   "cuts_per_sentence": 1.88,
+   "cuts_with_audio_transient_within_100ms": 0.226,
+   "rms_db_speech_seconds": -21.7,
+   "rms_db_non_speech_seconds": -27.1,
+   "dissolve_like_transitions": 131,
+   "luma_mean": 103.4,
+   "sat_mean": 104.4,
+   "audio": {
+    "integrated_lufs": -14.5,
+    "lra_lu": 4.1,
+    "true_peak_dbtp": -0.0
+   },
+   "duration": 1885.135
+  },
+  "5": {
+   "shots": 270,
+   "cuts_per_minute": 25.29,
+   "shot_sec": {
+    "mean": 2.36,
+    "median": 1.7,
+    "p10": 0.87,
+    "p90": 3.24,
+    "max": 123.93
+   },
+   "camera_motion_share": {
+    "static": 0.6,
+    "push-in": 0.222,
+    "pull-out": 0.074,
+    "internal-motion": 0.052,
+    "pan-right": 0.015,
+    "pan-left": 0.015,
+    "tilt-down": 0.011,
+    "tilt-up": 0.011
+   },
+   "words_per_minute": 156.1,
+   "cuts_on_word_boundary_250ms": 0.792,
+   "cuts_near_sentence_end_400ms": 0.223,
+   "cuts_per_sentence": 2.69,
+   "cuts_with_audio_transient_within_100ms": 0.204,
+   "rms_db_speech_seconds": -24.0,
+   "rms_db_non_speech_seconds": -83.0,
+   "dissolve_like_transitions": 45,
+   "luma_mean": 132.8,
+   "sat_mean": 74.1,
+   "audio": {
+    "integrated_lufs": -16.3,
+    "lra_lu": 4.2,
+    "true_peak_dbtp": 0.3
+   },
+   "duration": 638.154
+  },
+  "6": {
+   "shots": 382,
+   "cuts_per_minute": 23.43,
+   "shot_sec": {
+    "mean": 2.55,
+    "median": 1.78,
+    "p10": 0.93,
+    "p90": 3.83,
+    "max": 79.7
+   },
+   "camera_motion_share": {
+    "static": 0.581,
+    "internal-motion": 0.162,
+    "push-in": 0.118,
+    "pull-out": 0.068,
+    "pan-left": 0.031,
+    "pan-right": 0.024,
+    "tilt-up": 0.013,
+    "tilt-down": 0.003
+   },
+   "words_per_minute": 160.7,
+   "cuts_on_word_boundary_250ms": 0.793,
+   "cuts_near_sentence_end_400ms": 0.142,
+   "cuts_per_sentence": 2.54,
+   "cuts_with_audio_transient_within_100ms": 0.249,
+   "rms_db_speech_seconds": -20.3,
+   "rms_db_non_speech_seconds": -24.1,
+   "dissolve_like_transitions": 82,
+   "luma_mean": 120.7,
+   "sat_mean": 84.2,
+   "audio": {
+    "integrated_lufs": -13.8,
+    "lra_lu": 3.6,
+    "true_peak_dbtp": -0.7
+   },
+   "duration": 975.679
+  },
+  "7": {
+   "shots": 332,
+   "cuts_per_minute": 27.76,
+   "shot_sec": {
+    "mean": 2.15,
+    "median": 1.77,
+    "p10": 0.93,
+    "p90": 3.69,
+    "max": 10.9
+   },
+   "camera_motion_share": {
+    "static": 0.63,
+    "internal-motion": 0.139,
+    "push-in": 0.133,
+    "pull-out": 0.045,
+    "pan-right": 0.03,
+    "pan-left": 0.012,
+    "tilt-up": 0.006,
+    "tilt-down": 0.006
+   },
+   "words_per_minute": 165.2,
+   "cuts_on_word_boundary_250ms": 0.837,
+   "cuts_near_sentence_end_400ms": 0.278,
+   "cuts_per_sentence": 1.82,
+   "cuts_with_audio_transient_within_100ms": 0.302,
+   "rms_db_speech_seconds": -25.1,
+   "rms_db_non_speech_seconds": -49.2,
+   "dissolve_like_transitions": 124,
+   "luma_mean": 126.6,
+   "sat_mean": 64.5,
+   "audio": {
+    "integrated_lufs": -16.1,
+    "lra_lu": 5.6,
+    "true_peak_dbtp": 0.4
+   },
+   "duration": 715.314
+  },
+  "8": {
+   "shots": 257,
+   "cuts_per_minute": 31.41,
+   "shot_sec": {
+    "mean": 1.9,
+    "median": 1.47,
+    "p10": 0.49,
+    "p90": 3.83,
+    "max": 11.83
+   },
+   "camera_motion_share": {
+    "static": 0.42,
+    "push-in": 0.214,
+    "internal-motion": 0.206,
+    "pull-out": 0.086,
+    "pan-left": 0.039,
+    "pan-right": 0.016,
+    "tilt-up": 0.012,
+    "tilt-down": 0.008
+   },
+   "words_per_minute": 176.1,
+   "cuts_on_word_boundary_250ms": 0.793,
+   "cuts_near_sentence_end_400ms": 0.316,
+   "cuts_per_sentence": 2.13,
+   "cuts_with_audio_transient_within_100ms": 0.32,
+   "rms_db_speech_seconds": -19.6,
+   "rms_db_non_speech_seconds": -31.2,
+   "dissolve_like_transitions": 79,
+   "luma_mean": 122.9,
+   "sat_mean": 76.1,
+   "audio": {
+    "integrated_lufs": -13.0,
+    "lra_lu": 3.7,
+    "true_peak_dbtp": -0.6
+   },
+   "duration": 488.966
+  }
+ },
+ "overall": {
+  "videos": 8,
+  "shots": 3074,
+  "median_shot_sec": 1.7,
+  "mean_shot_sec": 2.34,
+  "p10": 0.63,
+  "p90": 4.0,
+  "share_under_1s": 0.196,
+  "share_over_5s": 0.062
+ }
+}

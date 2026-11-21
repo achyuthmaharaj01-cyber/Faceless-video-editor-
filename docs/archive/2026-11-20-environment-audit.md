@@ -1,3 +1,5 @@
+> **Superseded (2026-11-21):** this plan used Remotion and a custom GCP backend. The current system uses HyperFrames + VideoHub; see README.md and docs/cloud-architecture.md.
+
 # Phase 1 — Environment Audit
 
 Date: 2026-11-20 · Every item below was checked by running a command in this session, not assumed.

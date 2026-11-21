@@ -1,0 +1,20 @@
+{
+  "musicSource": "procedural (curious)",
+  "cues": 36,
+  "preMix": {
+    "integrated": -22,
+    "lra": 4.4,
+    "truePeak": -4.3
+  },
+  "masterGainDb": 3.3,
+  "final": {
+    "integrated": -18.7,
+    "lra": 4.4,
+    "truePeak": -1
+  },
+  "voiceProcessing": "none (static master gain only)",
+  "warnings": [
+    "music is the procedural placeholder bed: replace it with a licensed track for publishing quality (storyboard.music.track)",
+    "loudness target -14 LUFS needs +8.0 dB but the true peak allows only 3.3 dB: mix lands at -18.7 LUFS (no limiter is applied to the narration; approve limiting if you want it louder)"
+  ]
+}

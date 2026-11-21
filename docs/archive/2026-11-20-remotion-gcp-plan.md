@@ -1,3 +1,5 @@
+> **Superseded (2026-11-21):** this plan used Remotion and a custom GCP backend. The current system uses HyperFrames + VideoHub; see README.md and docs/cloud-architecture.md.
+
 # Implementation Plan — Faceless Video Studio
 
 Status: **Phase 1 complete (audit). Awaiting your decisions and Google Cloud access.**

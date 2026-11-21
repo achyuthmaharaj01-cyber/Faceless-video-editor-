@@ -1,0 +1,19 @@
+{
+ "file": "video-5.mp4",
+ "size_bytes": 167953327,
+ "duration_sec": 638.154,
+ "width": 1280,
+ "height": 720,
+ "aspect_ratio": "16:9",
+ "fps": 60.0,
+ "video_codec": "h264",
+ "video_profile": "Main",
+ "pix_fmt": "yuv420p",
+ "video_bitrate_kbps": 1971,
+ "audio_codec": "aac",
+ "audio_channels": 2,
+ "audio_sample_rate": 44100,
+ "audio_bitrate_kbps": 128,
+ "overall_bitrate_kbps": 2105,
+ "label": "5"
+}

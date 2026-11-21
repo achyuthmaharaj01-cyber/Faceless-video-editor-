@@ -1,0 +1,648 @@
+{
+ "version": 1,
+ "generated": "refined",
+ "format": {
+  "width": 1920,
+  "height": 1080,
+  "fps": 30
+ },
+ "duration": 44.41,
+ "style": {
+  "guide": "references/reference-analysis/master-style-guide.md",
+  "tokens": {}
+ },
+ "music": {
+  "track": "procedural",
+  "mood": "curious",
+  "gain_db": -21,
+  "duck_db": 12
+ },
+ "scenes": [
+  {
+   "id": "sc01",
+   "title": "1956",
+   "start": 0,
+   "end": 1.8,
+   "sentences": [
+    0
+   ],
+   "purpose": "hook: plant the year before anything else",
+   "visual": {
+    "type": "kinetic",
+    "text": "1956",
+    "size": 330,
+    "top": 30,
+    "background": "radial-gradient(circle at 50% 45%, #3a2a1a, #0b0806 70%)",
+    "sfx": false
+   },
+   "layers": [],
+   "sfx": [
+    {
+     "cue": "impact",
+     "at": "@1956",
+     "gain_db": -4
+    }
+   ],
+   "transition_in": "cut",
+   "technique": "year as kinetic type, impact on the spoken year",
+   "assets": [],
+   "status": "refined",
+   "narration": "In 1956,"
+  },
+  {
+   "id": "sc02",
+   "title": "a trucking man",
+   "start": 1.8,
+   "end": 6.48,
+   "sentences": [
+    0
+   ],
+   "purpose": "introduce the protagonist through his trade (no portrait available: no fake one)",
+   "visual": {
+    "type": "photo",
+    "asset": "truck",
+    "move": "pan-right",
+    "grade": "bw"
+   },
+   "assets": [
+    {
+     "id": "truck",
+     "kind": "image",
+     "need": "1950s truck with trailer: the trucking world McLean came from",
+     "pick": {
+      "source": "openverse/flickr",
+      "id": "8072314a-cbf3-4991-af59-3f2b0eb13c11",
+      "title": "Wheat and Super Haulage - 1950's Style",
+      "url": "https://live.staticflickr.com/8332/8115709226_3b47ff0f5b_b.jpg",
+      "urlFallback": null,
+      "thumb": "https://api.openverse.org/v1/images/8072314a-cbf3-4991-af59-3f2b0eb13c11/thumb/",
+      "landing": "https://www.flickr.com/photos/58733515@N02/8115709226",
+      "creator": "Phil Schubert",
+      "licenceRaw": "by-2.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/2.0/",
+      "width": 1024,
+      "height": 659,
+      "kind": "image",
+      "attributionText": "\"Wheat and Super Haulage - 1950's Style\" by Phil Schubert is licensed under CC BY 2.0. To view a copy of this license, visit https://creativecommons.org/licenses/by/2.0/.",
+      "notes": null
+     }
+    }
+   ],
+   "layers": [
+    {
+     "type": "label",
+     "text": "1950s trucking",
+     "position": [
+      0.06,
+      0.12
+     ],
+     "anchor": "left",
+     "at": "@trucking",
+     "size": 54
+    },
+    {
+     "type": "label",
+     "text": "malcom mclean",
+     "position": [
+      0.5,
+      0.8
+     ],
+     "at": "@Malcom",
+     "reveal": "words",
+     "size": 86
+    },
+    {
+     "type": "hand",
+     "text": "a simple idea...",
+     "position": [
+      0.58,
+      0.2
+     ],
+     "at": "@simple",
+     "rotate": -5
+    }
+   ],
+   "transition_in": "zoom",
+   "technique": "archival-style photo, slow pan, word-synced name label",
+   "sfx": [],
+   "status": "refined",
+   "narration": "a trucking businessman named Malcom McLean had a simple idea."
+  },
+  {
+   "id": "sc03",
+   "title": "one sack at a time",
+   "start": 6.48,
+   "end": 8.4,
+   "sentences": [
+    1
+   ],
+   "purpose": "the old way, visually",
+   "visual": {
+    "type": "photo",
+    "asset": "longshoremen",
+    "move": "push-in",
+    "focus": [
+     0.5,
+     0.55
+    ]
+   },
+   "assets": [
+    {
+     "id": "longshoremen",
+     "kind": "image",
+     "need": "longshoremen hand-loading cargo onto a ship (pre-container era)",
+     "pick": {
+      "source": "openverse/rawpixel",
+      "id": "835d1bf2-b7ec-4c15-b0e7-f13d8671c3eb",
+      "title": "Longshoremen loading cargo onto ship",
+      "url": "https://images.rawpixel.com/editor_1024/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2xvYzAwNjQ5NjM3LWltYWdlLmpwZw.jpg",
+      "urlFallback": null,
+      "thumb": "https://api.openverse.org/v1/images/835d1bf2-b7ec-4c15-b0e7-f13d8671c3eb/thumb/",
+      "landing": "https://www.rawpixel.com/image/6747412/photo-image-men-black-vintage",
+      "creator": "libraryofcongress",
+      "licenceRaw": "cc0",
+      "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "width": 4096,
+      "height": 3301,
+      "kind": "image",
+      "attributionText": "\"Longshoremen loading cargo onto ship\" by libraryofcongress is marked with CC0 1.0. To view the terms, visit https://creativecommons.org/publicdomain/zero/1.0/.",
+      "notes": null
+     }
+    }
+   ],
+   "layers": [
+    {
+     "type": "label",
+     "text": "one sack at a time",
+     "position": [
+      0.5,
+      0.84
+     ],
+     "at": "@one",
+     "reveal": "words",
+     "size": 72
+    }
+   ],
+   "transition_in": "cut",
+   "technique": "push-in on the manual labour, caption lands word by word",
+   "sfx": [],
+   "status": "refined",
+   "narration": "Why load a ship one sack at a time,"
+  },
+  {
+   "id": "sc04",
+   "title": "the whole trailer",
+   "start": 8.4,
+   "end": 11.56,
+   "sentences": [
+    1
+   ],
+   "purpose": "the idea, as a punchline",
+   "visual": {
+    "type": "kinetic",
+    "text": "lift the whole trailer on board?",
+    "size": 140,
+    "top": 30,
+    "asset": "truck"
+   },
+   "transition_in": "whip-left",
+   "technique": "kinetic type on container-rust colour, words on speech",
+   "assets": [],
+   "layers": [],
+   "sfx": [],
+   "status": "refined",
+   "narration": "when you could lift the whole trailer on board?",
+   "revisions": [
+    {
+     "note": "VideoHub note #1 (simulated test note)",
+     "change": "dimmed 1950s truck photo behind the kinetic words"
+    }
+   ]
+  },
+  {
+   "id": "sc05",
+   "title": "newark, april 1956",
+   "start": 11.56,
+   "end": 14.85,
+   "sentences": [
+    2
+   ],
+   "purpose": "establish place and date of the first voyage",
+   "visual": {
+    "type": "map",
+    "from": {
+     "lat": 38,
+     "lon": -92,
+     "zoom": 2.2
+    },
+    "focus": {
+     "lat": 39.5,
+     "lon": -76.5,
+     "zoom": 9
+    },
+    "zoomDuration": 2.4,
+    "pins": [
+     {
+      "lat": 40.73,
+      "lon": -74.17,
+      "label": "newark",
+      "at": "@Newark"
+     }
+    ]
+   },
+   "layers": [
+    {
+     "type": "label",
+     "text": "april 26, 1956",
+     "position": [
+      0.06,
+      0.1
+     ],
+     "anchor": "left",
+     "at": "@April",
+     "size": 60,
+     "style": "dark"
+    }
+   ],
+   "transition_in": "whip-left",
+   "technique": "map zooms in, pin lands on the spoken city",
+   "assets": [],
+   "sfx": [],
+   "status": "refined",
+   "narration": "On April 26th, the Ideal X left Newark"
+  },
+  {
+   "id": "sc06",
+   "title": "58 boxes",
+   "start": 14.85,
+   "end": 17.62,
+   "sentences": [
+    2
+   ],
+   "purpose": "make the number physical",
+   "visual": {
+    "type": "blocks3d",
+    "count": 58,
+    "cols": 8,
+    "growAt": "@fifty-eight",
+    "growDuration": 1.5
+   },
+   "layers": [
+    {
+     "type": "label",
+     "text": "58 boxes",
+     "position": [
+      0.5,
+      0.11
+     ],
+     "at": "@fifty-eight",
+     "size": 96,
+     "style": "dark"
+    }
+   ],
+   "transition_in": "cut",
+   "technique": "3D containers land as the number is spoken",
+   "assets": [],
+   "sfx": [],
+   "status": "refined",
+   "narration": "carrying fifty-eight metal boxes."
+  },
+  {
+   "id": "sc07",
+   "title": "five days to houston",
+   "start": 17.62,
+   "end": 21.06,
+   "sentences": [
+    3
+   ],
+   "purpose": "the voyage",
+   "visual": {
+    "type": "map",
+    "from": {
+     "lat": 34,
+     "lon": -83,
+     "zoom": 4.2
+    },
+    "focus": {
+     "lat": 33,
+     "lon": -84.5,
+     "zoom": 4.6
+    },
+    "zoomDuration": 3,
+    "pins": [
+     {
+      "lat": 40.73,
+      "lon": -74.17,
+      "label": "newark",
+      "at": "+0.05"
+     },
+     {
+      "lat": 29.76,
+      "lon": -95.37,
+      "label": "houston",
+      "at": "@Houston"
+     }
+    ],
+    "route": [
+     [
+      40.73,
+      -74.17
+     ],
+     [
+      36.5,
+      -74.5
+     ],
+     [
+      32,
+      -79
+     ],
+     [
+      26.5,
+      -79.6
+     ],
+     [
+      24.6,
+      -81.5
+     ],
+     [
+      26.5,
+      -84.5
+     ],
+     [
+      28.8,
+      -90
+     ],
+     [
+      29.76,
+      -95.37
+     ]
+    ],
+    "routeAt": "@Five",
+    "routeDuration": 2
+   },
+   "layers": [
+    {
+     "type": "label",
+     "text": "5 days",
+     "position": [
+      0.06,
+      0.1
+     ],
+     "anchor": "left",
+     "at": "@Five",
+     "size": 66,
+     "style": "dark"
+    }
+   ],
+   "transition_in": "cut",
+   "technique": "route draws along the coast while the narration covers the trip",
+   "assets": [],
+   "sfx": [],
+   "status": "refined",
+   "narration": "Five days later, it arrived in Houston."
+  },
+  {
+   "id": "sc08",
+   "title": "$5.86 per ton",
+   "start": 21.06,
+   "end": 25.12,
+   "sentences": [
+    4
+   ],
+   "purpose": "the cost of the old way",
+   "visual": {
+    "type": "stat",
+    "value": 5.86,
+    "prefix": "$",
+    "decimals": 2,
+    "sub": "per ton \u00b7 loose cargo",
+    "at": "@$5.86",
+    "asset": "longshoremen",
+    "dim": 0.35
+   },
+   "transition_in": "whip-left",
+   "technique": "money count-up over the manual-labour image",
+   "assets": [],
+   "layers": [],
+   "sfx": [],
+   "status": "refined",
+   "narration": "Loading loose cargo cost about $5.86 per ton."
+  },
+  {
+   "id": "sc09",
+   "title": "16 cents",
+   "start": 25.12,
+   "end": 28.32,
+   "sentences": [
+    5
+   ],
+   "purpose": "the payoff: the price collapses",
+   "visual": {
+    "type": "stat",
+    "from": 5.86,
+    "value": 0.16,
+    "prefix": "$",
+    "decimals": 2,
+    "sub": "per ton \u00b7 containers",
+    "at": "@dropped",
+    "duration": 1.1,
+    "background": "radial-gradient(circle at 50% 45%, #183a22, #040805 70%)"
+   },
+   "transition_in": "zoom",
+   "technique": "the same counter falls: before/after in one number",
+   "assets": [],
+   "layers": [
+    {
+     "type": "meter",
+     "position": [
+      0.2,
+      0.83
+     ],
+     "width": 0.6,
+     "fraction": 0.027303754266211604,
+     "at": "@roughly",
+     "duration": 1.0
+    }
+   ],
+   "sfx": [],
+   "status": "refined",
+   "narration": "With containers, it dropped to roughly sixteen cents."
+  },
+  {
+   "id": "sc10",
+   "title": "refused vs adapted",
+   "start": 28.32,
+   "end": 35.06,
+   "sentences": [
+    6,
+    7
+   ],
+   "purpose": "consequence, as a comparison",
+   "visual": {
+    "type": "comparison",
+    "left": {
+     "asset": "warehouse",
+     "label": "refused to change",
+     "grade": "bw"
+    },
+    "right": {
+     "asset": "terminal",
+     "label": "adapted",
+     "at": "@adapted"
+    }
+   },
+   "assets": [
+    {
+     "id": "warehouse",
+     "kind": "image",
+     "need": "old port warehouse: a port that stopped changing",
+     "pick": {
+      "source": "openverse/flickr",
+      "id": "8cc8fb4b-e427-4a68-9117-60c237401095",
+      "title": "Rotterdam - Pakhuismeesteren & New Orleans",
+      "url": "https://live.staticflickr.com/7481/26893922182_e247d6351b_b.jpg",
+      "urlFallback": null,
+      "thumb": "https://api.openverse.org/v1/images/8cc8fb4b-e427-4a68-9117-60c237401095/thumb/",
+      "landing": "https://www.flickr.com/photos/129231073@N06/26893922182",
+      "creator": "corno.fulgur75",
+      "licenceRaw": "by-2.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/2.0/",
+      "width": 1024,
+      "height": 683,
+      "kind": "image",
+      "attributionText": "\"Rotterdam - Pakhuismeesteren & New Orleans\" by corno.fulgur75 is licensed under CC BY 2.0. To view a copy of this license, visit https://creativecommons.org/licenses/by/2.0/.",
+      "notes": null
+     }
+    },
+    {
+     "id": "terminal",
+     "kind": "image",
+     "need": "container terminal with cranes: a port that adapted",
+     "pick": {
+      "source": "openverse/flickr",
+      "id": "480de3a4-e610-4b99-94e1-a7f6bd30f319",
+      "title": "TraPac Container Terminal - 2006",
+      "url": "https://live.staticflickr.com/3238/2859012675_d9e5cab8da_b.jpg",
+      "urlFallback": null,
+      "thumb": "https://api.openverse.org/v1/images/480de3a4-e610-4b99-94e1-a7f6bd30f319/thumb/",
+      "landing": "https://www.flickr.com/photos/24847875@N05/2859012675",
+      "creator": "JAXPORT",
+      "licenceRaw": "by-2.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/2.0/",
+      "width": 1024,
+      "height": 818,
+      "kind": "image",
+      "attributionText": "\"TraPac Container Terminal - 2006\" by JAXPORT is licensed under CC BY 2.0. To view a copy of this license, visit https://creativecommons.org/licenses/by/2.0/.",
+      "notes": null
+     }
+    }
+   ],
+   "transition_in": "whip-left",
+   "technique": "split screen; the right half arrives on \"adapted\"",
+   "layers": [],
+   "sfx": [],
+   "status": "refined",
+   "narration": "Ports that refused to change slowly emptied. Ports that adapted became giants."
+  },
+  {
+   "id": "sc11",
+   "title": "24,000 containers",
+   "start": 35.06,
+   "end": 39.62,
+   "sentences": [
+    8
+   ],
+   "purpose": "scale today",
+   "visual": {
+    "type": "stat",
+    "value": 24000,
+    "suffix": "+",
+    "sub": "containers on one ship",
+    "at": "@twenty-four",
+    "asset": "ship-aerial",
+    "dim": 0.5,
+    "size": 230
+   },
+   "assets": [
+    {
+     "id": "ship-aerial",
+     "kind": "image",
+     "need": "loaded container ship at sea, from above",
+     "pick": {
+      "source": "openverse/flickr",
+      "id": "d67d174b-687d-4fd6-9b4f-9c67ca738fc7",
+      "title": "Container Ship",
+      "url": "https://live.staticflickr.com/3162/2875308472_5eda7256df_b.jpg",
+      "urlFallback": null,
+      "thumb": "https://api.openverse.org/v1/images/d67d174b-687d-4fd6-9b4f-9c67ca738fc7/thumb/",
+      "landing": "https://www.flickr.com/photos/21442511@N08/2875308472",
+      "creator": "jdnx",
+      "licenceRaw": "by-2.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/2.0/",
+      "width": 1024,
+      "height": 768,
+      "kind": "image",
+      "attributionText": "\"Container Ship\" by jdnx is licensed under CC BY 2.0. To view a copy of this license, visit https://creativecommons.org/licenses/by/2.0/.",
+      "notes": null
+     }
+    }
+   ],
+   "transition_in": "whip-left",
+   "technique": "number over the real thing",
+   "layers": [],
+   "sfx": [],
+   "status": "refined",
+   "narration": "Today, the biggest ships carry more than twenty-four thousand containers."
+  },
+  {
+   "id": "sc12",
+   "title": "inside one of those boxes",
+   "start": 39.62,
+   "end": 44.41,
+   "sentences": [
+    9
+   ],
+   "purpose": "bring it home to the viewer",
+   "visual": {
+    "type": "photo",
+    "asset": "ship-harbor",
+    "move": "pull-out"
+   },
+   "assets": [
+    {
+     "id": "ship-harbor",
+     "kind": "image",
+     "need": "container ship entering a harbour",
+     "pick": {
+      "source": "openverse/flickr",
+      "id": "42cc359b-74e3-4d3b-8e74-5274fd10a056",
+      "title": "The Container Ship 'MSC Chicago' Entering Savannh Harbor (GA) July 2012",
+      "url": "https://live.staticflickr.com/7274/7720563568_aa8e0b852e_b.jpg",
+      "urlFallback": null,
+      "thumb": "https://api.openverse.org/v1/images/42cc359b-74e3-4d3b-8e74-5274fd10a056/thumb/",
+      "landing": "https://www.flickr.com/photos/22711505@N05/7720563568",
+      "creator": "Ron Cogswell",
+      "licenceRaw": "by-2.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/2.0/",
+      "width": 1024,
+      "height": 703,
+      "kind": "image",
+      "attributionText": "\"The Container Ship 'MSC Chicago' Entering Savannh Harbor (GA) July 2012\" by Ron Cogswell is licensed under CC BY 2.0. To view a copy of this license, visit https://creativecommons.org/licenses/by/2.0/.",
+      "notes": null
+     }
+    }
+   ],
+   "layers": [
+    {
+     "type": "captions",
+     "at": "@inside"
+    }
+   ],
+   "transition_in": "cut",
+   "technique": "pull-out to close, last words as captions",
+   "sfx": [],
+   "status": "refined",
+   "narration": "And almost everything you own spent part of its life inside one of those boxes."
+  }
+ ]
+}
