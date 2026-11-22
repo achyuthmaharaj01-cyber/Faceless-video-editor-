@@ -6,7 +6,7 @@ warnings.filterwarnings("ignore")
 SK = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); S = lambda n: os.path.join(SK, "scripts", n)
 STYLE = json.load(open(os.path.join(SK, "style.json")))
 ap = argparse.ArgumentParser(); ap.add_argument("video"); ap.add_argument("wd"); ap.add_argument("--format", default="tier")
-ap.add_argument("--ref-analysis", default=os.path.join(SK, "analysis")); ap.add_argument("--ref", default="video-3"); a = ap.parse_args()
+ap.add_argument("--ref-analysis", default=os.path.join(SK, "analysis")); ap.add_argument("--ref", default="video-3"); ap.add_argument("--timeline", help="project timeline_resolved.json (for SFX density)"); a = ap.parse_args()
 os.makedirs(a.wd, exist_ok=True); W = lambda n: os.path.join(a.wd, n)
 def sh(*c, **k): return subprocess.run(list(c), check=True, capture_output=True, text=True, **k)
 dur = float(sh("ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", a.video).stdout)
@@ -25,14 +25,19 @@ sh("ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-i", a.video, "-vn", "-ac"
 sh("python3", "-I", S("transcribe.py"), W("mix.wav"), W("transcript.json"))
 sh("python3", "-I", S("vo_timeline.py"), W("mix.wav"), W("transcript.json"), W("vo_timeline.json"))
 V = json.load(open(W("vo_timeline.json")))
+# real narrator pauses: demucs vocal stem of the mix, silencedetect (same method as style.json audio.vo.pauses_vocal_stem)
+sh("python3", "-m", "demucs", "--two-stems=vocals", "-n", "htdemucs", "-o", W("stems"), W("mix.wav"))
+_r = subprocess.run(["ffmpeg", "-nostdin", "-i", W("stems/htdemucs/mix/vocals.wav"), "-af", "silencedetect=noise=-38dB:d=0.3", "-f", "null", "-"], capture_output=True, text=True).stderr
+_p = [float(x) for x in re.findall(r"silence_duration: ([\d.]+)", _r)]
 def lab_stats(R):
     lab, sub = [], []
     for r in R:
         for l in r["lines"]:
             t = l["text"]
             if l["conf"] < 80 or not re.fullmatch(r"[a-z0-9\(\)' .\-,:$]+", t) or not re.search("[a-z]{3}", t): continue
+            if l["h_pct"] < (3.0 if l["cy_pct"] >= 75 else 4.0) or l["cy_pct"] > 94: continue   # small/edge text = inside the footage
             (sub if l["cy_pct"] >= 75 else lab).append(l)
-    f = lambda L, k: round(st.median([x[k] for x in L]), 2) if L else None
+    f = lambda L, k: round(st.median([x[k] for x in L]), 2) if len(L) >= 3 else None   # <3 samples: not measurable
     return {"label_h_pct": f(lab, "h_pct"), "label_cy_pct": f(lab, "cy_pct"), "bottom_h_pct": f(sub, "h_pct"), "bottom_cy_pct": f(sub, "cy_pct"), "n_label": len(lab), "n_bottom": len(sub)}
 ref = a.ref; RA = lambda n: json.load(open(os.path.join(a.ref_analysis, f"{ref}.{n}.json")))
 Rg = RA("graphics"); Rv = RA("vo_timeline"); Ro = RA("ocr"); Rc = RA("cuts")
@@ -42,18 +47,28 @@ mine = {"cuts_per_minute": C["cuts_per_minute"], "shot_median": C["shot_sec"]["m
         "luma_mean": round(st.mean(g["mean_luma"] for g in G), 1), "sat_mean": round(st.mean(g["mean_sat"] for g in G), 1),
         "vo_share": V["vo_on_share"], "integrated_lufs": V["integrated_lufs_mean_of_valid_parts"], "lufs_vo_on": V["lufs_vo_on"],
         "breath_gaps_per_min": V["off_summary"].get("music_or_sfx", {}).get("per_min", 0), "breath_gap_median_s": V["off_summary"].get("music_or_sfx", {}).get("median_dur"),
-        "clip_audio_per_min": V["off_summary"].get("clip_speech", {}).get("per_min", 0), **lab_stats(O)}
+        "clip_audio_per_min": V["off_summary"].get("clip_speech", {}).get("per_min", 0),
+        "vo_pauses_per_min": round(len(_p) / (dur / 60), 1), "vo_pause_median_s": round(st.median(_p), 2) if _p else None, **lab_stats(O)}
 refm = {"cuts_per_minute": Rc["cuts_per_minute"], "shot_median": Rc["shot_sec"]["median"], "shot_mean": Rc["shot_sec"]["mean"], "shot_p10": Rc["shot_sec"]["p10"], "shot_p90": Rc["shot_sec"]["p90"],
         "price_badge_share": share(Rg, "price_badge"), "vignette_share": share(Rg, "vignette"), "tier_chart_share": share(Rg, "tier_chart"),
         "luma_mean": round(st.mean(g["mean_luma"] for g in Rg), 1), "sat_mean": round(st.mean(g["mean_sat"] for g in Rg), 1),
         "vo_share": Rv["vo_on_share"], "integrated_lufs": Rv["integrated_lufs_mean_of_valid_parts"], "lufs_vo_on": Rv["lufs_vo_on"],
         "breath_gaps_per_min": Rv["off_summary"]["music_or_sfx"]["per_min"], "breath_gap_median_s": Rv["off_summary"]["music_or_sfx"]["median_dur"],
-        "clip_audio_per_min": Rv["off_summary"]["clip_speech"]["per_min"], **lab_stats(Ro)}
+        "clip_audio_per_min": Rv["off_summary"]["clip_speech"]["per_min"],
+        "vo_pauses_per_min": STYLE["audio"]["vo"]["pauses_vocal_stem"]["per_min"].get(ref), "vo_pause_median_s": STYLE["audio"]["vo"]["pauses_vocal_stem"]["median_s"].get(ref), **lab_stats(Ro)}
 # tolerance: relative (r) or absolute (a); hard = blocks delivery
 TOL = {"cuts_per_minute": ("r", .15, 1), "shot_median": ("r", .15, 1), "shot_mean": ("r", .2, 1), "shot_p10": ("r", .3, 0), "shot_p90": ("r", .3, 0),
        "price_badge_share": ("a", .12, 0), "vignette_share": ("a", .12, 0), "tier_chart_share": ("a", .1, 0), "luma_mean": ("r", .25, 0), "sat_mean": ("r", .35, 0),
-       "vo_share": ("a", .08, 1), "integrated_lufs": ("a", 1.0, 1), "lufs_vo_on": ("a", 1.5, 1), "breath_gaps_per_min": ("r", .5, 0), "breath_gap_median_s": ("r", .5, 0),
+       "vo_share": ("a", .08, 1), "integrated_lufs": ("a", 1.0, 1), "lufs_vo_on": ("a", 1.5, 1), "breath_gaps_per_min": ("r", .5, 0), "breath_gap_median_s": ("r", .5, 0), "vo_pauses_per_min": ("r", .5, 1), "vo_pause_median_s": ("r", .35, 0),
        "clip_audio_per_min": ("a", .6, 0), "label_h_pct": ("r", .2, 1), "label_cy_pct": ("a", 8, 0), "bottom_h_pct": ("r", .25, 0), "bottom_cy_pct": ("a", 5, 1)}
+if a.timeline:
+    TLr = json.load(open(a.timeline)); sfx = TLr.get("sfx", []); mins = TLr["total"] / 60
+    mine["sfx_per_min"] = round(len(sfx) / mins, 1)
+    mine["sfx_per_badge"] = round(sum(x["kind"] == "tick" for x in sfx) / max(1, TLr.get("badge_runs", 1)), 2)
+    mine["sfx_per_verdict"] = round(sum(x["kind"] == "hit" for x in sfx) / max(1, TLr.get("verdicts", 1)), 2)
+    A_ = STYLE["audio"]["sfx"]; refm["sfx_per_min"] = A_["per_minute_estimated"]["tier_format"]
+    refm["sfx_per_badge"] = A_["price_badge_entrance"]["hit_rate"]; refm["sfx_per_verdict"] = A_["verdict"]["hit_rate"]
+    TOL.update({"sfx_per_min": ("r", .6, 0), "sfx_per_badge": ("a", .15, 0), "sfx_per_verdict": ("a", .15, 0)})
 rows, fail = [], 0
 for k, (mode, tol, hard) in TOL.items():
     m, r = mine.get(k), refm.get(k)

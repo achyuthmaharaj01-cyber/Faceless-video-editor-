@@ -22,8 +22,25 @@ if not os.path.exists(os.path.join(P, "assets", "chart", "road.png")):
 esc = lambda s: html.escape(str(s), quote=True)
 W, H = 1920, 1080
 
-# ---------------- time mapping ----------------
+_missing = [i for i, s_ in enumerate(SL["shots"]) if s_["type"] in ("footage", "still", "clip_audio", "map", "logo", "silhouette") and not s_.get("src")]
+if _missing: raise SystemExit(f"shots without media (run auto_source/prep_media or edit the shot list): {_missing}")
+# ---------------- chart state auto-fill (from entries + verdicts) ----------------
 shots = SL["shots"]
+faces = [e.get("face") for e in SL.get("entries", [])]
+vtier = {v.get("entry"): v.get("tier") for v in SL.get("verdicts", [])}
+for s in shots:
+    if s["type"] != "tier_chart": continue
+    c = s.setdefault("chart", {})
+    if "ranked" in c and "pending" in c: continue
+    e = s.get("entry", -1)
+    if c.get("title") or e is None or e < 0:          # hook chart: everyone waiting on the road
+        c["ranked"], c["pending"], c["drop"] = [], [f for f in faces if f], None
+    else:
+        c["ranked"] = [{"img": faces[k], "tier": vtier.get(k) or "C"} for k in range(e) if faces[k] and vtier.get(k) not in (None, "GOD")]
+        c["pending"] = [f for f in faces[e + 1:] if f]
+        if faces[e]: c["drop"] = {"img": faces[e], "tier": (c.get("tier") or vtier.get(e) or "C").replace("GOD", "S"), "lane_index": len(c["pending"])}
+
+# ---------------- time mapping ----------------
 inserts = []   # (vo_t, dur)
 for s in shots:
     if s["type"] == "clip_audio": inserts.append((s["vo_s"], s["dur"]))
@@ -113,7 +130,7 @@ for i, s in enumerate(shots):
     for o in s.get("overlays", []):
         ov_i += 1; oid = f"o{ov_i:03d}"; k = o["kind"]
         os_ = P_(o["vo_s"]) if "vo_s" in o else s["ps"] + o.get("delay", 0)
-        oe_ = min(s["pe"], P_(o["vo_e"])) if "vo_e" in o else s["pe"]
+        oe_ = min(s["pe"], P_(o["vo_e"])) if "vo_e" in o else (min(s["pe"], os_ + o["dur"]) if "dur" in o else s["pe"])
         du = max(0.2, oe_ - os_)
         if k == "name_label":
             text = o["text"]; chars = "".join(f'<span class="ch">{esc(c) if c != chr(10) else "<br/>"}</span>' if c != "\n" else "<br/>" for c in text)
@@ -156,7 +173,8 @@ for s in shots:
 for j, (b, st, en) in enumerate(runs):
     img = f'<img src="{esc(b["img"])}" alt=""/>' if b.get("img") else ""
     clip_div(f"badge{j:02d}", st, en - st, f'<div class="tl-badge">{img}<div class="txt"><div class="price">{esc(b["price"])}</div><div class="model" data-layout-ignore>{esc(b.get("model",""))}</div></div></div>', "ov")
-    if b.get("sfx", True): audio.append(("sfx", st + 0.0, "tick"))
+    # reference hit rate on badge entrances = 0.49 -> every other badge (deterministic)
+    if b.get("sfx", j % 2 == 0): audio.append(("sfx", st + 0.0, "tick"))
 
 # ---------------- audio ----------------
 A = SL["audio"]; vo_src = A["vo"]; vo_len = A["vo_duration"]
@@ -181,11 +199,10 @@ if mus:
         auto = esc(json.dumps({"version": 1, "lanes": [{"target": "volume", "points": pts}]}))
         els.append(f'<audio id="music{k:02d}" class="clip" src="{esc(mus["src"])}" data-start="{r3(t0)}" data-duration="{r3(dur)}" data-media-start="{r3(mus.get("start",0))}" data-volume="{mus["volume"]:.4f}" data-automation="{auto}" data-fade-out="{1.5 if t0+dur>=total-0.01 else 0}" data-track-index="11" data-audio-group="music"></audio>')
         t0 += dur
-    for (ls, ts) in drops:
-        audio.append(("sfx", ts + STYLE["audio"]["music"]["verdict_dropout"]["return_ms_after_tier_word"] / 1000, "hit"))
-for s in shots:
-    if s["type"] == "clip_audio" or s.get("vignette_whoosh"):
-        audio.append(("sfx", s["ps"] - 0.08, "whoosh"))
+    for k_, (ls, ts) in enumerate(drops):   # reference: hit on 75 % of verdicts -> skip every 4th
+        if k_ % 4 != 3: audio.append(("sfx", ts + STYLE["audio"]["music"]["verdict_dropout"]["return_ms_after_tier_word"] / 1000, "hit"))
+for k_, s in enumerate([s for s in shots if s["type"] == "clip_audio" or s.get("vignette_whoosh")]):
+    if k_ % 5 in (0, 2): audio.append(("sfx", s["ps"] - 0.08, "whoosh"))   # reference: whoosh into 41 % of vignetted clips
 take = {"tick": "abc", "hit": "ab", "whoosh": "ab"}; cnt = {}
 import soundfile as _sf
 lane = {"tick": 12, "hit": 13, "whoosh": 14}
@@ -223,6 +240,7 @@ doc = f'''<!doctype html>
 </html>
 '''
 open(os.path.join(P, "index.html"), "w").write(doc)
-json.dump({"total": total, "shots": [{k: s[k] for k in ("type", "ps", "pe", "vo_s", "vo_e") if k in s} for s in shots], "inserts": inserts},
+json.dump({"sfx": [{"t": round(t, 3), "kind": k} for _, t, k in sorted(audio, key=lambda x: x[1])], "badge_runs": len(runs), "verdicts": len(SL.get("verdicts", [])),
+           "clips": sum(1 for s in shots if s["type"] == "clip_audio"), "total": total, "shots": [{k: s[k] for k in ("type", "ps", "pe", "vo_s", "vo_e") if k in s} for s in shots], "inserts": inserts},
           open(os.path.join(P, "timeline_resolved.json"), "w"), indent=1)
 print("wrote", os.path.join(P, "index.html"), "duration", total, "shots", len(shots), "charts", chart_i, "badges", len(runs), "sfx", len(audio))

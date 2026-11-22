@@ -37,7 +37,7 @@
 .tl-text .red { color: var(--tl-red); }
 
 /* name label: 8.5% H, beside the head, typewriter (style.json text.name_label) */
-.tl-name { font-size: 92px; line-height: 0.98; }
+.tl-name { font-size: 104px; line-height: 0.98; }   /* QA-calibrated: OCR glyph height 7.2% H like the reference */
 .tl-name.left { text-align: right; }   /* label sits left of the head -> right-aligned */
 .tl-name.right { text-align: left; }
 /* spec caption: icon + text, 6% H, centre (55%, 86%) */
@@ -89,4 +89,4 @@
 .tl-logo { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); height: 240px; width: auto; }
 
 /* ---------- map pin ---------- */
-.tl-pin { position: absolute; width: 90px; height: 120px; transform: translate(-50%, -100%); }
+.tl-pin, .tl-still-wrap > img.tl-pin { position: absolute; width: 90px; height: 120px; transform: translate(-50%, -100%); object-fit: contain; }

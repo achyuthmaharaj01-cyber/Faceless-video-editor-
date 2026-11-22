@@ -31,6 +31,7 @@ sims = np.array(list(sim_all.values()))
 hist, edges = np.histogram(sims, bins=40, range=(0.3, 1.0))
 lo_i, hi_i = np.searchsorted(edges, 0.55), np.searchsorted(edges, 0.8)
 thr = float(edges[lo_i + int(np.argmin(hist[lo_i:hi_i]))]) if hi_i > lo_i else 0.7
+thr = min(0.80, max(0.68, thr))   # references settled at 0.70; few other speakers -> no valley -> clamp
 # narrator median F0 (reported; a pitch gate was tried and rejected: some clip speakers share the pitch)
 def f0(s, e):
     seg = librosa.resample(mono[int(s * sr):int(e * sr)], orig_sr=sr, target_sr=16000)

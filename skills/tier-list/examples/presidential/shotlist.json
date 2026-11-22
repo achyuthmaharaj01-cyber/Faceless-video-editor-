@@ -1,0 +1,1431 @@
+{
+ "title": "Presidential Car Tier List",
+ "format": "tier",
+ "entries": [
+  {
+   "person": "William Howard Taft",
+   "item": "White Steamer",
+   "price": "~$4K",
+   "tier": "B",
+   "model": "White Model M",
+   "face_query": "William Howard Taft portrait",
+   "item_query": "White steam car antique",
+   "face_raw": "assets/raw/face_e0.jpg",
+   "face_source": {
+    "provider": "openverse:flickr",
+    "title": "William Howard Taft (1857-1930)",
+    "author": "Political Graveyard",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/36380617@N06/3514961700"
+   },
+   "item_raw": "assets/raw/item_e0.jpg",
+   "item_source": {
+    "provider": "openverse:flickr",
+    "title": "1922 Stanley Steam Car Roadster",
+    "author": "aldenjewell",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/31411679@N08/51657200323"
+   },
+   "face": "assets/faces/e0.png",
+   "item_cutout": "assets/cutouts/item_e0.png"
+  },
+  {
+   "person": "Lyndon B. Johnson",
+   "item": "Amphicar",
+   "price": "~$3K",
+   "tier": "S",
+   "model": "Amphicar 770",
+   "face_query": "Lyndon B. Johnson official portrait",
+   "item_query": "Amphicar 770",
+   "face_raw": "assets/raw/face_e1.jpg",
+   "face_source": {
+    "provider": "openverse:flickr",
+    "title": "Lyndon Johnson, 8 November 1967",
+    "author": "Archives Branch, USMC History Division",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/60868061@N04/21264540173"
+   },
+   "item_raw": "assets/raw/item_e1.jpg",
+   "item_source": {
+    "provider": "openverse:flickr",
+    "title": "1965 Amphicar 770",
+    "author": "Rutger van der Maar",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/83468718@N06/51658719893"
+   },
+   "face": "assets/faces/e1.png",
+   "item_cutout": "assets/cutouts/item_e1.png",
+   "face_box": [
+    610,
+    150,
+    160,
+    180
+   ]
+  },
+  {
+   "person": "John F. Kennedy",
+   "item": "Lincoln Continental X-100",
+   "price": "~$200K",
+   "tier": "A",
+   "model": "Lincoln X-100",
+   "face_query": "John F. Kennedy official portrait",
+   "item_query": "Lincoln Continental X-100",
+   "face_raw": "assets/raw/face_e2.jpg",
+   "face_source": {
+    "provider": "openverse:flickr",
+    "title": "Public Domain: President Kennedy off Hyannisport, MA, aboard the 'Honey Fitzby Cecil Stoughton, August 1963 (NARA)",
+    "author": "pingnews.com",
+    "license": "PDM 1.0",
+    "page": "https://www.flickr.com/photos/39735679@N00/2202443631"
+   },
+   "item_raw": "assets/raw/item_e2.jpg",
+   "item_source": {
+    "provider": "openverse:flickr",
+    "title": "Lincoln Continental Cabriolet (1963)",
+    "author": "usf1fan2",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/43494963@N03/53774682000"
+   },
+   "face": "assets/faces/e2.png",
+   "item_cutout": "assets/cutouts/item_e2.png"
+  },
+  {
+   "person": "Ronald Reagan",
+   "item": "Jeep CJ-6",
+   "price": "~$3K",
+   "tier": "C",
+   "model": "1962 Jeep CJ-6",
+   "face_query": "Ronald Reagan official portrait",
+   "item_query": "Jeep CJ-6",
+   "item_raw": "assets/raw/item_e3.jpg",
+   "item_source": {
+    "provider": "openverse:flickr",
+    "title": "Jeep CJ5",
+    "author": "dave_7",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/21612624@N00/5152056545"
+   },
+   "face_raw": "assets/raw/face_e3.jpg",
+   "face_source": {
+    "provider": "openverse:flickr",
+    "title": "President Ronald Reagan",
+    "author": "edalisse",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/32853992@N03/4313696073"
+   },
+   "face": "assets/faces/e3.png",
+   "item_cutout": "assets/cutouts/item_e3.png"
+  },
+  {
+   "person": "Barack Obama",
+   "item": "The Beast",
+   "price": "~$1.5M",
+   "tier": "D",
+   "model": "Cadillac One",
+   "face_query": "Barack Obama official portrait",
+   "item_query": "Cadillac One limousine",
+   "face_raw": "assets/raw/face_e4.jpg",
+   "face_source": {
+    "provider": "openverse:flickr",
+    "title": "Official Portrait of Barack Obama",
+    "author": "Beverly & Pack",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/10101046@N06/3203334240"
+   },
+   "item_raw": "assets/raw/item_e4.jpg",
+   "item_source": {
+    "provider": "openverse:flickr",
+    "title": "1947 Cadillac Limousine",
+    "author": "aldenjewell",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/31411679@N08/34934380891"
+   },
+   "face": "assets/faces/e4.png",
+   "item_cutout": "assets/cutouts/item_e4.png"
+  }
+ ],
+ "match_rate": 0.958,
+ "verdicts": [
+  {
+   "letter_vo": 15.96,
+   "tier_vo": 15.96,
+   "tier": "B",
+   "entry": 0
+  },
+  {
+   "letter_vo": 25.48,
+   "tier_vo": 25.48,
+   "tier": "S",
+   "entry": 1
+  },
+  {
+   "letter_vo": 45.85,
+   "tier_vo": 45.85,
+   "tier": "A",
+   "entry": 2
+  },
+  {
+   "letter_vo": 55.48,
+   "tier_vo": 55.48,
+   "tier": "C",
+   "entry": 3
+  },
+  {
+   "letter_vo": 65.64,
+   "tier_vo": 65.64,
+   "tier": "D",
+   "entry": 4
+  }
+ ],
+ "audio": {
+  "vo": "assets/vo/vo.wav",
+  "vo_duration": 66.35079166666667,
+  "music": {
+   "src": "assets/music/bed.mp3",
+   "start": 10,
+   "lufs": -17.2,
+   "volume": 0.3865,
+   "duration": 179.435102
+  },
+  "vo_lufs": -15.2,
+  "vo_lufs_raw": -24.3,
+  "vo_volume": 2.856
+ },
+ "shots": [
+  {
+   "vo_s": 0.0,
+   "vo_e": 1.52,
+   "text": "From steam powered limousines",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": -1,
+   "query": "White steam car 1909",
+   "overlays": [],
+   "raw": "assets/raw/s000.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Stanley Steamer",
+    "author": "Hugo-90",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/32109282@N00/9987082985",
+    "url": "https://live.staticflickr.com/5321/9987082985_b3a19ca498_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s000.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 1.52,
+   "vo_e": 3.12,
+   "text": "to a car that can swim,",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": -1,
+   "query": "Amphicar",
+   "overlays": [],
+   "kind": "video",
+   "raw": "assets/raw/s001.jpg",
+   "raw_kind": "image",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "1960 Amphicar prototype",
+    "author": "Hugo-90",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/32109282@N00/6853126876",
+    "url": "https://live.staticflickr.com/6240/6853126876_b2a3ae647a_b.jpg"
+   },
+   "src": "assets/media/s001.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 3.12,
+   "vo_e": 5.51,
+   "text": "this is the Presidential Car Tier List.",
+   "line_type": "subject",
+   "type": "tier_chart",
+   "note": "item b-roll; badge persists",
+   "entry": -1,
+   "overlays": [],
+   "chart": {
+    "title": "Presidential Car Tier List"
+   }
+  },
+  {
+   "vo_s": 5.51,
+   "vo_e": 6.55,
+   "text": "William Howard Taft",
+   "line_type": "named_person",
+   "type": "still",
+   "note": "clip/photo of the person + typewriter name label beside the head",
+   "entry": 0,
+   "query": "William Howard Taft portrait",
+   "overlays": [
+    {
+     "kind": "name_label",
+     "text": "william\nhoward taft",
+     "side": "right",
+     "x": 48.51041666666667,
+     "y": 22,
+     "vo_s": 5.51
+    }
+   ],
+   "raw": "assets/raw/s003.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Supreme Court Justices (LOC)",
+    "author": "pingnews.com",
+    "license": "PDM 1.0",
+    "page": "https://www.flickr.com/photos/39735679@N00/446827029",
+    "url": "https://live.staticflickr.com/254/446827029_bb1698a802_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s003.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 6.55,
+   "vo_e": 7.51,
+   "text": "was the first president",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 0,
+   "query": "William Howard Taft 1909",
+   "overlays": [],
+   "badge": {
+    "key": "e0",
+    "price": "~$4K",
+    "model": "White Model M",
+    "img": "assets/cutouts/item_e0.png"
+   },
+   "raw": "assets/raw/s004.jpg",
+   "raw_kind": "image",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "No Known Restrictions: President William Howard Taft and Mrs. Taft, 1909 by Clinedinst (LOC)",
+    "author": "pingnews.com",
+    "license": "PDM 1.0",
+    "page": "https://www.flickr.com/photos/39735679@N00/2050711836",
+    "url": "https://live.staticflickr.com/2415/2050711836_b7cca1aece_b.jpg"
+   },
+   "src": "assets/media/s004.jpg",
+   "motion": "pull_out"
+  },
+  {
+   "vo_s": 7.51,
+   "vo_e": 8.37,
+   "text": "to buy official",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 0,
+   "query": "Taft automobile White House",
+   "overlays": [],
+   "badge": {
+    "key": "e0",
+    "price": "~$4K",
+    "model": "White Model M",
+    "img": "assets/cutouts/item_e0.png"
+   },
+   "raw": "assets/raw/s005.jpg",
+   "raw_kind": "image",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "President Taft riding in a Pierce Arrow, Jackson, Michigan, June 4, 1910.",
+    "author": "In Memoriam: Wystan",
+    "license": "CC BY-SA 2.0",
+    "page": "https://www.flickr.com/photos/70251312@N00/8314691013",
+    "url": "https://live.staticflickr.com/8363/8314691013_00d64eaccc.jpg"
+   },
+   "src": "assets/media/s005.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 8.37,
+   "vo_e": 9.2,
+   "text": "cars.",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 0,
+   "query": "White House 1909 automobile",
+   "overlays": [],
+   "raw": "assets/raw/s006.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Peoria - Adams St, c.1910 (Postcard)",
+    "author": "roger4336",
+    "license": "CC BY-SA 2.0",
+    "page": "https://www.flickr.com/photos/24736216@N07/7824402376",
+    "url": "https://live.staticflickr.com/7109/7824402376_94abc86f2b_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s006.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 9.2,
+   "vo_e": 10.52,
+   "text": "In 1909",
+   "line_type": "year",
+   "type": "still",
+   "note": "archival footage of the event; red year label top-centre (story format)",
+   "entry": 0,
+   "query": "White House 1909",
+   "overlays": [],
+   "raw": "assets/raw/s007.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "1913 Stanley Steamer Picnic, Manchester, Iowa",
+    "author": "aldenjewell",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/31411679@N08/52621533077",
+    "url": "https://live.staticflickr.com/65535/52621533077_e2a29dba4e_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s007.jpg",
+   "motion": "pull_out"
+  },
+  {
+   "vo_s": 10.52,
+   "vo_e": 12.72,
+   "text": "he turned the White House stables into a garage",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 0,
+   "query": "White House garage 1910",
+   "overlays": [],
+   "raw": "assets/raw/s008.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Grand Canyon National Park: Livery Stables (1908) #01121",
+    "author": "Grand Canyon NPS",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/50693818@N08/13232963104",
+    "url": "https://live.staticflickr.com/7153/13232963104_b3d44a5163_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s008.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 12.72,
+   "vo_e": 14.8,
+   "text": "and filled it with a steam powered",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 0,
+   "query": "White Model M steam car",
+   "overlays": [],
+   "badge": {
+    "key": "e0",
+    "price": "~$4K",
+    "model": "White Model M",
+    "img": "assets/cutouts/item_e0.png"
+   },
+   "raw": "assets/raw/s009.jpg",
+   "raw_kind": "image",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "President Taft in his White Steamer, 1910",
+    "author": "aldenjewell",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/31411679@N08/51656295452",
+    "url": "https://live.staticflickr.com/65535/51656295452_c84af09040_b.jpg"
+   },
+   "src": "assets/media/s009.jpg",
+   "motion": "pull_out"
+  },
+  {
+   "vo_s": 14.8,
+   "vo_e": 15.96,
+   "text": "White Model M.",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 0,
+   "query": "White steam car",
+   "overlays": [],
+   "badge": {
+    "key": "e0",
+    "price": "~$4K",
+    "model": "White Model M",
+    "img": "assets/cutouts/item_e0.png"
+   },
+   "raw": "assets/raw/s010.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Stanley Steamer Model E2, 1909",
+    "author": "kemeko1971",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/8868801@N03/6829528703",
+    "url": "https://live.staticflickr.com/7159/6829528703_0917054e1b_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s010.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 15.96,
+   "vo_e": 16.83,
+   "text": "B-tier.",
+   "line_type": "verdict",
+   "type": "tier_chart",
+   "note": "cut to chart, cursor drags face into the column",
+   "entry": 0,
+   "query": "",
+   "overlays": [],
+   "chart": {
+    "drop_at_vo": 15.96,
+    "tier": "B"
+   },
+   "pause_after": 0.55
+  },
+  {
+   "vo_s": 16.83,
+   "vo_e": 18.05,
+   "text": "Lyndon B. Johnson",
+   "line_type": "named_person",
+   "type": "still",
+   "note": "clip/photo of the person + typewriter name label beside the head",
+   "entry": 1,
+   "query": "Lyndon B. Johnson portrait",
+   "overlays": [
+    {
+     "kind": "name_label",
+     "text": "lyndon\nb. johnson",
+     "side": "right",
+     "x": 35.75,
+     "y": 53.2037037037037,
+     "vo_s": 16.83
+    }
+   ],
+   "raw": "assets/raw/s012.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Mayor John F. Collins and President Lyndon B. Johnson with four unidentified men",
+    "author": "Boston City Archives",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/48039697@N05/10290742263",
+    "url": "https://live.staticflickr.com/3768/10290742263_4353485c5c_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s012.jpg",
+   "motion": "pull_out"
+  },
+  {
+   "vo_s": 18.05,
+   "vo_e": 19.53,
+   "text": "kept an Amphicar at his",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 1,
+   "query": "Amphicar 770",
+   "overlays": [],
+   "badge": {
+    "key": "e1",
+    "price": "~$3K",
+    "model": "Amphicar 770",
+    "img": "assets/cutouts/item_e1.png"
+   },
+   "raw": "assets/raw/s013.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "1964 Amphicar 770",
+    "author": "Sicnag",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/42220226@N07/21273270504",
+    "url": "https://live.staticflickr.com/5697/21273270504_254a1a8cac_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s013.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 19.53,
+   "vo_e": 20.65,
+   "text": "Texas ranch.",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 1,
+   "query": "LBJ Ranch Texas",
+   "overlays": [],
+   "raw": "assets/raw/s014.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "LBJ Ranch",
+    "author": "Mobilus In Mobili",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/52257493@N00/11888612184",
+    "url": "https://live.staticflickr.com/5515/11888612184_d8401d9c96_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s014.jpg",
+   "motion": "pull_out"
+  },
+  {
+   "vo_s": 20.65,
+   "vo_e": 22.43,
+   "text": "He would drive guests straight toward the",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 1,
+   "query": "Amphicar",
+   "overlays": [],
+   "badge": {
+    "key": "e1",
+    "price": "~$3K",
+    "model": "Amphicar 770",
+    "img": "assets/cutouts/item_e1.png"
+   },
+   "kind": "video",
+   "raw": "assets/raw/s015.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Amphicar... don't need a ferry",
+    "author": "marcostetter",
+    "license": "PDM 1.0",
+    "page": "https://www.flickr.com/photos/149556095@N03/35513670076",
+    "url": "https://live.staticflickr.com/4264/35513670076_801501c5bf_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s015.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 22.43,
+   "vo_e": 23.88,
+   "text": "lake, scream that the brakes had",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 1,
+   "query": "Amphicar lake",
+   "overlays": [],
+   "badge": {
+    "key": "e1",
+    "price": "~$3K",
+    "model": "Amphicar 770",
+    "img": "assets/cutouts/item_e1.png"
+   },
+   "raw": "assets/raw/s016.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Lakeland - Lake Mirror Classic Car Show - Red Amphicar - In Water (2)",
+    "author": "jared422_80",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/93283041@N00/6313245918",
+    "url": "https://live.staticflickr.com/6108/6313245918_4460af2e66_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s016.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 23.88,
+   "vo_e": 24.48,
+   "text": "failed,",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 1,
+   "query": "Amphicar 770 water",
+   "overlays": [],
+   "badge": {
+    "key": "e1",
+    "price": "~$3K",
+    "model": "Amphicar 770",
+    "img": "assets/cutouts/item_e1.png"
+   },
+   "raw": "assets/raw/s017.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Lakeland - Lake Mirror Classic Car Show - 1961 Amphicar Model 770 - In Water (2)",
+    "author": "jared422_80",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/93283041@N00/6313244698",
+    "url": "https://live.staticflickr.com/6114/6313244698_848c43a2ab_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s017.jpg",
+   "motion": "pull_out"
+  },
+  {
+   "vo_s": 24.48,
+   "vo_e": 25.48,
+   "text": "and then float away.",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 1,
+   "query": "Amphicar boat car",
+   "overlays": [],
+   "badge": {
+    "key": "e1",
+    "price": "~$3K",
+    "model": "Amphicar 770",
+    "img": "assets/cutouts/item_e1.png"
+   },
+   "raw": "assets/raw/s018.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Duck hunting from a car.",
+    "author": "Hugo-90",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/32109282@N00/2306923712",
+    "url": "https://live.staticflickr.com/2167/2306923712_716541b4f7_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s018.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 25.48,
+   "vo_e": 26.54,
+   "text": "S-tier.",
+   "line_type": "verdict",
+   "type": "tier_chart",
+   "note": "cut to chart, cursor drags face into the column",
+   "entry": 1,
+   "query": "",
+   "overlays": [],
+   "chart": {
+    "drop_at_vo": 25.48,
+    "tier": "S"
+   },
+   "pause_after": 0.55
+  },
+  {
+   "vo_s": 26.54,
+   "vo_e": 27.76,
+   "text": "John F. Kennedy rode",
+   "line_type": "named_person",
+   "type": "still",
+   "note": "clip/photo of the person + typewriter name label beside the head",
+   "entry": 2,
+   "query": "John F. Kennedy portrait",
+   "overlays": [
+    {
+     "kind": "name_label",
+     "text": "john\nf. kennedy",
+     "side": "right",
+     "x": 46.53125,
+     "y": 45.425925925925924,
+     "vo_s": 26.54
+    }
+   ],
+   "raw": "assets/raw/s020.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "The Kennedys by Toni Frissell, 1953",
+    "author": "trialsanderrors",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/76204898@N00/2870854953",
+    "url": "https://live.staticflickr.com/3216/2870854953_98036eb289_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s020.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 27.76,
+   "vo_e": 30.8,
+   "text": "in a 1961 Lincoln Continental called",
+   "line_type": "year",
+   "type": "still",
+   "note": "archival footage of the event; red year label top-centre (story format)",
+   "entry": 2,
+   "query": "Lincoln Continental X-100",
+   "overlays": [],
+   "badge": {
+    "key": "e2",
+    "price": "~$200K",
+    "model": "Lincoln X-100",
+    "img": "assets/cutouts/item_e2.png"
+   },
+   "raw": "assets/raw/s021.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Lincoln Continental 50/X. (1952).",
+    "author": "Txemai Argazki",
+    "license": "CC0 1.0",
+    "page": "https://www.flickr.com/photos/59170444@N05/54756426809",
+    "url": "https://live.staticflickr.com/65535/54756426809_b8fac62375_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s021.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 30.8,
+   "vo_e": 32.41,
+   "text": "the X-100.",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 2,
+   "query": "SS-100-X presidential limousine",
+   "overlays": [
+    {
+     "kind": "aside",
+     "text": "x-100",
+     "x": 46,
+     "y": 30,
+     "rotate": -4,
+     "vo_s": 30.8
+    }
+   ],
+   "badge": {
+    "key": "e2",
+    "price": "~$200K",
+    "model": "Lincoln X-100",
+    "img": "assets/cutouts/item_e2.png"
+   },
+   "raw": "assets/raw/s022.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Kennedy 1961 Lincoln Continental",
+    "author": "Eric Friedebach",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/146295701@N02/51662237351",
+    "url": "https://live.staticflickr.com/65535/51662237351_4a6149673c_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s022.jpg",
+   "motion": "pull_out"
+  },
+  {
+   "vo_s": 32.41,
+   "vo_e": 34.43,
+   "text": "Ford leased it to the Secret Service for just",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 2,
+   "query": "Kennedy motorcade",
+   "overlays": [],
+   "kind": "video",
+   "raw": "assets/raw/s023.jpg",
+   "source": {
+    "provider": "nasa",
+    "title": "Artemis I Preflight",
+    "author": "HQ",
+    "license": "Public Domain (NASA)",
+    "page": "https://images.nasa.gov/details/NHQ202208290012",
+    "url": "https://images-assets.nasa.gov/image/NHQ202208290012/NHQ202208290012~medium.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s023.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 34.43,
+   "vo_e": 36.14,
+   "text": "500 dollars a year.",
+   "line_type": "money",
+   "type": "still",
+   "note": "item footage; badge price; big rotated number if it is the headline figure",
+   "entry": 2,
+   "query": "Lincoln Continental 1961 limousine",
+   "overlays": [
+    {
+     "kind": "big",
+     "text": "$500 a year",
+     "x": 50,
+     "y": 28,
+     "rotate": -6,
+     "vo_s": 34.43
+    }
+   ],
+   "badge": {
+    "key": "e2",
+    "price": "~$200K",
+    "model": "Lincoln X-100",
+    "img": "assets/cutouts/item_e2.png"
+   },
+   "raw": "assets/raw/s024.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Kennedy's Suicide Door Assassination Lincoln",
+    "author": "Dave Mathews",
+    "license": "CC BY-SA 2.0",
+    "page": "https://www.flickr.com/photos/36248504@N00/97794502",
+    "url": "https://live.staticflickr.com/37/97794502_c1d48ad9c8_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s024.jpg",
+   "motion": "pull_out"
+  },
+  {
+   "vo_s": 36.14,
+   "vo_e": 39.29,
+   "text": "He also gave Americans a line they still quote today.",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 2,
+   "query": "John F. Kennedy speech",
+   "overlays": [],
+   "raw": "assets/raw/s025.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "65-784",
+    "author": "FDR Presidential Library & Museum",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/54078784@N08/5853195263",
+    "url": "https://live.staticflickr.com/3255/5853195263_9d0b824f33_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s025.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 39.15,
+   "type": "clip_audio",
+   "dur": 5.1,
+   "src_or_query": "John F. Kennedy inaugural address 1961",
+   "entry": 2,
+   "overlays": [
+    {
+     "kind": "subtitle",
+     "text": "the torch has been passed",
+     "delay": 0.24,
+     "dur": 1.74
+    },
+    {
+     "kind": "subtitle",
+     "text": "to a new generation",
+     "delay": 1.98,
+     "dur": 1.96
+    },
+    {
+     "kind": "subtitle",
+     "text": "of americans",
+     "red": [
+      "americans"
+     ],
+     "delay": 3.94,
+     "dur": 1.1
+    }
+   ],
+   "line_type": "quote_clip",
+   "kind": "video",
+   "raw": "assets/raw/jfk_clip.mp4",
+   "raw_kind": "video",
+   "raw_media_start": 7.9,
+   "source": {
+    "provider": "internet_archive",
+    "title": "Kennedy Inaugural Address (Excerpt)",
+    "license": "Public Domain",
+    "page": "https://archive.org/details/CEP150"
+   },
+   "src": "assets/media/s026.mp4",
+   "media_start": 0,
+   "clip_volume": 0.978,
+   "clip_lufs": -17.0
+  },
+  {
+   "vo_s": 39.29,
+   "vo_e": 40.69,
+   "text": "After Dallas it was rebuilt",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 2,
+   "query": "SS-100-X Henry Ford Museum",
+   "overlays": [],
+   "badge": {
+    "key": "e2",
+    "price": "~$200K",
+    "model": "Lincoln X-100",
+    "img": "assets/cutouts/item_e2.png"
+   },
+   "raw": "assets/raw/s027.jpg",
+   "raw_kind": "image",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Kennedy Death Car interior, Henry Ford Museum, Detroit",
+    "author": "gruntzooki",
+    "license": "CC BY-SA 2.0",
+    "page": "https://www.flickr.com/photos/37996580417@N01/10505413",
+    "url": "https://live.staticflickr.com/8/10505413_e978e7bd72.jpg"
+   },
+   "src": "assets/media/s027.jpg",
+   "motion": "pull_out"
+  },
+  {
+   "vo_s": 40.69,
+   "vo_e": 41.83,
+   "text": "and kept in service",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 2,
+   "query": "presidential limousine 1960s",
+   "overlays": [],
+   "badge": {
+    "key": "e2",
+    "price": "~$200K",
+    "model": "Lincoln X-100",
+    "img": "assets/cutouts/item_e2.png"
+   },
+   "raw": "assets/raw/s028.jpg",
+   "raw_kind": "image",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "1950 Lincoln Presidential Limousine (Bubble Top)",
+    "author": "aldenjewell",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/31411679@N08/30633652635",
+    "url": "https://live.staticflickr.com/5472/30633652635_0b63583768_b.jpg"
+   },
+   "src": "assets/media/s028.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 41.83,
+   "vo_e": 43.71,
+   "text": "until 1977.",
+   "line_type": "year",
+   "type": "still",
+   "note": "archival footage of the event; red year label top-centre (story format)",
+   "entry": 2,
+   "query": "Lincoln Continental 1961",
+   "overlays": [],
+   "badge": {
+    "key": "e2",
+    "price": "~$200K",
+    "model": "Lincoln X-100",
+    "img": "assets/cutouts/item_e2.png"
+   },
+   "raw": "assets/raw/s029.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "1961 Lincoln Continental Advertisement Life Magazine December 5 1960",
+    "author": "SenseiAlan",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/91591049@N00/32543753977",
+    "url": "https://live.staticflickr.com/7865/32543753977_edcd1b7714_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s029.jpg",
+   "motion": "pull_out"
+  },
+  {
+   "vo_s": 43.71,
+   "vo_e": 45.85,
+   "text": "Today it sits in the Henry Ford Museum.",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 2,
+   "query": "Henry Ford Museum Dearborn",
+   "overlays": [],
+   "badge": {
+    "key": "e2",
+    "price": "~$200K",
+    "model": "Lincoln X-100",
+    "img": "assets/cutouts/item_e2.png"
+   },
+   "raw": "assets/raw/s030.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Henry Ford Museum",
+    "author": "Hugo-90",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/32109282@N00/4555642601",
+    "url": "https://live.staticflickr.com/3654/4555642601_b1ceeebb2f_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s030.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 45.85,
+   "vo_e": 46.79,
+   "text": "A-tier.",
+   "line_type": "verdict",
+   "type": "tier_chart",
+   "note": "cut to chart, cursor drags face into the column",
+   "entry": 2,
+   "query": "",
+   "overlays": [],
+   "chart": {
+    "drop_at_vo": 45.85,
+    "tier": "A"
+   },
+   "pause_after": 0.55
+  },
+  {
+   "vo_s": 46.79,
+   "vo_e": 48.79,
+   "text": "Ronald Reagan drove a 1962",
+   "line_type": "named_person",
+   "type": "still",
+   "note": "clip/photo of the person + typewriter name label beside the head",
+   "entry": 3,
+   "query": "Ronald Reagan portrait",
+   "overlays": [
+    {
+     "kind": "name_label",
+     "text": "ronald\nreagan",
+     "side": "right",
+     "x": 50.802083333333336,
+     "y": 40.84259259259259,
+     "vo_s": 46.79
+    }
+   ],
+   "raw": "assets/raw/s032.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Ronald Reagan portrait",
+    "author": "Gage Skidmore",
+    "license": "CC BY-SA 2.0",
+    "page": "https://www.flickr.com/photos/22007612@N05/5560132459",
+    "url": "https://live.staticflickr.com/5185/5560132459_896221922f_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s032.jpg",
+   "motion": "pull_out"
+  },
+  {
+   "vo_s": 48.79,
+   "vo_e": 50.67,
+   "text": "Jeep CJ-6 around his",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 3,
+   "query": "Jeep CJ-6",
+   "overlays": [],
+   "badge": {
+    "key": "e3",
+    "price": "~$3K",
+    "model": "1962 Jeep CJ-6",
+    "img": "assets/cutouts/item_e3.png"
+   },
+   "raw": "assets/raw/s033.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "1979 Jeep-VIASA CJ-6",
+    "author": "Spanish Coches",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/39302751@N06/6247698156",
+    "url": "https://live.staticflickr.com/6116/6247698156_9c6ed50d7f_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s033.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 50.67,
+   "vo_e": 53.14,
+   "text": "ranch in California. It had no doors,",
+   "line_type": "place_or_brand",
+   "type": "map",
+   "note": "map with pin (place) or logo on black (brand)",
+   "entry": 3,
+   "query": "California satellite image",
+   "overlays": [],
+   "raw": "assets/raw/s034.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "San Francisco and East Bay (Satellite)",
+    "author": "roger4336",
+    "license": "CC BY-SA 2.0",
+    "page": "https://www.flickr.com/photos/24736216@N07/7758828268",
+    "url": "https://live.staticflickr.com/8297/7758828268_691b6bc499_b.jpg"
+   },
+   "raw_kind": "image",
+   "pin_x": 48,
+   "pin_y": 58,
+   "src": "assets/media/s034.jpg"
+  },
+  {
+   "vo_s": 53.14,
+   "vo_e": 54.98,
+   "text": "no roof, and he loved it more than any",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 3,
+   "query": "Ronald Reagan ranch jeep",
+   "overlays": [],
+   "badge": {
+    "key": "e3",
+    "price": "~$3K",
+    "model": "1962 Jeep CJ-6",
+    "img": "assets/cutouts/item_e3.png"
+   },
+   "raw": "assets/raw/s035.jpg",
+   "raw_kind": "image",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "1975 Jeep CJ5",
+    "author": "dave_7",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/21612624@N00/6117102608",
+    "url": "https://live.staticflickr.com/6062/6117102608_574e7c3c0f_b.jpg"
+   },
+   "src": "assets/media/s035.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 54.98,
+   "vo_e": 55.48,
+   "text": "limousine.",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 3,
+   "query": "Rancho del Cielo",
+   "overlays": [],
+   "raw": "assets/raw/s036.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Casa Piedras valley, Rancho del Cielo",
+    "author": "Gruenemann",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/13227526@N00/521777207",
+    "url": "https://live.staticflickr.com/241/521777207_c0b779fa81_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s036.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 55.48,
+   "vo_e": 56.7,
+   "text": "C-tier.",
+   "line_type": "verdict",
+   "type": "tier_chart",
+   "note": "cut to chart, cursor drags face into the column",
+   "entry": 3,
+   "query": "",
+   "overlays": [],
+   "chart": {
+    "drop_at_vo": 55.48,
+    "tier": "C"
+   },
+   "pause_after": 0.55
+  },
+  {
+   "vo_s": 56.7,
+   "vo_e": 59.2,
+   "text": "Barack Obama got the first version of the Beast in",
+   "line_type": "named_person",
+   "type": "still",
+   "note": "clip/photo of the person + typewriter name label beside the head",
+   "entry": 4,
+   "query": "Barack Obama portrait",
+   "overlays": [
+    {
+     "kind": "name_label",
+     "text": "barack\nobama",
+     "side": "right",
+     "x": 44.083333333333336,
+     "y": 35.00925925925926,
+     "vo_s": 56.7
+    }
+   ],
+   "raw": "assets/raw/s038.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "2",
+    "author": "Obama-Biden Transition Project",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/32284207@N05/3169910661",
+    "url": "https://live.staticflickr.com/1149/3169910661_166a3f87de_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s038.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 59.2,
+   "vo_e": 60.67,
+   "text": "2009. The doors",
+   "line_type": "year",
+   "type": "still",
+   "note": "archival footage of the event; red year label top-centre (story format)",
+   "entry": 4,
+   "query": "Cadillac One presidential limousine",
+   "overlays": [],
+   "badge": {
+    "key": "e4",
+    "price": "~$1.5M",
+    "model": "Cadillac One",
+    "img": "assets/cutouts/item_e4.png"
+   },
+   "raw": "assets/raw/s039.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Model of a Presidential Limousine",
+    "author": "Hugo-90",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/32109282@N00/28235331549",
+    "url": "https://live.staticflickr.com/4770/28235331549_3cc825f3bf_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s039.jpg",
+   "motion": "pull_out"
+  },
+  {
+   "vo_s": 60.67,
+   "vo_e": 61.45,
+   "text": "are reportedly",
+   "line_type": "news",
+   "type": "still",
+   "note": "article card, zoom-out reveal, headline highlighted",
+   "entry": 4,
+   "query": "presidential state car",
+   "overlays": [],
+   "raw": "assets/raw/s040.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Peruvian presidential limousines 1",
+    "author": "1970_Lincoln_Continental",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/39311243@N05/4328599645",
+    "url": "https://live.staticflickr.com/2745/4328599645_1691364547_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s040.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 61.45,
+   "vo_e": 62.39,
+   "text": "as heavy as an",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 4,
+   "query": "presidential motorcade",
+   "overlays": [],
+   "badge": {
+    "key": "e4",
+    "price": "~$1.5M",
+    "model": "Cadillac One",
+    "img": "assets/cutouts/item_e4.png"
+   },
+   "kind": "video",
+   "raw": "assets/raw/s041.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Bush Presidential Motorcade, Belfast 16-6-08",
+    "author": "teedee.",
+    "license": "CC BY-SA 2.0",
+    "page": "https://www.flickr.com/photos/10900966@N06/2584418457",
+    "url": "https://live.staticflickr.com/3057/2584418457_5925187886_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s041.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 62.39,
+   "vo_e": 63.49,
+   "text": "airplane door,",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 4,
+   "query": "Boeing 757 door",
+   "overlays": [],
+   "raw": "assets/raw/s042.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Delta 757-200",
+    "author": "Blue Pylons",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/10037058@N08/2779012011",
+    "url": "https://live.staticflickr.com/3003/2779012011_9d236de711_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s042.jpg",
+   "motion": "pull_out"
+  },
+  {
+   "vo_s": 63.49,
+   "vo_e": 65.07,
+   "text": "and the president is not allowed to",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 4,
+   "query": "presidential limousine The Beast",
+   "overlays": [],
+   "badge": {
+    "key": "e4",
+    "price": "~$1.5M",
+    "model": "Cadillac One",
+    "img": "assets/cutouts/item_e4.png"
+   },
+   "raw": "assets/raw/s043.jpg",
+   "raw_kind": "image",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Peruvian presidential limousines 4",
+    "author": "1970_Lincoln_Continental",
+    "license": "CC BY 2.0",
+    "page": "https://www.flickr.com/photos/39311243@N05/4328599739",
+    "url": "https://live.staticflickr.com/4071/4328599739_e3eea21219_b.jpg"
+   },
+   "src": "assets/media/s043.jpg",
+   "motion": "push_in"
+  },
+  {
+   "vo_s": 65.07,
+   "vo_e": 65.64,
+   "text": "drive it.",
+   "line_type": "subject",
+   "type": "still",
+   "note": "item b-roll; badge persists",
+   "entry": 4,
+   "query": "Cadillac One 2009",
+   "overlays": [],
+   "badge": {
+    "key": "e4",
+    "price": "~$1.5M",
+    "model": "Cadillac One",
+    "img": "assets/cutouts/item_e4.png"
+   },
+   "raw": "assets/raw/s044.jpg",
+   "source": {
+    "provider": "openverse:flickr",
+    "title": "Wedding under the Bridge / Dumbo Arts Center: Art Under the Bridge Festival 2009 / 20090926.10D.54550.P1.L1.C23.BW / SML",
+    "author": "See-ming Lee (SML)",
+    "license": "CC BY-SA 2.0",
+    "page": "https://www.flickr.com/photos/48973657@N00/3963429924",
+    "url": "https://live.staticflickr.com/3519/3963429924_3bf9766778_b.jpg"
+   },
+   "raw_kind": "image",
+   "src": "assets/media/s044.jpg",
+   "motion": "pull_out"
+  },
+  {
+   "vo_s": 65.64,
+   "vo_e": 66.651,
+   "text": "D-tier.",
+   "line_type": "verdict",
+   "type": "tier_chart",
+   "note": "cut to chart, cursor drags face into the column",
+   "entry": 4,
+   "query": "",
+   "overlays": [],
+   "chart": {
+    "drop_at_vo": 65.64,
+    "tier": "D"
+   },
+   "pause_after": 0.55
+  }
+ ]
+}

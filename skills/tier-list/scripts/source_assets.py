@@ -20,10 +20,10 @@ def get(url, headers=None, tries=5):
         _last[0] = time.time()
         try:
             req = urllib.request.Request(url, headers={**UA, **(headers or {})})
-            with urllib.request.urlopen(req, timeout=90) as r: return r.read()
+            with urllib.request.urlopen(req, timeout=40) as r: return r.read()
         except urllib.error.HTTPError as e:
             if e.code in (429, 500, 502, 503, 504) and k < tries - 1:
-                time.sleep(int(e.headers.get("Retry-After") or 0) or 6 * 2 ** k); continue
+                time.sleep(min(20, int(e.headers.get("Retry-After") or 0) or 6 * 2 ** k)); continue
             raise
 def lic_ok(l):
     l = (l or "").strip()
@@ -84,11 +84,33 @@ def unsplash(q, kind, n):
     d = json.loads(get("https://api.unsplash.com/search/photos?" + urllib.parse.urlencode({"query": q, "per_page": n}), {"Authorization": f"Client-ID {k}"}))
     return [{"provider": "unsplash", "title": r.get("description") or r.get("alt_description"), "url": r["urls"]["full"], "thumb": r["urls"]["small"], "page": r["links"]["html"],
              "author": r["user"]["name"], "license": "Unsplash License", "license_url": "https://unsplash.com/license"} for r in d.get("results", [])]
-PROV = [pexels, pixabay, unsplash, commons, openverse, nasa]
+def archive(q, kind, n):
+    """Internet Archive moving images, public-domain / CC0 items only. Downloads redirect to a per-item
+    storage host (dnNNNN.us.archive.org) that the network allowlist must permit."""
+    if kind != "video": return []
+    u = "https://archive.org/advancedsearch.php?" + urllib.parse.urlencode({"q": f"{q} AND mediatype:movies AND (licenseurl:*publicdomain*)", "fl[]": ["identifier", "title", "licenseurl", "creator"], "rows": n, "output": "json"}, doseq=True)
+    out = []
+    for r in json.loads(get(u))["response"]["docs"]:
+        try: md = json.loads(get(f"https://archive.org/metadata/{r['identifier']}"))
+        except Exception: continue
+        f = [x for x in md.get("files", []) if x["name"].lower().endswith(".mp4")]
+        if not f: continue
+        f = min(f, key=lambda x: int(x.get("size", 1e12)))
+        lic = r.get("licenseurl", ""); name = "CC0" if "zero" in lic else "Public Domain"
+        out.append({"provider": "internet_archive", "title": r.get("title"), "url": f"https://archive.org/download/{r['identifier']}/{urllib.parse.quote(f['name'])}", "thumb": None,
+                    "page": f"https://archive.org/details/{r['identifier']}", "author": str(r.get("creator") or "")[:120], "license": name, "license_url": lic, "duration": float(f.get("length") or 0)})
+    return out
+def openverse_audio(q, kind, n):
+    if kind != "audio": return []
+    u = "https://api.openverse.org/v1/audio/?" + urllib.parse.urlencode({"q": q, "page_size": n, "license_type": "commercial,modification"})
+    return [{"provider": "openverse:" + r.get("source", ""), "title": r.get("title"), "url": r.get("url"), "page": r.get("foreign_landing_url"), "author": r.get("creator"),
+             "license": f"CC {r.get('license','').upper()} {r.get('license_version','')}".replace("CC PDM", "PDM").replace("CC CC0", "CC0").strip(), "license_url": r.get("license_url"),
+             "duration": (r.get("duration") or 0) / 1000, "genres": r.get("genres")} for r in json.loads(get(u)).get("results", [])]
+PROV = [pexels, pixabay, unsplash, commons, openverse, nasa, archive, openverse_audio]
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("cmd"); ap.add_argument("a1"); ap.add_argument("a2", nargs="?")
     ap.add_argument("--kind", default="image"); ap.add_argument("--n", type=int, default=8); ap.add_argument("--meta"); ap.add_argument("--log"); ap.add_argument("--shot", default="")
-    ap.add_argument("--providers", default="pexels,pixabay,unsplash,commons,openverse,nasa"); a = ap.parse_args()
+    ap.add_argument("--providers", default="pexels,pixabay,unsplash,commons,openverse,nasa,archive,openverse_audio"); a = ap.parse_args()
     if a.cmd == "search":
         res = []
         for f in PROV:
@@ -101,7 +123,7 @@ if __name__ == "__main__":
         meta = json.loads(a.meta) if a.meta else {}
         if meta and not lic_ok(meta.get("license")): raise SystemExit(f"REJECTED licence: {meta.get('license')!r} - pick another candidate or flag for the user")
         os.makedirs(os.path.dirname(a.a2) or ".", exist_ok=True)
-        open(a.a2, "wb").write(get(a.a1))
+        open(a.a2, "wb").write(get(a.a1, tries=2))
         if a.log:
             new = not os.path.exists(a.log)
             with open(a.log, "a", newline="") as fh:

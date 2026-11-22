@@ -4,13 +4,14 @@ to assets/raw/, append to assets/LICENSES.csv, and write shot["raw"] + shot["sou
 Also sources entry portraits ("face_query") and item photos for badge/spec cutouts ("item_query").
 Usage: python -I auto_source.py shotlist.json project_dir [--providers commons,openverse,nasa]
 Review afterwards: python -I contact_sheet.py ... and replace bad picks by editing "query" + deleting "raw"."""
-import sys, os, json, re, argparse
+import sys, os, json, re, argparse, urllib.parse
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import source_assets as SA
-ap = argparse.ArgumentParser(); ap.add_argument("shotlist"); ap.add_argument("project"); ap.add_argument("--providers", default="pexels,pixabay,unsplash,commons,openverse,nasa")
+ap = argparse.ArgumentParser(); ap.add_argument("shotlist"); ap.add_argument("project"); ap.add_argument("--providers", default="pexels,pixabay,unsplash,openverse,nasa,archive,commons")
 a = ap.parse_args(); SLp = a.shotlist; SL = json.load(open(SLp)); P = a.project
 raw = os.path.join(P, "assets", "raw"); os.makedirs(raw, exist_ok=True); log = os.path.join(P, "assets", "LICENSES.csv")
 cache_p = os.path.join(P, "assets", ".search_cache.json"); cache = json.load(open(cache_p)) if os.path.exists(cache_p) else {}
+bad_hosts = set()
 used = set(s.get("source", {}).get("url") for s in SL["shots"] if s.get("source"))
 def search(q, kind):
     k = f"{kind}|{q}"
@@ -23,12 +24,12 @@ def search(q, kind):
         cache[k] = res; json.dump(cache, open(cache_p, "w"))
     return cache[k]
 def pick(q, kind, role):
-    c = [r for r in search(q, kind) if r.get("url") and SA.lic_ok(r.get("license")) and r["url"] not in used]
+    c = [r for r in search(q, kind) if r.get("url") and SA.lic_ok(r.get("license")) and r["url"] not in used and urllib.parse.urlparse(r["url"]).hostname not in bad_hosts]
     if kind == "image":
         c = [r for r in c if (r.get("w") or 2000) >= 900 and not re.search(r"\.(svg|tif|tiff|pdf|djvu)(\?|$)", r["url"], re.I)]
         if role == "frame": c.sort(key=lambda r: -(1 if (r.get("w") or 16) / max(1, r.get("h") or 9) >= 1.25 else 0))
     else:
-        c = [r for r in c if re.search(r"\.(webm|ogv|mp4|mov)(\?|$)", r["url"], re.I) or r["provider"] in ("pexels", "pixabay")]
+        c = [r for r in c if re.search(r"\.(webm|ogv|mp4|mov)(\?|$)", r["url"], re.I) or r["provider"] in ("pexels", "pixabay", "internet_archive")]
     return c
 def fetch(r, dest_stem, shot):
     ext = re.search(r"\.(jpe?g|png|webp|gif|webm|ogv|mp4|mov)(\?|$)", r["url"], re.I); ext = (ext.group(1) if ext else ("mp4" if r["provider"] in ("pexels", "pixabay") else "jpg")).lower()
@@ -41,7 +42,7 @@ def fetch(r, dest_stem, shot):
     except SystemExit as e:
         print("  !", e); return None
     except Exception as e:
-        print("  ! download failed:", str(e)[:120]); used.add(r["url"]); return None
+        print("  ! download failed:", str(e)[:120]); used.add(r["url"]); bad_hosts.add(urllib.parse.urlparse(r["url"]).hostname); return None
     used.add(r["url"]); return os.path.relpath(dest, P)
 missing = []
 for i, s in enumerate(SL["shots"]):

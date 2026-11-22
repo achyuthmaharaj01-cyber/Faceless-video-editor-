@@ -146,6 +146,7 @@ for (i, j) in beats:
     if k == "verdict":
         v = next(v for kk, v in list(vset.items()) + list(vtier.items()) if i <= kk < j)
         sh["chart"] = {"drop_at_vo": round(W[v["letter_i"]]["s"], 3), "tier": v["tier"]}
+        sh["pause_after"] = 0.55   # bed-only breath after the verdict (reference vocal-stem pause median 0.6 s)
     shots.append(sh)
 # clip inserts + pauses
 for wi_, it in anchors:

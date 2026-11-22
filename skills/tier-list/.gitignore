@@ -1,4 +1,4 @@
-# Derived from copyrighted reference videos: keep local only (never in a public repo)
+# Derived from copyrighted reference videos: keep local only
 analysis/*.transcript.json
 analysis/*.ocr.json
 analysis/*.vo_timeline.json

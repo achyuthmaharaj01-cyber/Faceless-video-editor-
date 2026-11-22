@@ -26,7 +26,11 @@ def lufs(path, t0=0, dur=None):
 INSET = "[0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,boxblur=40:2,eq=brightness=-0.18[bg];[0:v]scale=-2:1080[fg];[bg][fg]overlay=(W-w)/2:0,fps=30,format=yuv420p[v]"
 COVER = "[0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=30,format=yuv420p[v]"
 motion_cycle = ["push_in", "push_in", "pull_out", "push_in", "pull_out"]   # 60/40 split (style.json ken_burns)
-vo_l = lufs(J(SL["audio"]["vo"])); SL["audio"]["vo_lufs"] = round(vo_l, 1)
+vo_raw = lufs(J(SL["audio"]["vo"])); SL["audio"]["vo_lufs_raw"] = round(vo_raw, 1)
+# bring the VO to the reference VO level (style.json audio.vo.lufs_vo_on_sections video-3) via data-volume (max +12 dB)
+VO_T = STYLE["audio"]["vo"]["lufs_vo_on_sections"]["video-3"]
+SL["audio"]["vo_volume"] = round(min(3.98, 10 ** ((VO_T - vo_raw) / 20)), 3)
+vo_l = vo_raw + 20 * np.log10(SL["audio"]["vo_volume"]); SL["audio"]["vo_lufs"] = round(vo_l, 1)
 for i, s in enumerate(SL["shots"]):
     if not s.get("raw"): continue
     src = J(s["raw"]); w, h, dur, has_a = probe(src)
@@ -55,9 +59,12 @@ for i, s in enumerate(SL["shots"]):
         if s["type"] == "footage": s["type"] = "still"; s.setdefault("motion", motion_cycle[i % len(motion_cycle)])
         if s["type"] == "map": s["src"] = os.path.relpath(out, P)
 # ---- cutouts (faces + items)
-hfp = a.hf
-def remove_bg(src, dst):
-    run(["npx", "hyperframes", "remove-background", os.path.abspath(src), "-o", os.path.abspath(dst)], cwd=hfp or P)
+# general salient-object segmentation (cars, objects AND people); the Hyperframes remover is person-only
+from rembg import remove as _rb_remove, new_session as _rb_session
+_RB = {}
+def remove_bg(src, dst, model="isnet-general-use"):
+    if model not in _RB: _RB[model] = _rb_session(model)
+    _rb_remove(ImageOps.exif_transpose(Image.open(src)).convert("RGB"), session=_RB[model]).save(dst)
 def sticker(img, px):
     al = img.split()[3].filter(ImageFilter.MaxFilter(px * 2 + 1)); base = Image.new("RGBA", img.size, (255, 255, 255, 0)); base.putalpha(al)
     white = Image.new("RGBA", img.size, (255, 255, 255, 255)); white.putalpha(al); white.alpha_composite(img); return white
@@ -65,13 +72,23 @@ import cv2
 casc = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 for j, e in enumerate(SL.get("entries", [])):
     if e.get("face_raw"):
-        tmp = J("assets", "faces", f".cut_e{j}.png"); remove_bg(J(e["face_raw"]), tmp); im = Image.open(tmp).convert("RGBA")
-        g = cv2.cvtColor(np.array(im.convert("RGB")), cv2.COLOR_RGB2GRAY); f = casc.detectMultiScale(g, 1.1, 5, minSize=(40, 40))
+        src_im = ImageOps.exif_transpose(Image.open(J(e["face_raw"]))).convert("RGB")
+        g = cv2.cvtColor(np.array(src_im), cv2.COLOR_RGB2GRAY); f = casc.detectMultiScale(g, 1.05, 4, minSize=(24, 24))
+        tmp = J("assets", "faces", f".cut_e{j}.png")
+        if e.get("face_box"): f = [tuple(e["face_box"])]; e.pop("face_pick", None)   # manual [x,y,w,h] when the detector misses
         if len(f):
-            x, y, w, h = max(f, key=lambda r: r[2] * r[3]); cx, cy = x + w / 2, y + h / 2
-            im = im.crop((int(cx - w * 0.85), int(cy - h * 1.15), int(cx + w * 0.85), int(cy + h * 1.05)))
+            # several people: entry "face_pick" = index left-to-right (default: largest face)
+            f = sorted(f, key=lambda r: r[0])
+            x, y, w, h = f[e["face_pick"]] if "face_pick" in e and e["face_pick"] < len(f) else max(f, key=lambda r: r[2] * r[3])
+            cx, cy = x + w / 2, y + h / 2
+            box = (max(0, int(cx - w * 1.1)), max(0, int(cy - h * 1.4)), min(src_im.width, int(cx + w * 1.1)), min(src_im.height, int(cy + h * 1.3)))
+            src_im.crop(box).save(tmp + ".jpg"); remove_bg(tmp + ".jpg", tmp, "u2net_human_seg"); os.remove(tmp + ".jpg")
+            im = Image.open(tmp).convert("RGBA"); x, y, w, h = x - box[0], y - box[1], w, h; cx, cy = x + w / 2, y + h / 2
+            im = im.crop((max(0, int(cx - w * 0.85)), max(0, int(cy - h * 1.15)), int(cx + w * 0.85), int(cy + h * 1.05)))
             # keep only head: fade alpha below the chin
             al = np.array(im.split()[3]).astype(float); H_ = al.shape[0]; cut = int(H_ * 0.93); al[cut:] = 0; im.putalpha(Image.fromarray(al.astype("uint8")))
+        else:
+            remove_bg(J(e["face_raw"]), tmp, "u2net_human_seg"); im = Image.open(tmp).convert("RGBA")
         im = im.crop(im.getbbox()); im = im.resize((int(im.width * 240 / im.height), 240), Image.LANCZOS)
         im = ImageOps.expand(im, 10, (0, 0, 0, 0)); sticker(im, 6).save(J("assets", "faces", f"e{j}.png")); os.remove(tmp)
         e["face"] = f"assets/faces/e{j}.png"
@@ -79,6 +96,25 @@ for j, e in enumerate(SL.get("entries", [])):
         tmp = J("assets", "cutouts", f"item_e{j}.png"); remove_bg(J(e["item_raw"]), tmp); im = Image.open(tmp).convert("RGBA")
         bb = Image.fromarray((np.array(im.split()[3]) > 40).astype("uint8") * 255).getbbox(); im = im.crop(bb) if bb else im
         im.thumbnail((600, 300)); im.save(tmp); e["item_cutout"] = f"assets/cutouts/item_e{j}.png"
+# ---- name-label placement: beside the largest face, on the side with more room (style.json text.name_label)
+def frame_of(path):
+    if path.endswith(".mp4"):
+        r = subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "quiet", "-ss", "0.3", "-i", path, "-frames:v", "1", "-f", "image2pipe", "-vcodec", "png", "-"], capture_output=True)
+        import io; return Image.open(io.BytesIO(r.stdout)).convert("RGB")
+    return Image.open(path).convert("RGB")
+for s in SL["shots"]:
+    labs = [o for o in s.get("overlays", []) if o["kind"] == "name_label" and not o.get("manual")]
+    if not labs or not s.get("src"): continue
+    im = frame_of(J(s["src"])); g = cv2.cvtColor(np.array(im), cv2.COLOR_RGB2GRAY)
+    f = casc.detectMultiScale(g, 1.08, 5, minSize=(60, 60))
+    for o in labs:
+        if len(f):
+            x, y, w, h = max(f, key=lambda r: r[2] * r[3]); cx = (x + w / 2) / 19.2; cy = (y + h / 2) / 10.8
+            room_left, room_right = x / 19.2, 100 - (x + w) / 19.2
+            if room_left >= room_right: o["side"], o["x"] = "left", max(18, x / 19.2 - 2)
+            else: o["side"], o["x"] = "right", min(80, (x + w) / 19.2 + 2)
+            o["y"] = min(70, max(22, cy - 3))
+        else: o.setdefault("side", "left"); o.setdefault("x", 30); o.setdefault("y", 40)
 # ---- music level
 m = SL["audio"].get("music")
 if m and m.get("src"):

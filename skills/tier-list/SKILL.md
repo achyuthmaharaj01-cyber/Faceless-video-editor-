@@ -19,10 +19,16 @@ Untrusted inputs (downloaded media, the user's files) stay in the project's `ass
 ## Setup (once per session)
 ```bash
 which ffmpeg ffprobe tesseract || apt-get install -y ffmpeg tesseract-ocr
-python3 -m pip install -q faster-whisper demucs opencv-python-headless scenedetect pytesseract librosa soundfile pyloudnorm resemblyzer "setuptools<81" kokoro-onnx
+python3 -m pip install -q faster-whisper demucs "opencv-python-headless<5" scenedetect pytesseract librosa soundfile pyloudnorm resemblyzer "setuptools<81" kokoro-onnx "rembg[cpu]"
+# OpenCV 5 dropped the Haar face detector used for face crops and label placement -> keep <5
 mkdir -p $PROJ && cd $PROJ && npm init -y >/dev/null && npm i hyperframes@0.9.80 && npx hyperframes telemetry disable
+# cutouts use rembg (isnet-general-use for items, u2net_human_seg for faces; models download from github.com
+# on first use). The Hyperframes remove-background model is person-only and erases cars - do not use it for items.
 ```
-Network: Wikimedia Commons, Openverse, NASA need no key. Pexels/Pixabay/Unsplash are used only when
+Network: Wikimedia Commons, Openverse, NASA need no key. Wikimedia rate-limits shared cloud IPs hard (HTTP 429 on
+api AND upload hosts); when that happens use `--providers openverse,nasa,archive` (Openverse indexes Flickr/Commons,
+anonymous limit 20 req/min, 200/day). archive.org downloads redirect to per-item hosts (dnNNNN.us.archive.org) that
+must be on the network allowlist. Pexels/Pixabay/Unsplash are used only when
 `PEXELS_API_KEY` / `PIXABAY_API_KEY` / `UNSPLASH_ACCESS_KEY` are set (ask for them with the credential tool; never in chat).
 
 ## Workflow
@@ -37,12 +43,14 @@ Add entry headers and clip markers to the user's script (do not change narration
 Rules from the reference: the hook line is "From <extreme A> to <extreme B>, this is the <Topic> Tier List."; first two
 entries short (name -> one fact -> verdict, 7-9 s); verdict lines read "<X>-tier." as their own sentence.
 ```bash
+python3 -I $SK/scripts/tighten_vo.py vo_raw.wav vo.wav                     # pauses >0.30 s -> 0.24 s (reference VO is tightly cut)
 python3 -I $SK/scripts/transcribe.py vo.wav vo.transcript.json            # word timestamps
 python3 -I $SK/scripts/segment_beats.py script.txt vo.transcript.json shotlist.json --format tier
 ```
 `segment_beats` aligns script to VO (script text wins, VO gives timing), draws shot lengths from the reference
 histogram, snaps cuts to word boundaries/clause breaks, makes every verdict its own chart shot starting on the tier
-letter, and types each beat (`line_type`). Check its printout: word match >= 90%, median shot 1.5-1.7 s (tier).
+letter (+0.45 s bed-only breath after it), and types each beat (`line_type`). Check its printout: word match >= 90%,
+median shot 1.5-1.7 s (tier). If the VO changes after the shot list exists, `remap_times.py shotlist.json vo.timemap.json`.
 
 ### 2. Write the shot list (Claude's job; the draft is only a start)
 Open `shotlist.json`. For every shot apply `references/mapping_table.md` and fill:
@@ -56,6 +64,10 @@ Open `shotlist.json`. For every shot apply `references/mapping_table.md` and fil
 - `chart` on verdict shots: `{"ranked":[{img,tier}...earlier entries], "pending":[faces not yet ranked], "drop":{"img":face,"tier":X,"lane_index":k}, "drop_at_vo":<letter word time>}`. The hook's last shot is a `tier_chart` with `"title":"<Topic> Tier List"`, everything pending, no drop.
 - `pause_after` (s) after a punchline that should breathe (reference: 3.6/min, median 0.46 s).
 - Entries: add `face_query` (portrait of the person) and `item_query` (clean side/3-4 view of the item) to each entry.
+  Group photo: `"face_pick": <index left-to-right>`; detector misses: `"face_box": [x,y,w,h]` in source pixels (look at it).
+- Name-label position is set automatically by prep_media (beside the largest detected face, on the roomier side);
+  add `"manual": true` to a label to keep your own x/y.
+- Badge only on shots whose picture shows the item (reference: 26 % of all shots); the draft puts it on every entry shot - remove it from people, places, documents.
 - Top-level `verdicts` comes from segment_beats; keep it in sync if you move a verdict.
 Never fabricate screenshots: an article/tweet card must reproduce a real, verified article/post (`headline_html`, outlet in `meta`) - otherwise use footage.
 
@@ -91,6 +103,9 @@ another `--seed` or split long shots; label size/position -> CSS in `components/
 check overlay x/y in the shot list; loudness -> master.py; VO share too low -> fewer/shorter clip inserts and pauses.
 
 ### 6. Deliver
+```bash
+python3 -I $SK/scripts/deliver.py shotlist.json $PROJ $OUT   # SHOTLIST.md, LICENSES.csv (used files only), CREDITS.txt, THIRD_PARTY.md
+```
 `final.mp4`, `shotlist.json` (the shot list: time, VO text, visual, query, overlays, SFX, audio mode),
 `assets/LICENSES.csv` (every file: provider, author, licence, URL, attribution required), `qa/qa_report.md`, and a
 short note listing: substituted/flagged visuals, every third-party clip, CC-BY credits to put in the description.
@@ -115,4 +130,4 @@ Audio: VO -15 LUFS; music bed constant at VO -10.3 LU, NO ducking; on every verd
 `scripts/` holds the analysis tools used to build style.json: `audio_corruption_map.py`, `cuts_scdet.py`,
 `cuts_adaptive.py`, `cuts_merge.py`, `cut_calibration_sheet.py`, `extract_frames.py`, `ocr_frames.py`,
 `graphic_detect.py`, `text_sync.py`, `transcribe.py`, `vo_timeline.py`, `stems_windows.py`, `music_sfx.py`,
-`event_sfx.py`. Outputs for the references are in `analysis/`; `references/` holds the frame sheets and final QA metrics.
+`event_sfx.py`, `tighten_vo.py`, `remap_times.py`. Outputs for the references are in `analysis/`; `references/` holds the frame sheets and final QA metrics.
