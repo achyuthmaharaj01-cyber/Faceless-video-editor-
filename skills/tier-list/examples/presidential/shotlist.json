@@ -265,10 +265,11 @@
     {
      "kind": "name_label",
      "text": "william\nhoward taft",
-     "side": "right",
-     "x": 48.51041666666667,
-     "y": 22,
-     "vo_s": 5.51
+     "side": "left",
+     "x": 42.2,
+     "y": 28.38,
+     "vo_s": 5.51,
+     "overlap_cost": 0.0
     }
    ],
    "raw": "assets/raw/s003.jpg",
@@ -281,8 +282,9 @@
     "url": "https://live.staticflickr.com/254/446827029_bb1698a802_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s003.jpg",
-   "motion": "push_in"
+   "src": "assets/media/s003_portrait.jpg",
+   "motion": "push_in",
+   "media_swapped": "entry portrait (named person not identifiable in the sourced shot)"
   },
   {
    "vo_s": 6.55,
@@ -441,36 +443,7 @@
    "motion": "pull_out"
   },
   {
-   "vo_s": 14.8,
-   "vo_e": 15.96,
-   "text": "White Model M.",
-   "line_type": "subject",
-   "type": "still",
-   "note": "item b-roll; badge persists",
-   "entry": 0,
-   "query": "White steam car",
-   "overlays": [],
-   "badge": {
-    "key": "e0",
-    "price": "~$4K",
-    "model": "White Model M",
-    "img": "assets/cutouts/item_e0.png"
-   },
-   "raw": "assets/raw/s010.jpg",
-   "source": {
-    "provider": "openverse:flickr",
-    "title": "Stanley Steamer Model E2, 1909",
-    "author": "kemeko1971",
-    "license": "CC BY 2.0",
-    "page": "https://www.flickr.com/photos/8868801@N03/6829528703",
-    "url": "https://live.staticflickr.com/7159/6829528703_0917054e1b_b.jpg"
-   },
-   "raw_kind": "image",
-   "src": "assets/media/s010.jpg",
-   "motion": "push_in"
-  },
-  {
-   "vo_s": 15.96,
+   "vo_s": 15.01,
    "vo_e": 16.83,
    "text": "B-tier.",
    "line_type": "verdict",
@@ -499,9 +472,10 @@
      "kind": "name_label",
      "text": "lyndon\nb. johnson",
      "side": "right",
-     "x": 35.75,
-     "y": 53.2037037037037,
-     "vo_s": 16.83
+     "x": 59.79,
+     "y": 17.5,
+     "vo_s": 16.83,
+     "overlap_cost": 0.316
     }
    ],
    "raw": "assets/raw/s012.jpg",
@@ -514,7 +488,7 @@
     "url": "https://live.staticflickr.com/3768/10290742263_4353485c5c_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s012.jpg",
+   "src": "assets/media/s011.jpg",
    "motion": "pull_out"
   },
   {
@@ -543,7 +517,7 @@
     "url": "https://live.staticflickr.com/5697/21273270504_254a1a8cac_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s013.jpg",
+   "src": "assets/media/s012.jpg",
    "motion": "push_in"
   },
   {
@@ -566,7 +540,7 @@
     "url": "https://live.staticflickr.com/5515/11888612184_d8401d9c96_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s014.jpg",
+   "src": "assets/media/s013.jpg",
    "motion": "pull_out"
   },
   {
@@ -596,7 +570,7 @@
     "url": "https://live.staticflickr.com/4264/35513670076_801501c5bf_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s015.jpg",
+   "src": "assets/media/s014.jpg",
    "motion": "push_in"
   },
   {
@@ -625,7 +599,7 @@
     "url": "https://live.staticflickr.com/6108/6313245918_4460af2e66_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s016.jpg",
+   "src": "assets/media/s015.jpg",
    "motion": "push_in"
   },
   {
@@ -654,40 +628,11 @@
     "url": "https://live.staticflickr.com/6114/6313244698_848c43a2ab_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s017.jpg",
+   "src": "assets/media/s016.jpg",
    "motion": "pull_out"
   },
   {
-   "vo_s": 24.48,
-   "vo_e": 25.48,
-   "text": "and then float away.",
-   "line_type": "subject",
-   "type": "still",
-   "note": "item b-roll; badge persists",
-   "entry": 1,
-   "query": "Amphicar boat car",
-   "overlays": [],
-   "badge": {
-    "key": "e1",
-    "price": "~$3K",
-    "model": "Amphicar 770",
-    "img": "assets/cutouts/item_e1.png"
-   },
-   "raw": "assets/raw/s018.jpg",
-   "source": {
-    "provider": "openverse:flickr",
-    "title": "Duck hunting from a car.",
-    "author": "Hugo-90",
-    "license": "CC BY 2.0",
-    "page": "https://www.flickr.com/photos/32109282@N00/2306923712",
-    "url": "https://live.staticflickr.com/2167/2306923712_716541b4f7_b.jpg"
-   },
-   "raw_kind": "image",
-   "src": "assets/media/s018.jpg",
-   "motion": "push_in"
-  },
-  {
-   "vo_s": 25.48,
+   "vo_s": 24.53,
    "vo_e": 26.54,
    "text": "S-tier.",
    "line_type": "verdict",
@@ -715,10 +660,11 @@
     {
      "kind": "name_label",
      "text": "john\nf. kennedy",
-     "side": "right",
-     "x": 46.53125,
-     "y": 45.425925925925924,
-     "vo_s": 26.54
+     "side": "left",
+     "x": 50.5,
+     "y": 50.09,
+     "vo_s": 26.54,
+     "overlap_cost": 0.0
     }
    ],
    "raw": "assets/raw/s020.jpg",
@@ -731,8 +677,9 @@
     "url": "https://live.staticflickr.com/3216/2870854953_98036eb289_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s020.jpg",
-   "motion": "push_in"
+   "src": "assets/media/s018_portrait.jpg",
+   "motion": "push_in",
+   "media_swapped": "entry portrait (named person not identifiable in the sourced shot)"
   },
   {
    "vo_s": 27.76,
@@ -760,7 +707,7 @@
     "url": "https://live.staticflickr.com/65535/54756426809_b8fac62375_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s021.jpg",
+   "src": "assets/media/s019.jpg",
    "motion": "push_in"
   },
   {
@@ -798,7 +745,7 @@
     "url": "https://live.staticflickr.com/65535/51662237351_4a6149673c_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s022.jpg",
+   "src": "assets/media/s020.jpg",
    "motion": "pull_out"
   },
   {
@@ -822,7 +769,7 @@
     "url": "https://images-assets.nasa.gov/image/NHQ202208290012/NHQ202208290012~medium.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s023.jpg",
+   "src": "assets/media/s021.jpg",
    "motion": "push_in"
   },
   {
@@ -860,7 +807,7 @@
     "url": "https://live.staticflickr.com/37/97794502_c1d48ad9c8_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s024.jpg",
+   "src": "assets/media/s022.jpg",
    "motion": "pull_out"
   },
   {
@@ -883,7 +830,7 @@
     "url": "https://live.staticflickr.com/3255/5853195263_9d0b824f33_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s025.jpg",
+   "src": "assets/media/s023.jpg",
    "motion": "push_in"
   },
   {
@@ -926,7 +873,7 @@
     "license": "Public Domain",
     "page": "https://archive.org/details/CEP150"
    },
-   "src": "assets/media/s026.mp4",
+   "src": "assets/media/s024.mp4",
    "media_start": 0,
    "clip_volume": 0.978,
    "clip_lufs": -17.0
@@ -957,7 +904,7 @@
     "page": "https://www.flickr.com/photos/37996580417@N01/10505413",
     "url": "https://live.staticflickr.com/8/10505413_e978e7bd72.jpg"
    },
-   "src": "assets/media/s027.jpg",
+   "src": "assets/media/s025.jpg",
    "motion": "pull_out"
   },
   {
@@ -986,7 +933,7 @@
     "page": "https://www.flickr.com/photos/31411679@N08/30633652635",
     "url": "https://live.staticflickr.com/5472/30633652635_0b63583768_b.jpg"
    },
-   "src": "assets/media/s028.jpg",
+   "src": "assets/media/s026.jpg",
    "motion": "push_in"
   },
   {
@@ -1015,12 +962,12 @@
     "url": "https://live.staticflickr.com/7865/32543753977_edcd1b7714_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s029.jpg",
+   "src": "assets/media/s027.jpg",
    "motion": "pull_out"
   },
   {
    "vo_s": 43.71,
-   "vo_e": 45.85,
+   "vo_e": 44.9,
    "text": "Today it sits in the Henry Ford Museum.",
    "line_type": "subject",
    "type": "still",
@@ -1044,11 +991,11 @@
     "url": "https://live.staticflickr.com/3654/4555642601_b1ceeebb2f_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s030.jpg",
+   "src": "assets/media/s028.jpg",
    "motion": "push_in"
   },
   {
-   "vo_s": 45.85,
+   "vo_s": 44.9,
    "vo_e": 46.79,
    "text": "A-tier.",
    "line_type": "verdict",
@@ -1076,10 +1023,11 @@
     {
      "kind": "name_label",
      "text": "ronald\nreagan",
-     "side": "right",
-     "x": 50.802083333333336,
-     "y": 40.84259259259259,
-     "vo_s": 46.79
+     "side": "left",
+     "x": 30.74,
+     "y": 45.21,
+     "vo_s": 46.79,
+     "overlap_cost": 0.0
     }
    ],
    "raw": "assets/raw/s032.jpg",
@@ -1092,7 +1040,7 @@
     "url": "https://live.staticflickr.com/5185/5560132459_896221922f_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s032.jpg",
+   "src": "assets/media/s030.jpg",
    "motion": "pull_out"
   },
   {
@@ -1121,7 +1069,7 @@
     "url": "https://live.staticflickr.com/6116/6247698156_9c6ed50d7f_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s033.jpg",
+   "src": "assets/media/s031.jpg",
    "motion": "push_in"
   },
   {
@@ -1146,7 +1094,7 @@
    "raw_kind": "image",
    "pin_x": 48,
    "pin_y": 58,
-   "src": "assets/media/s034.jpg"
+   "src": "assets/media/s032.jpg"
   },
   {
    "vo_s": 53.14,
@@ -1174,34 +1122,11 @@
     "page": "https://www.flickr.com/photos/21612624@N00/6117102608",
     "url": "https://live.staticflickr.com/6062/6117102608_574e7c3c0f_b.jpg"
    },
-   "src": "assets/media/s035.jpg",
+   "src": "assets/media/s033.jpg",
    "motion": "push_in"
   },
   {
-   "vo_s": 54.98,
-   "vo_e": 55.48,
-   "text": "limousine.",
-   "line_type": "subject",
-   "type": "still",
-   "note": "item b-roll; badge persists",
-   "entry": 3,
-   "query": "Rancho del Cielo",
-   "overlays": [],
-   "raw": "assets/raw/s036.jpg",
-   "source": {
-    "provider": "openverse:flickr",
-    "title": "Casa Piedras valley, Rancho del Cielo",
-    "author": "Gruenemann",
-    "license": "CC BY 2.0",
-    "page": "https://www.flickr.com/photos/13227526@N00/521777207",
-    "url": "https://live.staticflickr.com/241/521777207_c0b779fa81_b.jpg"
-   },
-   "raw_kind": "image",
-   "src": "assets/media/s036.jpg",
-   "motion": "push_in"
-  },
-  {
-   "vo_s": 55.48,
+   "vo_s": 54.53,
    "vo_e": 56.7,
    "text": "C-tier.",
    "line_type": "verdict",
@@ -1230,9 +1155,10 @@
      "kind": "name_label",
      "text": "barack\nobama",
      "side": "right",
-     "x": 44.083333333333336,
-     "y": 35.00925925925926,
-     "vo_s": 56.7
+     "x": 67.57,
+     "y": 18.87,
+     "vo_s": 56.7,
+     "overlap_cost": 0.0
     }
    ],
    "raw": "assets/raw/s038.jpg",
@@ -1245,7 +1171,7 @@
     "url": "https://live.staticflickr.com/1149/3169910661_166a3f87de_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s038.jpg",
+   "src": "assets/media/s035.jpg",
    "motion": "push_in"
   },
   {
@@ -1274,7 +1200,7 @@
     "url": "https://live.staticflickr.com/4770/28235331549_3cc825f3bf_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s039.jpg",
+   "src": "assets/media/s036.jpg",
    "motion": "pull_out"
   },
   {
@@ -1297,7 +1223,7 @@
     "url": "https://live.staticflickr.com/2745/4328599645_1691364547_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s040.jpg",
+   "src": "assets/media/s037.jpg",
    "motion": "push_in"
   },
   {
@@ -1327,7 +1253,7 @@
     "url": "https://live.staticflickr.com/3057/2584418457_5925187886_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s041.jpg",
+   "src": "assets/media/s038.jpg",
    "motion": "push_in"
   },
   {
@@ -1350,7 +1276,7 @@
     "url": "https://live.staticflickr.com/3003/2779012011_9d236de711_b.jpg"
    },
    "raw_kind": "image",
-   "src": "assets/media/s042.jpg",
+   "src": "assets/media/s039.jpg",
    "motion": "pull_out"
   },
   {
@@ -1379,40 +1305,11 @@
     "page": "https://www.flickr.com/photos/39311243@N05/4328599739",
     "url": "https://live.staticflickr.com/4071/4328599739_e3eea21219_b.jpg"
    },
-   "src": "assets/media/s043.jpg",
+   "src": "assets/media/s040.jpg",
    "motion": "push_in"
   },
   {
-   "vo_s": 65.07,
-   "vo_e": 65.64,
-   "text": "drive it.",
-   "line_type": "subject",
-   "type": "still",
-   "note": "item b-roll; badge persists",
-   "entry": 4,
-   "query": "Cadillac One 2009",
-   "overlays": [],
-   "badge": {
-    "key": "e4",
-    "price": "~$1.5M",
-    "model": "Cadillac One",
-    "img": "assets/cutouts/item_e4.png"
-   },
-   "raw": "assets/raw/s044.jpg",
-   "source": {
-    "provider": "openverse:flickr",
-    "title": "Wedding under the Bridge / Dumbo Arts Center: Art Under the Bridge Festival 2009 / 20090926.10D.54550.P1.L1.C23.BW / SML",
-    "author": "See-ming Lee (SML)",
-    "license": "CC BY-SA 2.0",
-    "page": "https://www.flickr.com/photos/48973657@N00/3963429924",
-    "url": "https://live.staticflickr.com/3519/3963429924_3bf9766778_b.jpg"
-   },
-   "raw_kind": "image",
-   "src": "assets/media/s044.jpg",
-   "motion": "pull_out"
-  },
-  {
-   "vo_s": 65.64,
+   "vo_s": 64.69,
    "vo_e": 66.651,
    "text": "D-tier.",
    "line_type": "verdict",

@@ -69,52 +69,96 @@ def sticker(img, px):
     al = img.split()[3].filter(ImageFilter.MaxFilter(px * 2 + 1)); base = Image.new("RGBA", img.size, (255, 255, 255, 0)); base.putalpha(al)
     white = Image.new("RGBA", img.size, (255, 255, 255, 255)); white.putalpha(al); white.alpha_composite(img); return white
 import cv2
-casc = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import faces as FC
+NAME_PX = STYLE["text"]["name_label"]["font_px"]          # name label font size at 1920x1080
+REF_EMB = {}                                              # entry index -> SFace embedding of the named person
 for j, e in enumerate(SL.get("entries", [])):
     if e.get("face_raw"):
         src_im = ImageOps.exif_transpose(Image.open(J(e["face_raw"]))).convert("RGB")
-        g = cv2.cvtColor(np.array(src_im), cv2.COLOR_RGB2GRAY); f = casc.detectMultiScale(g, 1.05, 4, minSize=(24, 24))
         tmp = J("assets", "faces", f".cut_e{j}.png")
-        if e.get("face_box"): f = [tuple(e["face_box"])]; e.pop("face_pick", None)   # manual [x,y,w,h] when the detector misses
-        if len(f):
+        if e.get("face_box"): fc = FC.face_from_box(src_im, e["face_box"]) or {"box": tuple(e["face_box"]), "raw": None}
+        else:
+            ff = FC.detect(src_im)
             # several people: entry "face_pick" = index left-to-right (default: largest face)
-            f = sorted(f, key=lambda r: r[0])
-            x, y, w, h = f[e["face_pick"]] if "face_pick" in e and e["face_pick"] < len(f) else max(f, key=lambda r: r[2] * r[3])
-            cx, cy = x + w / 2, y + h / 2
+            fc = (sorted(ff, key=lambda d: d["box"][0])[e["face_pick"]] if ff and "face_pick" in e and -len(ff) <= e["face_pick"] < len(ff) else (ff[0] if ff else None))
+        if fc:
+            if fc.get("raw") is not None: REF_EMB[j] = FC.embed(src_im, fc)
+            x, y, w, h = fc["box"]; cx, cy = x + w / 2, y + h / 2
             box = (max(0, int(cx - w * 1.1)), max(0, int(cy - h * 1.4)), min(src_im.width, int(cx + w * 1.1)), min(src_im.height, int(cy + h * 1.3)))
             src_im.crop(box).save(tmp + ".jpg"); remove_bg(tmp + ".jpg", tmp, "u2net_human_seg"); os.remove(tmp + ".jpg")
-            im = Image.open(tmp).convert("RGBA"); x, y, w, h = x - box[0], y - box[1], w, h; cx, cy = x + w / 2, y + h / 2
-            im = im.crop((max(0, int(cx - w * 0.85)), max(0, int(cy - h * 1.15)), int(cx + w * 0.85), int(cy + h * 1.05)))
-            # keep only head: fade alpha below the chin
-            al = np.array(im.split()[3]).astype(float); H_ = al.shape[0]; cut = int(H_ * 0.93); al[cut:] = 0; im.putalpha(Image.fromarray(al.astype("uint8")))
+            im = Image.open(tmp).convert("RGBA"); x, y = x - box[0], y - box[1]; cx, cy = x + w / 2, y + h / 2
+            # head-only cutout like the reference: hair to chin + a short neck, ears included
+            im = im.crop((max(0, int(cx - w * 0.78)), max(0, int(cy - h * 1.05)), int(cx + w * 0.78), int(cy + h * 0.80)))
+            al = np.array(im.split()[3]).astype(float); H_ = al.shape[0]; fade0 = int(H_ * 0.86)
+            al[fade0:] *= np.linspace(1, 0, H_ - fade0)[:, None]; im.putalpha(Image.fromarray(al.astype("uint8")))
         else:
             remove_bg(J(e["face_raw"]), tmp, "u2net_human_seg"); im = Image.open(tmp).convert("RGBA")
-        im = im.crop(im.getbbox()); im = im.resize((int(im.width * 240 / im.height), 240), Image.LANCZOS)
-        im = ImageOps.expand(im, 10, (0, 0, 0, 0)); sticker(im, 6).save(J("assets", "faces", f"e{j}.png")); os.remove(tmp)
+        im = im.crop(im.getbbox()); im = im.resize((int(im.width * 320 / im.height), 320), Image.LANCZOS)
+        im = ImageOps.expand(im, 12, (0, 0, 0, 0)); sticker(im, 7).save(J("assets", "faces", f"e{j}.png")); os.remove(tmp)
         e["face"] = f"assets/faces/e{j}.png"
     if e.get("item_raw"):
         tmp = J("assets", "cutouts", f"item_e{j}.png"); remove_bg(J(e["item_raw"]), tmp); im = Image.open(tmp).convert("RGBA")
         bb = Image.fromarray((np.array(im.split()[3]) > 40).astype("uint8") * 255).getbbox(); im = im.crop(bb) if bb else im
         im.thumbnail((600, 300)); im.save(tmp); e["item_cutout"] = f"assets/cutouts/item_e{j}.png"
-# ---- name-label placement: beside the largest face, on the side with more room (style.json text.name_label)
+# ---- name-label placement: beside the NAMED person's head (identity-matched to the entry portrait),
+#      vertically centred on the face, on the side where the text fits (style.json text.name_label)
 def frame_of(path):
     if path.endswith(".mp4"):
         r = subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "quiet", "-ss", "0.3", "-i", path, "-frames:v", "1", "-f", "image2pipe", "-vcodec", "png", "-"], capture_output=True)
         import io; return Image.open(io.BytesIO(r.stdout)).convert("RGB")
     return Image.open(path).convert("RGB")
-for s in SL["shots"]:
+label_report = []
+for i, s in enumerate(SL["shots"]):
     labs = [o for o in s.get("overlays", []) if o["kind"] == "name_label" and not o.get("manual")]
     if not labs or not s.get("src"): continue
-    im = frame_of(J(s["src"])); g = cv2.cvtColor(np.array(im), cv2.COLOR_RGB2GRAY)
-    f = casc.detectMultiScale(g, 1.08, 5, minSize=(60, 60))
+    im = frame_of(J(s["src"])); ff = FC.detect(im, min_size=40)
+    ref = REF_EMB.get(s.get("entry", -1)); pick, how = None, "none"
+    if ff and ref is not None:
+        sims = [(FC.same_person(FC.embed(im, f), ref), f) for f in ff]
+        best = max(sims, key=lambda t: t[0])
+        if best[0] >= FC.SAME: pick, how = best[1], f"identity {best[0]:.2f}"
+    e_ = SL["entries"][s["entry"]] if 0 <= s.get("entry", -1) < len(SL.get("entries", [])) else {}
+    if pick is None and e_.get("face_raw") and s["type"] in ("still", "footage") and not s.get("keep_media"):
+        # the named person is not identifiable in this shot -> use the entry portrait (a name intro must show the face)
+        out = J("assets", "media", f"s{i:03d}_portrait.jpg"); pim = ImageOps.exif_transpose(Image.open(J(e_["face_raw"]))).convert("RGB")
+        if pim.width / pim.height < 1.5:
+            bg = ImageOps.fit(pim, (1920, 1080)).filter(ImageFilter.GaussianBlur(40)).point(lambda v: int(v * 0.62))
+            fg = pim.resize((int(pim.width * 1080 / pim.height), 1080), Image.LANCZOS); bg.paste(fg, ((1920 - fg.width) // 2, 0)); bg.save(out, quality=92)
+        else: ImageOps.fit(pim, (1920, 1080), Image.LANCZOS).save(out, quality=92)
+        s["src"] = os.path.relpath(out, P); s["type"] = "still"; s.setdefault("motion", "push_in"); s["media_swapped"] = "entry portrait (named person not identifiable in the sourced shot)"
+        im = Image.open(out).convert("RGB"); ff = FC.detect(im, min_size=40)
+        if ff and ref is not None:
+            best = max(((FC.same_person(FC.embed(im, f), ref), f) for f in ff), key=lambda t: t[0])
+            pick, how = best[1], f"portrait swap, identity {best[0]:.2f}"
+        elif ff: pick, how = ff[0], "portrait swap"
+    if pick is None and ff: pick, how = ff[0], "largest face (identity not confirmed - check)"
     for o in labs:
-        if len(f):
-            x, y, w, h = max(f, key=lambda r: r[2] * r[3]); cx = (x + w / 2) / 19.2; cy = (y + h / 2) / 10.8
-            room_left, room_right = x / 19.2, 100 - (x + w) / 19.2
-            if room_left >= room_right: o["side"], o["x"] = "left", max(18, x / 19.2 - 2)
-            else: o["side"], o["x"] = "right", min(80, (x + w) / 19.2 + 2)
-            o["y"] = min(70, max(22, cy - 3))
+        lines = o["text"].split("\n"); size = o.get("size", NAME_PX)
+        tw = max(len(l) for l in lines) * 0.52 * size; th = len(lines) * 0.98 * size; gap = 0.35 * size
+        if pick:
+            x, y, w, h = pick["box"]; hl, hr = x - 0.3 * w, x + 1.3 * w        # head incl. hair/ears
+            # other people's heads (expanded boxes) the label should not cover
+            others = [(f["box"][0] - 0.3 * f["box"][2], f["box"][1] - 0.5 * f["box"][3], f["box"][0] + 1.3 * f["box"][2], f["box"][1] + 1.6 * f["box"][3]) for f in ff if f is not pick]
+            def area(a, b): return max(0, min(a[2], b[2]) - max(a[0], b[0])) * max(0, min(a[3], b[3]) - max(a[1], b[1]))
+            best = None
+            for sz in (size, size * 0.9, size * 0.8, size * 0.7):
+                tw = max(len(l) for l in lines) * 0.52 * sz; th = len(lines) * 0.98 * sz
+                for side in ("left", "right"):
+                    for dy in (0, -0.6, 0.6, -1.1, 1.1):              # beside the face, nudged up/down by face heights
+                        cyl = y + h * 0.5 + dy * h
+                        x0 = (hl - gap - tw) if side == "left" else (hr + gap); bx = (x0, cyl - th / 2, x0 + tw, cyl + th / 2)
+                        if bx[0] < 30 or bx[2] > 1890 or bx[1] < 30 or bx[3] > 1050: continue
+                        cost = sum(area(bx, ob) for ob in others) / (tw * th) + 0.15 * abs(dy) + 0.6 * (1 - sz / size)
+                        if best is None or cost < best[0]: best = (cost, side, x0, cyl, sz, th)
+                if best and best[0] < 0.05: break
+            if best is None: best = (9, "right", hr + gap, y + h / 2, size * 0.7, len(lines) * 0.98 * size * 0.7)
+            _, side, x0, cyl, sz, th = best
+            if sz != size: o["size"] = round(sz)
+            o["side"] = side; o["x"] = round(((x0 + max(len(l) for l in lines) * 0.52 * sz) if side == "left" else x0) / 19.2, 2)
+            o["y"] = round(cyl / 10.8, 2); o["overlap_cost"] = round(best[0], 3)
         else: o.setdefault("side", "left"); o.setdefault("x", 30); o.setdefault("y", 40)
+        label_report.append((i, o["text"].replace("\n", " "), how, o["side"], o["x"], o["y"]))
+for r in label_report: print("label s%03d %-22s %-45s %s x=%s y=%s" % r)
 # ---- music level
 m = SL["audio"].get("music")
 if m and m.get("src"):

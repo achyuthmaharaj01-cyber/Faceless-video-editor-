@@ -22,8 +22,8 @@
     #root .hdr { position: absolute; top: 674px; height: 86px; width: 320px; display: flex; align-items: center; justify-content: center;
       font: 700 66px "Arimo"; color: #000; }
     #root .col { position: absolute; top: 760px; height: 320px; width: 320px; border-left: 3px solid #000; box-sizing: border-box; }
-    #root .face { position: absolute; height: 81px; width: auto; filter: drop-shadow(0 0 0 #fff) drop-shadow(0 3px 3px rgba(0,0,0,.45)); }
-    #root .face.small { height: 72px; }
+    #root .face { position: absolute; height: 128px; transform-origin: 0 0; width: auto; filter: drop-shadow(0 0 0 #fff) drop-shadow(0 3px 3px rgba(0,0,0,.45)); }
+    #root .face.small { height: 104px; }
     #root .cursor { position: absolute; width: 34px; height: 50px; }
     #root .title { position: absolute; left: 960px; top: 590px; transform: translate(-50%, -50%); font: 400 70px "Arimo"; color: #fff;
       -webkit-text-stroke: 1.5px rgba(0,0,0,.75); paint-order: stroke fill; text-shadow: 0 2px 6px rgba(0,0,0,.6); white-space: nowrap; }
@@ -48,13 +48,13 @@
         const h = document.createElement("div"); h.className = "hdr"; h.style.left = i * 320 + "px"; h.style.background = COL[t]; h.textContent = t; layer.appendChild(h);
         const c = document.createElement("div"); c.className = "col"; c.style.left = i * 320 + "px"; if (i === 0) c.style.borderLeft = "none"; layer.appendChild(c);
       });
-      // slots inside a column: rows of 4, 78 px pitch
+      // slots inside a column: rows of 3, 104 px pitch (104 px heads; user override of the measured 72 px)
       const count = {}; TIERS.forEach(t => count[t] = 0);
-      const slot = (t) => { const k = count[t]++; return { x: TIERS.indexOf(t) * 320 + 14 + (k % 4) * 76, y: 772 + Math.floor(k / 4) * 80 }; };
+      const slot = (t) => { const k = count[t]++; return { x: TIERS.indexOf(t) * 320 + 8 + (k % 3) * 104, y: 766 + Math.floor(k / 3) * 104 }; };
       const mk = (src, x, y, cls) => { const im = document.createElement("img"); im.src = src; im.className = "face " + (cls || ""); im.style.left = x + "px"; im.style.top = y + "px"; layer.appendChild(im); return im; };
       ranked.forEach(r => { const p = slot(r.tier); mk(r.img, p.x, p.y, "small"); });
-      // pending faces on two road lanes (centres y 184 / 389), 125 px pitch, right-aligned like the reference
-      const lanePos = (i) => { const row = i % 2, k = Math.floor(i / 2); return { x: 1830 - k * 125, y: (row ? 397 : 184) - 40 }; };
+      // pending faces on two road lanes (centres y 184 / 397), 150 px pitch, right-aligned like the reference (128 px heads)
+      const lanePos = (i) => { const row = i % 2, k = Math.floor(i / 2); return { x: 1774 - k * 150, y: (row ? 397 : 184) - 64 }; };
       pending.forEach((src, i) => { const p = lanePos(i); mk(src, p.x, p.y); });
       const tl = gsap.timeline({ paused: true });
       if (V.title) { const t = document.createElement("div"); t.className = "title"; t.textContent = V.title; layer.appendChild(t); }
@@ -62,10 +62,15 @@
         const from = lanePos(drop.lane_index || pending.length), to = slot(drop.tier);
         const f = mk(drop.img, from.x, from.y);
         const cur = document.createElement("img"); cur.src = "assets/chart/cursor.png"; cur.className = "cursor"; layer.appendChild(cur);
-        const t0 = Math.max(0.05, dropAt - 0.45);
-        tl.fromTo(cur, { x: from.x + 120, y: from.y + 160 }, { x: from.x + 40, y: from.y + 46, duration: Math.max(0.05, t0 - 0.05), ease: "power1.out" }, 0);
-        tl.fromTo(f, { x: 0, y: 0, height: 81 }, { x: to.x - from.x, y: to.y - from.y, height: 72, duration: 0.45, ease: "power2.out" }, t0);
-        tl.fromTo(cur, { x: from.x + 40, y: from.y + 46 }, { x: to.x + 40, y: to.y + 46, duration: 0.45, ease: "power2.out", immediateRender: false }, t0);
+        // smooth drag: cursor glides to the face, picks it up (lift 1.08), carries it (0.7 s, power3.inOut),
+        // drops it 0.15 s before the spoken tier letter, face settles to the ranked size (96/112)
+        const land = Math.max(0.85, dropAt - 0.15), DR = 0.7, t0 = land - DR, ox = 58, oy = 66;
+        tl.fromTo(cur, { x: from.x + 260, y: from.y + 240 }, { x: from.x + ox, y: from.y + oy, duration: Math.max(0.1, t0 - 0.05), ease: "sine.inOut" }, 0);
+        tl.fromTo(f, { scale: 1 }, { scale: 1.08, duration: 0.12, ease: "power1.out" }, t0 - 0.06);
+        tl.fromTo(f, { x: 0, y: 0 }, { x: to.x - from.x, y: to.y - from.y, duration: DR, ease: "power3.inOut", immediateRender: false }, t0);
+        tl.fromTo(cur, { x: from.x + ox, y: from.y + oy }, { x: to.x + ox, y: to.y + oy, duration: DR, ease: "power3.inOut", immediateRender: false }, t0);
+        tl.fromTo(f, { scale: 1.08 }, { scale: 104 / 128, duration: 0.22, ease: "back.out(1.6)", immediateRender: false }, land - 0.04);
+        tl.fromTo(cur, { opacity: 1 }, { opacity: 0, duration: 0.25, ease: "power1.out", immediateRender: false }, land + 0.25);
       }
       window.__timelines[V.cid || "tier-chart"] = tl;
     })();

@@ -63,6 +63,10 @@ r3 = lambda x: f"{x:.3f}"
 
 els, tweens, audio, zc = [], [], [], [10]
 def z(): zc[0] += 1; return zc[0]
+def pop(id_, t, sub=False):
+    """smooth entrance: 0.18 s scale 0.92->1 + fade (subtitles: 0.1 s fade only). id_ is an inner .tl-pop element."""
+    if sub: tweens.append(f'tl.fromTo("#{id_}", {{opacity:0}}, {{opacity:1, duration:0.1, ease:"power1.out"}}, {r3(t)});')
+    else: tweens.append(f'tl.fromTo("#{id_}", {{opacity:0, scale:0.92}}, {{opacity:1, scale:1, duration:0.18, ease:"power2.out"}}, {r3(t)});')
 def clip_div(id_, start, dur, inner, cls="", style="", extra=""):
     els.append(f'<div id="{id_}" class="clip {cls}" data-start="{r3(start)}" data-duration="{r3(dur)}" data-track-index="{2 if cls.startswith("ov") else 1}" style="z-index:{z()};{style}" {extra}>{inner}</div>')
 
@@ -86,7 +90,7 @@ for i, s in enumerate(shots):
         clip_div(sid, st, du, inner, "tl-still-wrap")
         m = s.get("motion", "push_in"); a, b = (1.0, 1.11) if m == "push_in" else (1.11, 1.0) if m == "pull_out" else (1.0, 1.0)
         if a != b:
-            tweens.append(f'tl.fromTo("#{sid}-img", {{scale:{a}}}, {{scale:{b}, duration:{r3(du)}, ease:"none"}}, {r3(st)});')
+            tweens.append(f'tl.fromTo("#{sid}-img", {{scale:{a}}}, {{scale:{b}, duration:{r3(du)}, ease:"sine.inOut"}}, {r3(st)});')
         if s.get("vignette"): clip_div(f"{sid}-vig", st, du, "", "ov tl-vignette")
     elif t == "tier_chart":
         chart_i += 1; cid = f"chart-{chart_i:02d}"
@@ -136,23 +140,24 @@ for i, s in enumerate(shots):
             text = o["text"]; chars = "".join(f'<span class="ch">{esc(c) if c != chr(10) else "<br/>"}</span>' if c != "\n" else "<br/>" for c in text)
             side = o.get("side", "left"); x = o.get("x", 30 if side == "left" else 62); y = o.get("y", 40)
             anchor = "right:%dpx" % (W - x * 19.2) if side == "left" else "left:%dpx" % (x * 19.2)
-            clip_div(oid, os_, du, f'<div id="{oid}-t" class="tl-text tl-name {side}" style="{anchor};top:{y*10.8:.0f}px;transform:translateY(-50%)">{chars}</div>', "ov")
+            fs = o.get("size", STYLE["text"]["name_label"].get("font_px", 90)); nl = text.count(chr(10)) + 1
+            clip_div(oid, os_, du, f'<div id="{oid}-t" class="tl-text tl-name {side}" style="{anchor};top:{y*10.8 - nl*0.98*fs/2:.0f}px;font-size:{fs}px">{chars}</div>', "ov")
             n = len([c for c in text if c != "\n"])
-            tweens.append(f'tl.fromTo("#{oid}-t .ch", {{opacity:0}}, {{opacity:1, duration:0.001, stagger:{1/35:.4f}}}, {r3(os_)});')
-            tweens.append(f'tl.fromTo("#{oid}-t", {{x:0}}, {{x:{29*du:.1f}, duration:{r3(du)}, ease:"none"}}, {r3(os_)});')
+            tweens.append(f'tl.fromTo("#{oid}-t .ch", {{opacity:0}}, {{opacity:1, duration:0.08, ease:"power1.out", stagger:{1/35:.4f}}}, {r3(os_)});')
+            tweens.append(f'tl.fromTo("#{oid}-t", {{x:0}}, {{x:{(29 if side == "right" else -29)*du:.1f}, duration:{r3(du)}, ease:"sine.out"}}, {r3(os_)});')
         elif k == "spec":
             icon = f'<img src="{esc(o["icon"])}" alt=""/>' if o.get("icon") else ""
-            clip_div(oid, os_, du, f'<div class="tl-text tl-spec" style="left:{o.get("x",55)*19.2:.0f}px;top:{o.get("y",86)*10.8:.0f}px">{icon}<span>{esc(o["text"])}</span></div>', "ov")
+            clip_div(oid, os_, du, f'<div class="tl-text tl-spec" style="left:{o.get("x",55)*19.2:.0f}px;top:{o.get("y",86)*10.8:.0f}px"><span id="{oid}-p" class="tl-pop">{icon}<span>{esc(o["text"])}</span></span></div>', "ov"); pop(f"{oid}-p", os_)
         elif k == "subtitle":
             red = set(w.lower() for w in o.get("red", []))
             words = " ".join(f'<span class="red">{esc(w)}</span>' if w.lower().strip(".,!?") in red else esc(w) for w in o["text"].split())
-            clip_div(oid, os_, du, f'<div class="tl-text tl-sub {"story" if SL.get("format")=="story" else ""}" style="left:960px;top:{o.get("y",86)*10.8:.0f}px">{words}</div>', "ov")
+            clip_div(oid, os_, du, f'<div class="tl-text tl-sub {"story" if SL.get("format")=="story" else ""}" style="left:960px;top:{o.get("y",86)*10.8:.0f}px"><span id="{oid}-p" class="tl-pop">{words}</span></div>', "ov"); pop(f"{oid}-p", os_, sub=True)
         elif k == "aside":
-            clip_div(oid, os_, du, f'<div class="tl-text tl-aside" style="left:{o["x"]*19.2:.0f}px;top:{o["y"]*10.8:.0f}px;transform:translate(-50%,-50%) rotate({o.get("rotate",0)}deg)">{esc(o["text"])}</div>', "ov")
+            clip_div(oid, os_, du, f'<div class="tl-text tl-aside" style="left:{o["x"]*19.2:.0f}px;top:{o["y"]*10.8:.0f}px;transform:translate(-50%,-50%) rotate({o.get("rotate",0)}deg)"><span id="{oid}-p" class="tl-pop">{esc(o["text"])}</span></div>', "ov"); pop(f"{oid}-p", os_)
         elif k == "big":
-            clip_div(oid, os_, du, f'<div class="tl-text tl-big" style="left:{o["x"]*19.2:.0f}px;top:{o["y"]*10.8:.0f}px;transform:translate(-50%,-50%) rotate({o.get("rotate",0)}deg)">{esc(o["text"])}</div>', "ov")
+            clip_div(oid, os_, du, f'<div class="tl-text tl-big" style="left:{o["x"]*19.2:.0f}px;top:{o["y"]*10.8:.0f}px;transform:translate(-50%,-50%) rotate({o.get("rotate",0)}deg)"><span id="{oid}-p" class="tl-pop">{esc(o["text"])}</span></div>', "ov"); pop(f"{oid}-p", os_)
         elif k == "year":
-            clip_div(oid, os_, du, f'<div class="tl-text tl-year" style="left:960px;top:{o.get("y",8)*10.8:.0f}px">{esc(o["text"])}</div>', "ov")
+            clip_div(oid, os_, du, f'<div class="tl-text tl-year" style="left:960px;top:{o.get("y",8)*10.8:.0f}px"><span id="{oid}-p" class="tl-pop">{esc(o["text"])}</span></div>', "ov"); pop(f"{oid}-p", os_)
         elif k == "hand":
             ax, ay, tx, ty = o["arrow"]   # % coords: arrow tail (near text) -> tip
             col = o.get("color", "#ffe14d")
@@ -160,7 +165,7 @@ for i, s in enumerate(shots):
                    f'<path d="M{ax*19.2:.0f},{ay*10.8:.0f} Q{(ax+tx)/2*19.2+40:.0f},{(ay+ty)/2*10.8-30:.0f} {tx*19.2:.0f},{ty*10.8:.0f}" stroke="{col}" stroke-width="10" fill="none" stroke-linecap="round" marker-end="url(#{oid}-m)"/></svg>')
             clip_div(oid, os_, du, svg + f'<div class="tl-hand" style="position:absolute;left:{o["x"]*19.2:.0f}px;top:{o["y"]*10.8:.0f}px;transform:translate(-50%,-50%) rotate({o.get("rotate",-6)}deg);color:{col}">{esc(o["text"])}</div>', "ov")
         elif k == "title":
-            clip_div(oid, os_, du, f'<div class="tl-text tl-title" style="left:960px;top:{o.get("y",54)*10.8:.0f}px">{esc(o["text"])}</div>', "ov")
+            clip_div(oid, os_, du, f'<div class="tl-text tl-title" style="left:960px;top:{o.get("y",54)*10.8:.0f}px"><span id="{oid}-p" class="tl-pop">{esc(o["text"])}</span></div>', "ov"); pop(f"{oid}-p", os_)
         else:
             raise SystemExit(f"unknown overlay {k}")
 
@@ -172,7 +177,8 @@ for s in shots:
     elif b: runs.append([b, s["ps"], s["pe"]])
 for j, (b, st, en) in enumerate(runs):
     img = f'<img src="{esc(b["img"])}" alt=""/>' if b.get("img") else ""
-    clip_div(f"badge{j:02d}", st, en - st, f'<div class="tl-badge">{img}<div class="txt"><div class="price">{esc(b["price"])}</div><div class="model" data-layout-ignore>{esc(b.get("model",""))}</div></div></div>', "ov")
+    clip_div(f"badge{j:02d}", st, en - st, f'<div id="badge{j:02d}-p" class="tl-badge">{img}<div class="txt"><div class="price">{esc(b["price"])}</div><div class="model" data-layout-ignore>{esc(b.get("model",""))}</div></div></div>', "ov")
+    pop(f"badge{j:02d}-p", st)
     # reference hit rate on badge entrances = 0.49 -> every other badge (deterministic)
     if b.get("sfx", j % 2 == 0): audio.append(("sfx", st + 0.0, "tick"))
 
@@ -228,7 +234,7 @@ doc = f'''<!doctype html>
 </style>
 </head>
 <body>
-<div id="root" data-composition-id="main" data-start="0" data-duration="{r3(total)}" data-width="1920" data-height="1080">
+<div id="root" data-composition-id="main" data-fps="60" data-start="0" data-duration="{r3(total)}" data-width="1920" data-height="1080">
 {chr(10).join(els)}
 </div>
 <script>

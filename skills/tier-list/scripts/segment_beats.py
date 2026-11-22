@@ -77,7 +77,11 @@ def draw():
     return 1.5 * scale
 # ---- segment
 breaks_hard = set()
-for v in verdicts: breaks_hard.add(v["letter_i"]); breaks_hard.add(v["tier_i"] + 1)
+def chart_start(v):   # cut to the chart ~0.95 s before the tier letter so the drag is seen landing on it
+    k = v["letter_i"]
+    while k > 0 and W[v["letter_i"]]["s"] - W[k]["s"] < 0.95 and W[k - 1]["entry"] == W[v["letter_i"]]["entry"]: k -= 1
+    return k
+for v in verdicts: v["chart_i"] = chart_start(v); breaks_hard.add(v["chart_i"]); breaks_hard.add(v["tier_i"] + 1)
 for wi_, it in anchors: breaks_hard.add(wi_ + 1)
 for i in range(1, len(W)):
     if W[i]["entry"] != W[i - 1]["entry"]: breaks_hard.add(i)
@@ -128,7 +132,7 @@ MAP = {"verdict": ("tier_chart", "cut to chart, cursor drags face into the colum
        "place_or_brand": ("footage", "map with pin (place) or logo on black (brand)"),
        "subject": ("footage", "item b-roll; badge persists")}
 shots, seen_entry = [], set()
-vset = {v["letter_i"]: v for v in verdicts}; vtier = {v["tier_i"]: v for v in verdicts}
+vset = {v["chart_i"]: v for v in verdicts}; vtier = {v["tier_i"]: v for v in verdicts}
 for (i, j) in beats:
     text = " ".join(w["w"] for w in W[i:j]); ent_i = W[i]["entry"]; ent = entries[ent_i] if 0 <= ent_i < len(entries) else None
     hv = any(k in vset or k in vtier for k in range(i, j))

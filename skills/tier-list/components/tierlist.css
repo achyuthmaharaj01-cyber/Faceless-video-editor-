@@ -37,23 +37,23 @@
 .tl-text .red { color: var(--tl-red); }
 
 /* name label: 8.5% H, beside the head, typewriter (style.json text.name_label) */
-.tl-name { font-size: 104px; line-height: 0.98; }   /* QA-calibrated: OCR glyph height 7.2% H like the reference */
+.tl-name { font-size: 90px; line-height: 0.98; }   /* QA-calibrated: OCR glyph height 7.2% H like the reference */
 .tl-name.left { text-align: right; }   /* label sits left of the head -> right-aligned */
 .tl-name.right { text-align: left; }
 /* spec caption: icon + text, 6% H, centre (55%, 86%) */
-.tl-spec { font-size: 65px; display: flex; align-items: center; gap: 12px; transform: translate(-50%, -50%); }
-.tl-spec img { height: 76px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,.5)); }
+.tl-spec { font-size: 58px; display: flex; align-items: center; gap: 12px; transform: translate(-50%, -50%); }
+.tl-spec img { height: 68px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,.5)); }
 /* clip-audio subtitle: centre (50%, 86%) */
-.tl-sub { font-size: 92px; transform: translate(-50%, -50%); text-align: center; }
-.tl-sub.story { font-size: 65px; }
+.tl-sub { font-size: 80px; transform: translate(-50%, -50%); text-align: center; }
+.tl-sub.story { font-size: 58px; }
 /* aside label: free placement, may rotate, 6.5% H */
-.tl-aside { font-size: 70px; transform-origin: 50% 50%; }
+.tl-aside { font-size: 62px; transform-origin: 50% 50%; }
 /* year label: red, top centre, 6% H */
-.tl-year { font-size: 65px; color: var(--tl-red); transform: translate(-50%, -50%); }
+.tl-year { font-size: 58px; color: var(--tl-red); transform: translate(-50%, -50%); }
 /* big number on the subject, 9% H */
-.tl-big { font-size: 97px; transform-origin: 50% 50%; }
+.tl-big { font-size: 86px; transform-origin: 50% 50%; }
 /* title card over the chart grass band */
-.tl-title { font-size: 70px; transform: translate(-50%, -50%); }
+.tl-title { font-size: 62px; transform: translate(-50%, -50%); }
 /* handwritten annotation + arrow (yellow or white) */
 .tl-hand { font-family: "Kalam"; font-weight: 700; font-size: 84px; color: var(--tl-yellow); -webkit-text-stroke: 2px rgba(0,0,0,.6); }
 .tl-arrow { position: absolute; overflow: visible; }
@@ -90,3 +90,7 @@
 
 /* ---------- map pin ---------- */
 .tl-pin, .tl-still-wrap > img.tl-pin { position: absolute; width: 90px; height: 120px; transform: translate(-50%, -100%); object-fit: contain; }
+
+/* inner wrapper animated by GSAP for smooth pop-ins (the positioned parent keeps its CSS transform) */
+.tl-pop { display: inline-flex; align-items: center; gap: inherit; transform-origin: 50% 50%; }
+.tl-badge { transform-origin: 20% 50%; }

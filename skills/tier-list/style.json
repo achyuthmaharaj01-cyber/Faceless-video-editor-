@@ -228,7 +228,8 @@
     "median": -7,
     "q25": -382,
     "q75": 33
-   }
+   },
+   "font_px": 90
   },
   "spec_caption": {
    "pattern": "<number> <unit> | <short fact>, lowercase (\"620 horsepower\", \"no driver aids\", \"no power steering\")",
@@ -282,6 +283,28 @@
   "big_number": {
    "pattern": "\"805 horsepower\"/\"$1M\" large on the subject, rotated to match it",
    "size_pct_h": 9.0
+  },
+  "user_overrides": {
+   "reason": "user review of the first test render: text a bit smaller, name beside the subject's head, smoother animation, bigger chart heads",
+   "sizes_px_at_1080": {
+    "name_label": 90,
+    "subtitle": 80,
+    "subtitle_story": 58,
+    "spec": 58,
+    "aside": 62,
+    "big": 86,
+    "year": 58,
+    "title": 62
+   },
+   "measured_before_override": {
+    "name_label": 104,
+    "subtitle": 92,
+    "spec": 65,
+    "aside": 70,
+    "big": 97,
+    "year": 65,
+    "title": 70
+   }
   }
  },
  "graphics": {
@@ -339,6 +362,11 @@
    "animation": "a mouse cursor drags the face from its lane into the column over ~0.25 s (ease-out), face lands, chart holds ~0.8 s after the verdict word, hard cut out",
    "on_screen_s": {
     "median_estimated": 1.6
+   },
+   "face_px": {
+    "pending_on_road": 128,
+    "ranked_in_column": 104,
+    "note": "user override (measured 7.5% H = 81 px looked too small); head-only cutouts"
    }
   },
   "price_badge": {
@@ -584,5 +612,13 @@
    "cuts/min 27.4 (17% slower than video-3)"
   ],
   "consequence": "the horizontal chart + price badge are the video-3/4 era of the style (what the user chose). A rows-chart variant is not built yet."
+ },
+ "motion_overrides": {
+  "render_fps": 60,
+  "typewriter": "per-character fade 0.08 s, 35 chars/s",
+  "pop_in": "0.18 s, scale 0.92->1 + fade, power2.out (badge, captions, asides)",
+  "subtitle_in": "0.1 s fade",
+  "chart_drag": "0.7 s power3.inOut, face scales 1.08 while carried, lands 0.15 s before the tier letter",
+  "ken_burns": "sine.inOut instead of linear"
  }
 }

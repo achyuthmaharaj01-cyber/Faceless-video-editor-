@@ -22,6 +22,7 @@ which ffmpeg ffprobe tesseract || apt-get install -y ffmpeg tesseract-ocr
 python3 -m pip install -q faster-whisper demucs "opencv-python-headless<5" scenedetect pytesseract librosa soundfile pyloudnorm resemblyzer "setuptools<81" kokoro-onnx "rembg[cpu]"
 # OpenCV 5 dropped the Haar face detector used for face crops and label placement -> keep <5
 mkdir -p $PROJ && cd $PROJ && npm init -y >/dev/null && npm i hyperframes@0.9.80 && npx hyperframes telemetry disable
+# face detection/identity (scripts/faces.py) downloads OpenCV zoo YuNet + SFace from huggingface.co/opencv on first use
 # cutouts use rembg (isnet-general-use for items, u2net_human_seg for faces; models download from github.com
 # on first use). The Hyperframes remove-background model is person-only and erases cars - do not use it for items.
 ```
@@ -65,8 +66,11 @@ Open `shotlist.json`. For every shot apply `references/mapping_table.md` and fil
 - `pause_after` (s) after a punchline that should breathe (reference: 3.6/min, median 0.46 s).
 - Entries: add `face_query` (portrait of the person) and `item_query` (clean side/3-4 view of the item) to each entry.
   Group photo: `"face_pick": <index left-to-right>`; detector misses: `"face_box": [x,y,w,h]` in source pixels (look at it).
-- Name-label position is set automatically by prep_media (beside the largest detected face, on the roomier side);
-  add `"manual": true` to a label to keep your own x/y.
+- Name-label position is set automatically by prep_media: it finds the NAMED person in the shot by face identity
+  (YuNet + SFace, matched against the entry portrait), puts the label beside that head at face height, and picks the
+  side/nudge that covers no other heads (shrinks the text up to 30 % only if nothing fits). If the person cannot be
+  identified in the sourced shot, the shot is swapped to the entry portrait (`media_swapped` in the shot list - report
+  it). `"manual": true` on a label keeps your own x/y; `"keep_media": true` on a shot forbids the swap.
 - Badge only on shots whose picture shows the item (reference: 26 % of all shots); the draft puts it on every entry shot - remove it from people, places, documents.
 - Top-level `verdicts` comes from segment_beats; keep it in sync if you move a verdict.
 Never fabricate screenshots: an article/tweet card must reproduce a real, verified article/post (`headline_html`, outlet in `meta`) - otherwise use footage.
@@ -93,7 +97,7 @@ Fill the chart `img`/`pending` paths with `assets/faces/eN.png` (made by prep_me
 
 ### 5. Render, master, QA
 ```bash
-cd $PROJ && npx hyperframes render -o render.mp4
+cd $PROJ && npx hyperframes render --fps 60 -o render.mp4               # references are 60 fps; motion is visibly smoother
 python3 -I $SK/scripts/master.py render.mp4 final.mp4                      # -15 LUFS, -1 dBTP
 python3 -I $SK/scripts/qa_compare.py final.mp4 qa/ --format tier           # side-by-side metrics, exit 1 on hard fail
 python3 -I $SK/scripts/frame_compare.py final.mp4 qa/side_by_side.jpg      # visual check vs references/frames
@@ -114,11 +118,11 @@ short note listing: substituted/flagged visuals, every third-party clip, CC-BY c
 Pacing: tier 33 cuts/min, median 1.56 s, p10 0.83, p90 2.87; story 18.5/min, median 2.35. Cut on word boundaries.
 Hard cuts only (no whooshes on cuts). Long shots only for clip audio and the chart.
 Text: Arimo (Arial clone) regular, white, lowercase, 1.5 px dark outline + soft shadow, never a box.
-- name label 92 px (8.5 % H) beside the head, typewriter 35 chars/s + 29 px/s drift, appears on the spoken name (median -7 ms), leaves with the cut.
-- spec caption 65 px at (55 %, 86 %) with item icon; subtitles 92 px (story 65 px) centred at 86 %, 2-5 words, one red key word.
+- name label 90 px beside the named person's head (user-tuned from the measured 104 px), typewriter 35 chars/s with a 0.08 s fade per character + 29 px/s drift away from the head, appears on the spoken name (median -7 ms), leaves with the cut.
+- spec caption 58 px at (55 %, 86 %) with item icon; subtitles 80 px (story 58 px) centred at 86 %, 2-5 words, one red key word. Captions/asides/badge enter with a 0.18 s scale 0.92->1 + fade; subtitles with a 0.1 s fade.
 - price badge top-left x 44-467 px, y 42-165 px, navy, cyan->blue glowing 4 px edge, price 52 px bold, model 19 px; "~" for estimates; pops on the item's first shot, persists on every item shot.
-Tier chart: road band 0-668 px, GOD row 555-668, header 674-760 (S #f57e7e A #f8bc7f B #f7dc79 C #fefc79 D #c5fd7a F #91fc79), body #353535; cursor drags the face in, it lands ~0.2 s before the letter; chart holds ~0.8 s after "tier".
-Treatments: stills 1.00->1.11 linear (60 % push-in, 40 % pull-out); vertical/4:3 sources inset on a blurred darkened copy; dark vignette on clips with subtitles; light vignette on article cards; no colour grade.
+Tier chart: road band 0-668 px, GOD row 555-668, header 674-760 (S #f57e7e A #f8bc7f B #f7dc79 C #fefc79 D #c5fd7a F #91fc79), body #353535; head-only sticker cutouts 128 px on the road, 104 px ranked (3 per column row); the chart shot starts ~0.95 s before the tier letter; the cursor glides to the face, lifts it (1.08), carries it 0.7 s (power3.inOut) and drops it 0.15 s before the letter; chart holds ~0.8 s after "tier" plus a 0.55 s breath.
+Treatments: stills 1.00->1.11 (sine.inOut) (60 % push-in, 40 % pull-out); vertical/4:3 sources inset on a blurred darkened copy; dark vignette on clips with subtitles; light vignette on article cards; no colour grade.
 Audio: VO -15 LUFS; music bed constant at VO -10.3 LU, NO ducking; on every verdict the bed cuts to silence on the tier letter and returns with a hit 0.31 s into "tier"; clips play their own audio at VO -2 LU, hard-switched on the cut, ~10 s, with subtitles + whoosh in; SFX: tick on badge entrance (peak +30-60 ms), hit on verdict, whoosh into clips; nothing on plain cuts; master -15 LUFS / -1 dBTP.
 
 ## Components
