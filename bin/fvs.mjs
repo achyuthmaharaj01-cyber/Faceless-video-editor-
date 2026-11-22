@@ -120,6 +120,21 @@ const COMMANDS = {
     const sName = script.mimeType === 'application/vnd.google-apps.document' ? `${script.name}.txt` : script.name;
     out({ script: await d.download(script, path.join(dir, sName)), voice: await d.download(voice, path.join(dir, voice.name)) });
   },
+  async 'drive-upload'({ pos, opt }) {
+    // upload one file (any size, resumable) into YouTube Production/<folder> (default: Completed Videos)
+    const d = await import('../backend/integrations/drive.mjs');
+    const file = path.resolve(need(pos[0], 'file'));
+    if (!fs.existsSync(file)) throw new Error(`file not found: ${file}`);
+    const tree = await d.ensureTree(opt.root);
+    let parent = tree[opt.folder || 'Completed Videos'];
+    if (!parent) throw new Error(`--folder must be one of: ${d.TREE.join(', ')}`);
+    if (opt.sub) parent = await d.ensureFolder(opt.sub, parent);
+    const ext = path.extname(file).toLowerCase();
+    const mime = { '.mp4': 'video/mp4', '.mov': 'video/quicktime', '.wav': 'audio/wav', '.mp3': 'audio/mpeg', '.csv': 'text/csv', '.md': 'text/markdown', '.txt': 'text/plain', '.zip': 'application/zip' }[ext] || 'application/octet-stream';
+    const mb = (fs.statSync(file).size / 1048576).toFixed(1);
+    console.error(`uploading ${path.basename(file)} (${mb} MB)…`);
+    out({ uploaded: path.basename(file), sizeMB: +mb, ...(await d.upload(file, parent, { mimeType: mime })) });
+  },
   async 'drive-push'({ pos, opt }) {
     // upload deliverables/ (final video, QC report, register, credits) to Completed Videos/<title>/
     const d = await import('../backend/integrations/drive.mjs');
@@ -161,7 +176,8 @@ const COMMANDS = {
   status <project>                         stages, approval, renders, history
   drive-auth                               one-time Google OAuth consent (laptop / backend; see docs/google-drive.md)
   drive-pull [dir]                         download the newest script + voiceover from YouTube Production/Input
-  drive-push <project>                     upload deliverables/ to YouTube Production/Completed Videos/<title>`);
+  drive-push <project>                     upload deliverables/ to YouTube Production/Completed Videos/<title>
+  drive-upload <file> [--folder F] [--sub S]  upload one file of any size (default folder: Completed Videos)`);
   },
 };
 
