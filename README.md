@@ -22,7 +22,7 @@ script + voiceover ─► fvs new ─► fvs analyse (word-level alignment) ─�
 | HyperFrames → VideoHub adapter | ✅ built and verified in the real VideoHub UI; preview frames pixel-identical to HyperFrames' capture |
 | Pipeline (ingest, alignment, storyboard, assets, build, mix, QC, versions, approval gate) | ✅ tested end to end up to approval on a sample film |
 | Reference analysis (8 videos, 3,074 shots) + style library | ✅ `references/reference-analysis/` |
-| Final render of the sample | ⏳ waits for your approval |
+| Final render of the sample | ✅ approved, rendered by HyperFrames (116 s for 44 s), final QC 0 failures |
 | Drive API for large files, Pexels/Pixabay | implemented, untested (need your OAuth client / free keys) |
 | Cloud render backend (GCP/AWS) | designed, not deployed (needs your account + approval) |
 

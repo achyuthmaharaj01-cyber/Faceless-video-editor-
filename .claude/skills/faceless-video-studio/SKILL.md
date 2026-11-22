@@ -64,6 +64,17 @@ asked to approve the storyboard first.
 
 ## 4. Assets (licensed, verified, registered)
 
+**Research first (Agent-Reach, if installed — `agent-reach channels`):** find *specific* sources for the
+script's subjects (the actual ship, person, building, event), not generic stock:
+```bash
+agent-reach web search "<subject> photograph public domain"     # finds archive/Commons/agency pages
+agent-reach read "<url>"                                         # reads a page (licence section, captions, facts)
+```
+Agent-Reach only finds and reads pages; it does not prove a licence. A file is used only when its licence is
+verified from the source itself (`fvs asset-search` sources, or the file's own licence page) and recorded in the
+register. Never download video from YouTube or other platforms (Agent-Reach's YouTube channel is for metadata and
+subtitles only, e.g. checking facts).
+
 For scenes that need media, find candidates and **look at them** before choosing:
 ```bash
 fvs asset-search --query "<specific subject>" --sheet <scratch>/c.jpg --save <scratch>/c.json --brief
@@ -116,7 +127,9 @@ fvs approve <project> --by "<user, how/where they approved>"
 fvs render <project>           # HyperFrames, 1080p30 H.264/AAC; refuses without a matching approval
 fvs qc <project>               # writes reports/quality-control-report.md
 ```
-Never record an approval the user did not give. A render the user starts with VideoHub's Render button also runs
+Never record an approval the user did not give. Before the final render, fact-check the on-screen names,
+dates and figures with `agent-reach web search` / `read` and tell the user about any claim in their script that
+sources contradict (do not change the narration yourself). A render the user starts with VideoHub's Render button also runs
 HyperFrames (`render.mjs`). If QC fails, fix, show the change in VideoHub, and get approval again (the approval is
 tied to the exact composition). Report QC honestly: failed / warnings / manual review.
 

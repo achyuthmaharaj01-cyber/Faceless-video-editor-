@@ -25,8 +25,10 @@ Kokoro TTS (test material only; real productions use your voiceover).
 | 10. Feedback | ✅ (simulated note) drawn box at frame 300 via the VideoHub UI → `hub_notes` → `fvs notes` mapped it to scene sc04, restored the note picture from a real frame |
 | 11. Revision + refresh | ✅ storyboard change → rebuild (previous version kept in `versions/`) → VideoHub reloaded in place at the same frame → verified visually → `hub_note_update` fixed |
 | 12. Pre-render QC | ✅ 0 failed; it caught (and the pipeline fixed) overlapping text and an unsupported on-screen figure ("−97%") |
-| 13. Approval | ⛔ **not done**: approval must come from you; the session's safety check (correctly) refused to record one on your behalf |
-| 14. Final render + final QC + delivery | ⛔ **pending your approval** of this sample (or of your first real video). The render path itself was exercised on a 6 s test film through VideoHub's Render button → HyperFrames → 1080p30 H.264/AAC; QC signal checks on that file: 180 frames, no black/frozen frames, audio sync 0.9 ms (corr. 0.998) |
+| 13. Approval | ✅ given by the user in chat on 2026-11-22 ("proceed to do the test film"), recorded with the composition hash `241382fa` |
+| 14. Final render | ✅ HyperFrames, 1920×1080, 30 fps, H.264 High/AAC 48 kHz, 1,333 frames, 32.8 MB — **116 s wall time for 44.4 s** (≈ 11.5 frames/s, 3 workers, 4 vCPU, no GPU) |
+| 15. Final QC on the rendered file | ✅ **0 failed**, 32 passed: duration within 23 ms of the voiceover, no black/frozen frames, true peak −1.1 dBTP, audio sync **0 ms** (correlation 1.0) vs the approved mix, render hash = approved hash, layout clean at 24 moments, licences complete. Warnings: −18.7 LUFS (no limiter without approval), six 1024 px images, placeholder music |
+| 16. Delivery | ✅ `fvs deliver` packaged MP4 + QC report + credits + licence register + storyboard; text files uploaded to Drive `Completed Videos/The Box That Changed the World (pipeline test)/`; the MP4 (32.8 MB) was sent in chat because the Drive connector caps uploads at ~4 MB — full-size Drive upload needs the Drive API OAuth setup |
 
 Mistake noted: during the first run the note was marked fixed before the fix was verified; it was verified
 immediately after, and SKILL.md now requires verification before `hub_note_update`.
@@ -37,7 +39,8 @@ contain corrupted H.264 data (reported in the index). Windows paths from the bri
 attached to the cloud session).
 
 ## Not tested (needs your accounts or approval)
-- Drive API module (`drive-auth/pull/push`) — needs your OAuth client.
+- Drive API module (`drive-auth/pull/push`) — needs your OAuth client (docs/google-drive.md).
+- Agent-Reach web search + page reading: ✅ tested (Exa, Jina); Wikimedia blocked from the cloud IP.
 - Pexels / Pixabay search — needs free API keys.
 - VideoHub on Windows with its MCP tools registered in Claude Code — tested here through its CLI and UI on Linux.
 - GCP/AWS distributed rendering — not deployed.

@@ -25,12 +25,23 @@ node bin/fvs.mjs doctor
 
 The repository includes the skill. The `faceless-video-editor` cloud environment allows the hosts the pipeline
 needs (Whisper weights on Hugging Face, Openverse/NASA/Pexels/Pixabay/Wikimedia/Flickr/rawpixel media, jsDelivr).
-A fresh container needs, once per session (or as the environment's setup script):
+The environment's **setup script** (saved 2026-11-22) installs everything on every fresh container: `npm install`,
+`pip install -r requirements.txt`, and Agent-Reach pinned to the reviewed commit `c70ae6d` (via `uv`).
+
+## Agent-Reach (research)
+
+github.com/Panniantong/Agent-Reach gives Claude web search (Exa) and page reading (Jina Reader), plus GitHub,
+YouTube metadata/subtitles and more, as one read-only CLI with JSON output. Install (laptop or cloud):
 
 ```bash
-npm install
-pip install -r requirements.txt
+uv tool install "git+https://github.com/Panniantong/Agent-Reach@c70ae6da5d39bc90e09ad2ae0575ccc89f31e284"
+agent-reach setup
 ```
+Notes: install from GitHub only (the PyPI package of the same name is a different project); `setup` links its skill
+into `~/.claude/skills`; it never posts and never logs in for you. On a personal computer it may copy a site's login
+from your Chrome when a login-walled platform is used, so prefer a secondary account for such platforms. In the
+cloud environment the hosts `mcp.exa.ai` and `r.jina.ai` are allowed for it; Wikimedia rate-limits the cloud IP
+(HTTP 429), so Wikimedia sourcing works from the laptop.
 
 ## Configuration (`.env`, never committed)
 
