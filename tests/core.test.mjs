@@ -131,3 +131,15 @@ test('Google OAuth client: from env, or from the downloaded Desktop-app JSON; we
     assert.throws(() => client(), /no Google OAuth client found/);
   } finally { for (const k of Object.keys(process.env)) if (!(k in keep)) delete process.env[k]; Object.assign(process.env, keep); }
 });
+
+test('a saved Google login with older, narrower scopes is refused with a clear message', async () => {
+  const home = tmp(); const keep = { ...process.env };
+  try {
+    process.env.XDG_CONFIG_HOME = home; process.env.GOOGLE_OAUTH_CLIENT_ID = 'id'; process.env.GOOGLE_OAUTH_CLIENT_SECRET = 's';
+    delete process.env.FVS_GOOGLE_REFRESH_TOKEN;
+    fs.mkdirSync(path.join(home, 'faceless-video-studio'), { recursive: true });
+    fs.writeFileSync(path.join(home, 'faceless-video-studio', 'google-token.json'), JSON.stringify({ refresh_token: 'r', scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.readonly' }));
+    const m = await import(`../backend/integrations/drive.mjs?scopetest=${Date.now()}`);
+    await assert.rejects(m.findFolder('x'), /run `fvs drive-auth` again/);
+  } finally { for (const k of Object.keys(process.env)) if (!(k in keep)) delete process.env[k]; Object.assign(process.env, keep); }
+});

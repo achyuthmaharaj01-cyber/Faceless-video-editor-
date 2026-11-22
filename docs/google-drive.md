@@ -38,8 +38,8 @@ A Drive *folder link* never grants API access by itself.
    `.env` and `client_secret*.json` are listed in `.gitignore`. Delete the copy in Downloads afterwards.
 4. On the laptop: `node bin/fvs.mjs drive-auth` → approve in the browser. The refresh token is stored in
    `~/.config/faceless-video-studio/google-token.json` (mode 600), outside the repository.
-5. Scopes: `drive.readonly` (read your inputs) + `drive.file` (create/upload its own files). Revoke any time at
-   myaccount.google.com/permissions.
+5. Scope: `drive` (read your inputs and upload into your existing `YouTube Production` folders — the narrower
+   `drive.file` cannot write into folders another app created). Revoke any time at myaccount.google.com/permissions.
 
 For a cloud backend, store the refresh token in its secret manager and expose it as `FVS_GOOGLE_REFRESH_TOKEN`.
 

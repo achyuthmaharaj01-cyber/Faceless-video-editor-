@@ -11,7 +11,9 @@ import path from 'node:path';
 import http from 'node:http';
 import crypto from 'node:crypto';
 
-const SCOPES = ['https://www.googleapis.com/auth/drive.readonly', 'https://www.googleapis.com/auth/drive.file'];
+// Full Drive scope: drive.file only allows writing into folders this app created, but the YouTube Production
+// folders may be created by the user or by Claude's Drive connector, so uploads there need the drive scope.
+export const SCOPES = ['https://www.googleapis.com/auth/drive'];
 const CFG_DIR = path.join(process.env.XDG_CONFIG_HOME || path.join(os.homedir(), '.config'), 'faceless-video-studio');
 const TOKEN_FILE = path.join(CFG_DIR, 'google-token.json');
 export const TREE = ['Input', 'Projects', 'Completed Videos', 'Project Files', 'Production Reports', 'Reference Library'];
@@ -68,8 +70,11 @@ let cached = null;
 async function accessToken() {
   if (cached && cached.exp > Date.now() + 60000) return cached.token;
   const { id, secret } = client();
-  const refresh = process.env.FVS_GOOGLE_REFRESH_TOKEN || (fs.existsSync(TOKEN_FILE) && JSON.parse(fs.readFileSync(TOKEN_FILE, 'utf8')).refresh_token);
+  const saved = fs.existsSync(TOKEN_FILE) ? JSON.parse(fs.readFileSync(TOKEN_FILE, 'utf8')) : null;
+  const refresh = process.env.FVS_GOOGLE_REFRESH_TOKEN || saved?.refresh_token;
   if (!refresh) throw new Error('not authorised: run `fvs drive-auth` once on a computer with a browser');
+  if (!process.env.FVS_GOOGLE_REFRESH_TOKEN && saved && !SCOPES.every(sc => String(saved.scope || '').split(' ').includes(sc)))
+    throw new Error('the saved Google login has older, narrower permissions (uploads into your existing folders would fail): run `fvs drive-auth` again');
   const r = await fetch('https://oauth2.googleapis.com/token', { method: 'POST', body: new URLSearchParams({ client_id: id, client_secret: secret, refresh_token: refresh, grant_type: 'refresh_token' }) });
   const t = await r.json();
   if (!t.access_token) throw new Error('token refresh failed: ' + (t.error_description || t.error));
