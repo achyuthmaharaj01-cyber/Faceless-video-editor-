@@ -23,7 +23,8 @@ script + voiceover ─► fvs new ─► fvs analyse (word-level alignment) ─�
 | Pipeline (ingest, alignment, storyboard, assets, build, mix, QC, versions, approval gate) | ✅ tested end to end up to approval on a sample film |
 | Reference analysis (8 videos, 3,074 shots) + style library | ✅ `references/reference-analysis/` |
 | Final render of the sample | ✅ approved, rendered by HyperFrames (116 s for 44 s), final QC 0 failures |
-| Drive API for large files, Pexels/Pixabay | implemented, untested (need your OAuth client / free keys) |
+| Drive API for large files | ✅ tested on the Windows laptop (login, input lookup, 32.8 MB upload byte-exact) |
+| Pexels/Pixabay | implemented, untested (needs free keys) |
 | Cloud render backend (GCP/AWS) | designed, not deployed (needs your account + approval) |
 
 Details: [docs/test-report.md](docs/test-report.md).

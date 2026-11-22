@@ -39,9 +39,14 @@ contain corrupted H.264 data (reported in the index). Windows paths from the bri
 attached to the cloud session).
 
 ## Not tested (needs your accounts or approval)
-- Drive API module (`drive-auth/pull/push`) — needs your OAuth client (docs/google-drive.md).
 - Agent-Reach web search + page reading: ✅ tested (Exa, Jina); Wikimedia blocked from the cloud IP.
 - Pexels / Pixabay search — needs free API keys.
 - VideoHub on Windows with its MCP tools registered in Claude Code — tested here through its CLI and UI on Linux.
 - GCP/AWS distributed rendering — not deployed.
 - Laptop performance — measure with `npx hyperframes benchmark` on the i5-1335U.
+
+## Google Drive API (2026-11-22, user's Windows laptop)
+- `drive-auth`: consent completed after the loopback fix (`e32ae11`); token stored in `%USERPROFILE%\.config\faceless-video-studio\`.
+- `drive-pull`: found the existing `YouTube Production/Input` folder (no duplicates created) and listed it.
+- `drive-upload`: the 32,820,155-byte test film uploaded in resumable 8 MiB chunks into the existing
+  `Completed Videos/The Box That Changed the World (pipeline test)/` folder; size confirmed byte-exact from Drive's metadata.

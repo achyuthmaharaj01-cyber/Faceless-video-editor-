@@ -17,7 +17,7 @@ YouTube Production/
 | Path | What works | Limit |
 |---|---|---|
 | **Claude Drive connector** (in Claude, incl. the phone app) | search, metadata, folders, reading Google Docs / small files, small uploads | **~4.2 MB per call** (≈ 3.1 MB of file) — a finished video cannot go through it |
-| **Drive API with your own OAuth** (`backend/integrations/drive.mjs`, `fvs drive-pull` / `drive-push`) | any size: resumable 8 MiB-chunk uploads and streaming downloads | needs a one-time OAuth setup; implemented, **not yet run** against your account |
+| **Drive API with your own OAuth** (`backend/integrations/drive.mjs`, `fvs drive-pull` / `drive-push`) | any size: resumable 8 MiB-chunk uploads and streaming downloads | needs a one-time OAuth setup; tested on the Windows laptop (2026-11-22) |
 
 A Drive *folder link* never grants API access by itself.
 
@@ -47,5 +47,6 @@ For a cloud backend, store the refresh token in its secret manager and expose it
 
 - Inputs: `fvs drive-pull <dir>` (newest script + voiceover in `Input/`; Google Docs are exported as text), or
   in a Claude session the connector for the script plus the voiceover if it is under ~3 MB.
-- Delivery: `fvs deliver <project>` then `fvs drive-push <project>` → `Completed Videos/<title>/`.
+- Delivery: `fvs deliver <project>` then `fvs drive-push <project>` → `Completed Videos/<title>/`; a single file:
+  `fvs drive-upload <file> [--folder "Completed Videos"] [--sub "<title>"]`.
 - Intermediate files are not uploaded unless you ask.
