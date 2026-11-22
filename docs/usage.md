@@ -1,5 +1,17 @@
 # Using the skill
 
+## Every new video = a new Claude Code session
+
+1. Put the script + voiceover in Drive `YouTube Production/Input/` (or have them on the laptop).
+2. Laptop: open Claude Code in the studio folder (`C:\Users\achyu\Faceless-video-editor-`), or anywhere after
+   `node bin/fvs.mjs install-skill`. Phone: start a Claude Code session on the repository.
+3. Say: *"New video: <title>. Use the faceless-video-studio skill with the files in my Drive Input folder"*
+   (or give the file paths). Claude follows `.claude/skills/faceless-video-studio/SKILL.md` step by step.
+4. Review in VideoHub (laptop) or in the chat (phone), approve in your own words, receive the video in
+   `Completed Videos/<title>/`.
+5. To continue an unfinished project in a later session: *"Continue the <title> video"* — Claude runs
+   `fvs status <project>` and resumes where it stopped.
+
 ## From the phone (Claude app → Claude Code → this repository)
 
 1. Put the script (.docx/.txt/.md) and voiceover (.mp3/.wav/.m4a) in Drive `YouTube Production/Input/`.

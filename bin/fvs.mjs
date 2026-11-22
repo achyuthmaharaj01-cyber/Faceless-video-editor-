@@ -109,6 +109,20 @@ const COMMANDS = {
   },
   async qc({ pos, opt }) { const m = await import('../lib/qc/qc.mjs'); const r = await m.qualityControl(need(pos[0], 'project'), { video: opt.video }); out(r.summary); process.exitCode = r.failed ? 1 : 0; },
   async deliver({ pos, opt }) { const m = await import('../lib/deliver.mjs'); out(await m.deliver(need(pos[0], 'project'), { to: opt.to })); },
+  async 'install-skill'({ opt }) {
+    // copy this repo's skill into the user's Claude skills folder so every new session (in any folder) has it;
+    // the copy records where the studio is. Re-run after updating the studio.
+    const os = await import('node:os');
+    const studio = path.resolve(HERE, '..');
+    const src = path.join(studio, '.claude', 'skills', 'faceless-video-studio', 'SKILL.md');
+    const dir = path.join(opt.home || os.homedir(), '.claude', 'skills', 'faceless-video-studio');
+    const dst = path.join(dir, 'SKILL.md');
+    const MARK = '<!-- installed by fvs install-skill -->';
+    if (fs.existsSync(dst) && !fs.readFileSync(dst, 'utf8').includes(MARK)) throw new Error(`${dst} exists and was not installed by fvs; move it away first`);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(dst, fs.readFileSync(src, 'utf8').trimEnd() + `\n\n## Studio folder\n\n${MARK}\nThe studio is installed at: \`${studio}\`\n(\`fvs\` = \`node "${path.join(studio, 'bin', 'fvs.mjs')}"\`)\n`);
+    out({ installed: dst, studio, note: 'Start a new Claude Code session to load it. Re-run after `git pull` to refresh it.' });
+  },
   async 'drive-auth'() { const d = await import('../backend/integrations/drive.mjs'); out(await d.authorize()); },
   async 'drive-pull'({ pos, opt }) {
     // newest script + voiceover from YouTube Production/Input → a local folder (then `fvs new` with them)
@@ -177,7 +191,8 @@ const COMMANDS = {
   drive-auth                               one-time Google OAuth consent (laptop / backend; see docs/google-drive.md)
   drive-pull [dir]                         download the newest script + voiceover from YouTube Production/Input
   drive-push <project>                     upload deliverables/ to YouTube Production/Completed Videos/<title>
-  drive-upload <file> [--folder F] [--sub S]  upload one file of any size (default folder: Completed Videos)`);
+  drive-upload <file> [--folder F] [--sub S]  upload one file of any size (default folder: Completed Videos)
+  install-skill                            install the skill for Claude Code sessions in any folder`);
   },
 };
 

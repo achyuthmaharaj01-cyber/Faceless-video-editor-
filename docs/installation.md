@@ -15,8 +15,9 @@ node bin/fvs.mjs doctor
 ```
 - Install VideoHub (docs/videohub-integration.md) and set `FVS_WORKSPACE` to its films folder and `VIDEOHUB_DIR`
   to its install folder in `.env`.
-- Make the skill available everywhere: copy or link `.claude/skills/faceless-video-studio` into
-  `%USERPROFILE%\.claude\skills\` and set `FVS_HOME` to this folder (inside the repository it is found automatically).
+- The skill is found automatically when Claude Code is opened in this folder. To have it in sessions opened
+  anywhere: `node bin/fvs.mjs install-skill` (writes `%USERPROFILE%\.claude\skills\faceless-video-studio\SKILL.md`
+  with this folder's path; re-run after every `git pull`).
 - The first `fvs analyse` downloads the Whisper model (`small.en`, ≈ 500 MB) once.
 - Render settings for this laptop: `FVS_RENDER_WORKERS=2`; add `--low-memory` to `fvs render` if Chrome runs out of
   memory. Close other browsers during renders.
