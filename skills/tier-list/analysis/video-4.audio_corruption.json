@@ -1,0 +1,15 @@
+{
+ "source": "video-4.mp4",
+ "bad_packets": 9416,
+ "corrupt_seconds": 218.64,
+ "regions": [
+  [
+   577.759,
+   691.676
+  ],
+  [
+   1222.438,
+   1327.16
+  ]
+ ]
+}

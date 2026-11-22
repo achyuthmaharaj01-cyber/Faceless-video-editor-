@@ -1,0 +1,74 @@
+<!-- tier-list style: TIER CHART scene (style.json graphics.tier_chart). Mount once per verdict:
+  <div id="chart-03" data-composition-id="chart-03" data-composition-src="compositions/tier-chart.html"
+       data-start="61.2" data-duration="1.6" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"
+       data-variable-values='{"title":"","ranked":"[{\"img\":\"assets/faces/a.png\",\"tier\":\"F\"}]","pending":"[\"assets/faces/b.png\"]","drop":"{\"img\":\"assets/faces/c.png\",\"tier\":\"D\",\"lane_index\":3}","drop_at":"0.55"}'></div>
+  Geometry at 1920x1080 (from 1280x720 measurement x1.5): road band 0-668, GOD row 555-668, header 674-760, body 760-1080. -->
+<html data-composition-variables='[
+  {"id":"title","type":"string","label":"Title over the grass band (hook only)","default":""},
+  {"id":"ranked","type":"string","label":"JSON [{img,tier}] already placed","default":"[]"},
+  {"id":"pending","type":"string","label":"JSON [img] still on the road","default":"[]"},
+  {"id":"drop","type":"string","label":"JSON {img,tier,lane_index} placed in this scene, or empty","default":""},
+  {"id":"drop_at","type":"string","label":"seconds (scene-local) when the face lands = tier letter word","default":"0.5"},
+  {"id":"cid","type":"string","label":"composition id (must equal the host id)","default":"tier-chart"}
+]'>
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; background: #353535; }
+    #root .road { position: absolute; left: 0; top: 0; width: 1920px; height: 668px; object-fit: cover; }
+    #root .god-w { position: absolute; left: 0; top: 555px; width: 209px; height: 113px; background: #f9fafd; display: flex; align-items: center; justify-content: center;
+      font: 700 78px "Arimo"; color: #000; }
+    #root .god-d { position: absolute; left: 209px; top: 555px; width: 110px; height: 113px; background: #353535; }
+    #root .rule { position: absolute; left: 0; top: 668px; width: 1920px; height: 6px; background: #000; }
+    #root .hdr { position: absolute; top: 674px; height: 86px; width: 320px; display: flex; align-items: center; justify-content: center;
+      font: 700 66px "Arimo"; color: #000; }
+    #root .col { position: absolute; top: 760px; height: 320px; width: 320px; border-left: 3px solid #000; box-sizing: border-box; }
+    #root .face { position: absolute; height: 81px; width: auto; filter: drop-shadow(0 0 0 #fff) drop-shadow(0 3px 3px rgba(0,0,0,.45)); }
+    #root .face.small { height: 72px; }
+    #root .cursor { position: absolute; width: 34px; height: 50px; }
+    #root .title { position: absolute; left: 960px; top: 590px; transform: translate(-50%, -50%); font: 400 70px "Arimo"; color: #fff;
+      -webkit-text-stroke: 1.5px rgba(0,0,0,.75); paint-order: stroke fill; text-shadow: 0 2px 6px rgba(0,0,0,.6); white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="tier-chart" data-width="1920" data-height="1080">
+    <img class="road" src="assets/chart/road.png" alt="" />
+    <div class="god-w">GOD</div><div class="god-d"></div>
+    <div class="rule"></div>
+    <div id="tc-layer"></div>
+  </div>
+  <script>
+    (function () {
+      const V = window.__hyperframes.getVariables();
+      const root = document.querySelector('[data-composition-id="' + (V.cid || "tier-chart") + '"]') || document.getElementById("root");
+      const layer = root.querySelector("#tc-layer");
+      const TIERS = ["S", "A", "B", "C", "D", "F"];
+      const COL = { S: "#f57e7e", A: "#f8bc7f", B: "#f7dc79", C: "#fefc79", D: "#c5fd7a", F: "#91fc79" };
+      const parse = (s, d) => { try { return s ? JSON.parse(s) : d; } catch (e) { return d; } };
+      const ranked = parse(V.ranked, []), pending = parse(V.pending, []), drop = parse(V.drop, null);
+      const dropAt = parseFloat(V.drop_at || "0.5");
+      TIERS.forEach((t, i) => {
+        const h = document.createElement("div"); h.className = "hdr"; h.style.left = i * 320 + "px"; h.style.background = COL[t]; h.textContent = t; layer.appendChild(h);
+        const c = document.createElement("div"); c.className = "col"; c.style.left = i * 320 + "px"; if (i === 0) c.style.borderLeft = "none"; layer.appendChild(c);
+      });
+      // slots inside a column: rows of 4, 78 px pitch
+      const count = {}; TIERS.forEach(t => count[t] = 0);
+      const slot = (t) => { const k = count[t]++; return { x: TIERS.indexOf(t) * 320 + 14 + (k % 4) * 76, y: 772 + Math.floor(k / 4) * 80 }; };
+      const mk = (src, x, y, cls) => { const im = document.createElement("img"); im.src = src; im.className = "face " + (cls || ""); im.style.left = x + "px"; im.style.top = y + "px"; layer.appendChild(im); return im; };
+      ranked.forEach(r => { const p = slot(r.tier); mk(r.img, p.x, p.y, "small"); });
+      // pending faces on two road lanes (centres y 184 / 389), 125 px pitch, right-aligned like the reference
+      const lanePos = (i) => { const row = i % 2, k = Math.floor(i / 2); return { x: 1830 - k * 125, y: (row ? 397 : 184) - 40 }; };
+      pending.forEach((src, i) => { const p = lanePos(i); mk(src, p.x, p.y); });
+      const tl = gsap.timeline({ paused: true });
+      if (V.title) { const t = document.createElement("div"); t.className = "title"; t.textContent = V.title; layer.appendChild(t); }
+      if (drop && drop.img) {
+        const from = lanePos(drop.lane_index || pending.length), to = slot(drop.tier);
+        const f = mk(drop.img, from.x, from.y);
+        const cur = document.createElement("img"); cur.src = "assets/chart/cursor.png"; cur.className = "cursor"; layer.appendChild(cur);
+        const t0 = Math.max(0.05, dropAt - 0.45);
+        tl.fromTo(cur, { x: from.x + 120, y: from.y + 160 }, { x: from.x + 40, y: from.y + 46, duration: Math.max(0.05, t0 - 0.05), ease: "power1.out" }, 0);
+        tl.fromTo(f, { x: 0, y: 0, height: 81 }, { x: to.x - from.x, y: to.y - from.y, height: 72, duration: 0.45, ease: "power2.out" }, t0);
+        tl.fromTo(cur, { x: from.x + 40, y: from.y + 46 }, { x: to.x + 40, y: to.y + 46, duration: 0.45, ease: "power2.out", immediateRender: false }, t0);
+      }
+      window.__timelines[V.cid || "tier-chart"] = tl;
+    })();
+  </script>
+</template>
+</html>

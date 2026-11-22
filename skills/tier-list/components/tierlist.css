@@ -1,0 +1,92 @@
+/* tier-list style — shared overlay styles. Canvas 1920x1080. Every number comes from style.json
+   (converted from % of frame: x% * 19.2 px, y% * 10.8 px). Do not edit values here without
+   re-measuring; the QA script compares renders against the reference using these positions. */
+@font-face { font-family: "Arimo"; src: url("fonts/arimo-latin-400-normal.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Arimo"; src: url("fonts/arimo-latin-700-normal.woff2") format("woff2"); font-weight: 700; }
+@font-face { font-family: "Kalam"; src: url("fonts/kalam-latin-700-normal.woff2") format("woff2"); font-weight: 700; }
+
+:root {
+  --tl-white: #ffffff;
+  --tl-red: #e0262b;
+  --tl-yellow: #ffe14d;
+  --tl-outline: rgba(0, 0, 0, 0.75);
+  --tl-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  --tl-badge-fill: rgba(20, 24, 42, 0.85);
+  --tl-badge-edge-a: #42d9f9;
+  --tl-badge-edge-b: #199aff;
+}
+
+/* ---------- full-frame media ---------- */
+.tl-media { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
+.tl-media.contain { object-fit: contain; }
+.tl-still-wrap { position: absolute; inset: 0; overflow: hidden; }
+.tl-still-wrap > img { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; transform-origin: 50% 50%; }
+/* inset of a vertical/4:3 source over a blurred copy (style.json treatments.inset_on_blur_or_black) */
+.tl-inset-bg { position: absolute; inset: -60px; width: 2040px; height: 1200px; object-fit: cover; }
+.tl-inset-fg { position: absolute; top: 0; height: 1080px; left: 50%; transform: translateX(-50%); width: auto; max-width: 1920px; object-fit: contain; }
+/* vignette (dark) and white-vignette screenshot card */
+.tl-vignette { position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.55) 80%, rgba(0,0,0,0.85) 100%); }
+.tl-vignette-light { position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 72% 72% at 50% 50%, rgba(255,255,255,0) 50%, rgba(170,170,170,0.55) 85%, rgba(90,90,90,0.85) 100%); }
+
+/* ---------- text base: white lowercase Arial-style, outline + soft shadow, no box ---------- */
+.tl-text { position: absolute; font-family: "Arimo"; font-weight: 400; color: var(--tl-white);
+  -webkit-text-stroke: 1.5px var(--tl-outline); paint-order: stroke fill; text-shadow: var(--tl-shadow);
+  line-height: 1.0; white-space: pre; letter-spacing: -0.005em; }
+.tl-text .red { color: var(--tl-red); }
+
+/* name label: 8.5% H, beside the head, typewriter (style.json text.name_label) */
+.tl-name { font-size: 92px; line-height: 0.98; }
+.tl-name.left { text-align: right; }   /* label sits left of the head -> right-aligned */
+.tl-name.right { text-align: left; }
+/* spec caption: icon + text, 6% H, centre (55%, 86%) */
+.tl-spec { font-size: 65px; display: flex; align-items: center; gap: 12px; transform: translate(-50%, -50%); }
+.tl-spec img { height: 76px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,.5)); }
+/* clip-audio subtitle: centre (50%, 86%) */
+.tl-sub { font-size: 92px; transform: translate(-50%, -50%); text-align: center; }
+.tl-sub.story { font-size: 65px; }
+/* aside label: free placement, may rotate, 6.5% H */
+.tl-aside { font-size: 70px; transform-origin: 50% 50%; }
+/* year label: red, top centre, 6% H */
+.tl-year { font-size: 65px; color: var(--tl-red); transform: translate(-50%, -50%); }
+/* big number on the subject, 9% H */
+.tl-big { font-size: 97px; transform-origin: 50% 50%; }
+/* title card over the chart grass band */
+.tl-title { font-size: 70px; transform: translate(-50%, -50%); }
+/* handwritten annotation + arrow (yellow or white) */
+.tl-hand { font-family: "Kalam"; font-weight: 700; font-size: 84px; color: var(--tl-yellow); -webkit-text-stroke: 2px rgba(0,0,0,.6); }
+.tl-arrow { position: absolute; overflow: visible; }
+
+/* ---------- price badge (style.json graphics.price_badge) x 2.3-24.3%, y 3.9-15.3% ---------- */
+.tl-badge { position: absolute; left: 44px; top: 42px; width: 423px; height: 123px; border-radius: 24px;
+  background: var(--tl-badge-fill); box-sizing: border-box; padding: 0 16px 0 10px; display: flex; align-items: center;
+  border: 4px solid transparent;
+  background-image: linear-gradient(var(--tl-badge-fill), var(--tl-badge-fill)), linear-gradient(135deg, var(--tl-badge-edge-a), var(--tl-badge-edge-b));
+  background-origin: border-box; background-clip: padding-box, border-box;
+  box-shadow: 0 0 12px 2px rgba(25, 154, 255, 0.9), 0 0 3px 1px rgba(66, 217, 249, 0.9) inset; }
+.tl-badge img { height: 92px; width: 182px; object-fit: contain; filter: drop-shadow(0 3px 4px rgba(0,0,0,.6)); }
+.tl-badge .txt { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: "Arimo"; color: #fff; font-weight: 700; }
+.tl-badge .price { font-size: 52px; line-height: 1.0; letter-spacing: -0.01em; }
+.tl-badge .model { font-size: 19px; line-height: 1.1; margin-top: 4px; white-space: nowrap; }
+
+/* ---------- screenshot cards built in code (generic, no real outlet branding) ---------- */
+.tl-card { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: #fff; color: #111; font-family: "Arimo"; box-shadow: 0 10px 40px rgba(0,0,0,.25); }
+.tl-card.article { width: 1240px; padding: 56px 72px; }
+.tl-card.article .kicker { font-size: 22px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #777; }
+.tl-card.article .headline { font-size: 64px; font-weight: 700; line-height: 1.12; margin-top: 18px; }
+.tl-card.article .meta { font-size: 22px; color: #888; margin-top: 18px; }
+.tl-card.article img { width: 100%; height: 420px; object-fit: cover; margin-top: 28px; }
+.tl-card.post { width: 1100px; padding: 44px 52px; background: #000; color: #e7e9ea; border: 1px solid #2f3336; border-radius: 18px; }
+.tl-card.post .who { font-size: 30px; font-weight: 700; color: #fff; }
+.tl-card.post .handle { font-size: 26px; color: #71767b; }
+.tl-card.post .body { font-size: 40px; line-height: 1.3; margin-top: 22px; white-space: pre-wrap; }
+.tl-mark-yellow { background: var(--tl-yellow); color: #111; padding: 0 6px; }
+.tl-mark-red { background: var(--tl-red); color: #fff; padding: 0 6px; }
+
+/* ---------- silhouette reveal / logo on black ---------- */
+.tl-silhouette { position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); height: 640px; filter: brightness(0); }
+.tl-logo { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); height: 240px; width: auto; }
+
+/* ---------- map pin ---------- */
+.tl-pin { position: absolute; width: 90px; height: 120px; transform: translate(-50%, -100%); }

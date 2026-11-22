@@ -1,0 +1,9 @@
+# Derived from copyrighted reference videos: keep local only (never in a public repo)
+analysis/*.transcript.json
+analysis/*.ocr.json
+analysis/*.vo_timeline.json
+analysis/*.text_sync.json
+analysis/*.music_sfx.json
+analysis/*.event_sfx.json
+references/*.jpg
+references/frames/
