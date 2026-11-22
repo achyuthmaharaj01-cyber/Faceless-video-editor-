@@ -6,6 +6,12 @@ import { fileURLToPath } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 
+// Settings and keys: the studio folder's .env is loaded automatically (variables already set in the shell win).
+const ENV_FILE = path.join(HERE, '..', '.env');
+if (fs.existsSync(ENV_FILE)) {
+  try { process.loadEnvFile(ENV_FILE); } catch (e) { console.error(`fvs: could not read ${ENV_FILE}: ${e.message}`); }
+}
+
 // Node's fetch ignores HTTPS_PROXY unless NODE_USE_ENV_PROXY=1 (Node >= 22.21). Behind a proxy, re-launch with it.
 if ((process.env.HTTPS_PROXY || process.env.https_proxy) && !process.env.NODE_USE_ENV_PROXY) {
   const { spawnSync } = await import('node:child_process');

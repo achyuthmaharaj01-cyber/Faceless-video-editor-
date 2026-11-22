@@ -16,9 +16,22 @@ const CFG_DIR = path.join(process.env.XDG_CONFIG_HOME || path.join(os.homedir(),
 const TOKEN_FILE = path.join(CFG_DIR, 'google-token.json');
 export const TREE = ['Input', 'Projects', 'Completed Videos', 'Project Files', 'Production Reports', 'Reference Library'];
 
-function client() {
-  const id = process.env.GOOGLE_OAUTH_CLIENT_ID, secret = process.env.GOOGLE_OAUTH_CLIENT_SECRET;
-  if (!id || !secret) throw new Error('set GOOGLE_OAUTH_CLIENT_ID and GOOGLE_OAUTH_CLIENT_SECRET (Desktop-app OAuth client; see docs/google-drive.md)');
+export const CLIENT_FILE = path.join(CFG_DIR, 'google-oauth-client.json');
+
+/** OAuth client: from .env (GOOGLE_OAUTH_CLIENT_ID/SECRET), else from the JSON file Google lets you download
+ *  (GOOGLE_OAUTH_CLIENT_FILE, default ~/.config/faceless-video-studio/google-oauth-client.json). */
+export function client() {
+  let id = process.env.GOOGLE_OAUTH_CLIENT_ID, secret = process.env.GOOGLE_OAUTH_CLIENT_SECRET;
+  if (!id || !secret) {
+    const file = process.env.GOOGLE_OAUTH_CLIENT_FILE || CLIENT_FILE;
+    if (fs.existsSync(file)) {
+      const j = JSON.parse(fs.readFileSync(file, 'utf8'));
+      const c = j.installed || j.web || j;
+      if (j.web) throw new Error(`${file} is a "Web application" client; create a "Desktop app" OAuth client instead`);
+      id = c.client_id; secret = c.client_secret;
+    }
+  }
+  if (!id || !secret) throw new Error(`no Google OAuth client found: put GOOGLE_OAUTH_CLIENT_ID and GOOGLE_OAUTH_CLIENT_SECRET in the studio's .env, or save the downloaded JSON as ${CLIENT_FILE} (see docs/google-drive.md)`);
   return { id, secret };
 }
 

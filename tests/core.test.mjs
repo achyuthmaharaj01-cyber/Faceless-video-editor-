@@ -112,3 +112,22 @@ test('fnv1a matches the in-page implementation (UTF-8)', () => {
   const pageFnv = new Function('text', body);
   for (const s of ['', 'abc', 'héllo · 1956 — “quotes”', '<html data-x="1">']) assert.equal(pageFnv(s), fnv1a(s));
 });
+
+test('Google OAuth client: from env, or from the downloaded Desktop-app JSON; web clients refused', async () => {
+  const d = tmp();
+  const keep = { ...process.env };
+  try {
+    delete process.env.GOOGLE_OAUTH_CLIENT_ID; delete process.env.GOOGLE_OAUTH_CLIENT_SECRET;
+    const { client } = await import('../backend/integrations/drive.mjs');
+    process.env.GOOGLE_OAUTH_CLIENT_FILE = path.join(d, 'c.json');
+    fs.writeFileSync(process.env.GOOGLE_OAUTH_CLIENT_FILE, JSON.stringify({ installed: { client_id: 'id1.apps.googleusercontent.com', client_secret: 's1' } }));
+    assert.deepEqual(client(), { id: 'id1.apps.googleusercontent.com', secret: 's1' });
+    process.env.GOOGLE_OAUTH_CLIENT_ID = 'id2'; process.env.GOOGLE_OAUTH_CLIENT_SECRET = 's2';
+    assert.deepEqual(client(), { id: 'id2', secret: 's2' });          // .env / shell wins
+    delete process.env.GOOGLE_OAUTH_CLIENT_ID; delete process.env.GOOGLE_OAUTH_CLIENT_SECRET;
+    fs.writeFileSync(process.env.GOOGLE_OAUTH_CLIENT_FILE, JSON.stringify({ web: { client_id: 'w', client_secret: 'w' } }));
+    assert.throws(() => client(), /Desktop app/);
+    process.env.GOOGLE_OAUTH_CLIENT_FILE = path.join(d, 'missing.json');
+    assert.throws(() => client(), /no Google OAuth client found/);
+  } finally { for (const k of Object.keys(process.env)) if (!(k in keep)) delete process.env[k]; Object.assign(process.env, keep); }
+});
