@@ -37,27 +37,53 @@ export function client() {
   return { id, secret };
 }
 
+/**
+ * Loopback receiver for the OAuth redirect. The port is read once, right after listen(), and used for both the
+ * redirect_uri and the resolved value (srv.address() is null after close()). Requests that carry neither a
+ * `code` nor an `error` parameter (e.g. /favicon.ico) are ignored.
+ */
+export function waitForRedirect({ state, onListen }) {
+  return new Promise((resolve, reject) => {
+    let port = null;
+    const srv = http.createServer((req, res) => {
+      const u = new URL(req.url, 'http://127.0.0.1');
+      const code = u.searchParams.get('code'), error = u.searchParams.get('error');
+      if (!code && !error) { res.statusCode = 404; res.end(); return; }   // favicon.ico and other stray requests
+      if (u.searchParams.get('state') !== state) { res.statusCode = 400; res.end('state mismatch'); return; }
+      res.end(code ? 'Authorised. You can close this tab.' : `Authorisation failed: ${error}`);
+      srv.close();
+      if (code) resolve({ code, redirect: `http://127.0.0.1:${port}` });
+      else reject(new Error(`Google returned: ${error}`));
+    });
+    srv.on('error', reject);
+    srv.listen(0, '127.0.0.1', () => {
+      port = srv.address().port;
+      onListen(`http://127.0.0.1:${port}`);
+    });
+  });
+}
+
+function openBrowser(url) {
+  import('node:child_process').then(({ spawn }) => {
+    // Windows: not `cmd /c start`, which splits the URL at every `&`
+    const [cmd, args] = process.platform === 'win32' ? ['rundll32', ['url.dll,FileProtocolHandler', url]]
+      : process.platform === 'darwin' ? ['open', [url]] : ['xdg-open', [url]];
+    spawn(cmd, args, { detached: true, stdio: 'ignore' }).on('error', () => {}).unref();
+  });
+}
+
 /** One-time consent on a computer with a browser. Stores the refresh token outside the repo. */
 export async function authorize({ open = true } = {}) {
   const { id, secret } = client();
   const state = crypto.randomBytes(16).toString('hex');
   const verifier = crypto.randomBytes(32).toString('base64url');
   const challenge = crypto.createHash('sha256').update(verifier).digest('base64url');
-  const { code, redirect } = await new Promise((resolve, reject) => {
-    const srv = http.createServer((req, res) => {
-      const u = new URL(req.url, 'http://127.0.0.1');
-      if (u.searchParams.get('state') !== state) { res.end('state mismatch'); return; }
-      res.end('Authorised. You can close this tab.');
-      srv.close();
-      u.searchParams.get('code') ? resolve({ code: u.searchParams.get('code'), redirect: `http://127.0.0.1:${srv.address().port}` }) : reject(new Error(u.searchParams.get('error') || 'no code'));
-    }).listen(0, '127.0.0.1', () => {
-      const redirect_uri = `http://127.0.0.1:${srv.address().port}`;
-      const url = 'https://accounts.google.com/o/oauth2/v2/auth?' + new URLSearchParams({ client_id: id, redirect_uri, response_type: 'code', scope: SCOPES.join(' '),
-        access_type: 'offline', prompt: 'consent', state, code_challenge: challenge, code_challenge_method: 'S256' });
-      console.log(`Open this URL to authorise Google Drive access:\n${url}`);
-      if (open) import('node:child_process').then(({ spawn }) => spawn(process.platform === 'win32' ? 'cmd' : process.platform === 'darwin' ? 'open' : 'xdg-open', process.platform === 'win32' ? ['/c', 'start', '', url] : [url], { detached: true, stdio: 'ignore' }).unref());
-    });
-  });
+  const { code, redirect } = await waitForRedirect({ state, onListen: redirect_uri => {
+    const url = 'https://accounts.google.com/o/oauth2/v2/auth?' + new URLSearchParams({ client_id: id, redirect_uri, response_type: 'code', scope: SCOPES.join(' '),
+      access_type: 'offline', prompt: 'consent', state, code_challenge: challenge, code_challenge_method: 'S256' });
+    console.log(`Open this URL to authorise Google Drive access:\n${url}`);
+    if (open) openBrowser(url);
+  } });
   const r = await fetch('https://oauth2.googleapis.com/token', { method: 'POST', body: new URLSearchParams({ client_id: id, client_secret: secret, code, code_verifier: verifier, grant_type: 'authorization_code', redirect_uri: redirect }) });
   const tok = await r.json();
   if (!tok.refresh_token) throw new Error('no refresh token returned: ' + JSON.stringify(tok));

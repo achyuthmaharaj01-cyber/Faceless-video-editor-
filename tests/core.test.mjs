@@ -143,3 +143,21 @@ test('a saved Google login with older, narrower scopes is refused with a clear m
     await assert.rejects(m.findFolder('x'), /run `fvs drive-auth` again/);
   } finally { for (const k of Object.keys(process.env)) if (!(k in keep)) delete process.env[k]; Object.assign(process.env, keep); }
 });
+
+test('OAuth loopback: port kept after close, favicon ignored, state checked, code resolved', async () => {
+  const { waitForRedirect } = await import('../backend/integrations/drive.mjs');
+  let base;
+  const done = waitForRedirect({ state: 'st1', onListen: r => { base = r; } });
+  while (!base) await new Promise(r => setTimeout(r, 10));
+  assert.equal((await fetch(`${base}/favicon.ico`)).status, 404);              // ignored, server stays up
+  assert.equal((await fetch(`${base}/?code=c1&state=wrong`)).status, 400);     // state mismatch, still up
+  const ok = await fetch(`${base}/?code=c1&state=st1`);
+  assert.match(await ok.text(), /Authorised/);
+  assert.deepEqual(await done, { code: 'c1', redirect: base });                // redirect uses the stored port
+  let base2;
+  const fail = waitForRedirect({ state: 's2', onListen: r => { base2 = r; } });
+  while (!base2) await new Promise(r => setTimeout(r, 10));
+  const rejected = assert.rejects(fail, /access_denied/);   // attach before the error request arrives
+  await fetch(`${base2}/?error=access_denied&state=s2`);
+  await rejected;
+});
