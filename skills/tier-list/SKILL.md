@@ -1,6 +1,6 @@
 ---
 name: tier-list
-description: Edit a finished "tier list" / ranked-list YouTube video (Jack Pockets-style celebrity/billionaire tier lists and "X who hate each other" story lists) from a SCRIPT and a VOICEOVER file, rendered with Hyperframes. Reproduces the measured editing style - 33 cuts/min, price badges, typewriter name labels, cursor-dragged tier chart with a music dropout on every verdict, VO-off clips with lowercase subtitles, constant un-ducked music bed at -10 LU, -15 LUFS master. Use when the user supplies a script + voiceover (or asks for a tier list / ranking video "in the tier-list style") and wants the edited MP4.
+description: Edit a finished "tier list" / ranked-list YouTube video (Jack Pockets-style celebrity/billionaire tier lists and "X who hate each other" story lists) from a SCRIPT and a VOICEOVER file, rendered with Hyperframes. Reproduces the measured editing style - 33 cuts/min, price badges, typewriter name labels, cursor-dragged tier chart with a music dropout on every verdict, VO-off clips with lowercase subtitles, constant un-ducked music bed at -10 LU, -15 LUFS master. Also has a HYBRID mode (real licensed photos first, three.js 3D motion graphics where no image exists) for explainer/business-story scripts that are not rankings. Use when the user supplies a script + voiceover (or asks for a tier list / ranking video "in the tier-list style") and wants the edited MP4.
 ---
 
 # Tier-list video editor
@@ -135,3 +135,46 @@ Audio: VO -15 LUFS; music bed constant at VO -10.3 LU, NO ducking; on every verd
 `cuts_adaptive.py`, `cuts_merge.py`, `cut_calibration_sheet.py`, `extract_frames.py`, `ocr_frames.py`,
 `graphic_detect.py`, `text_sync.py`, `transcribe.py`, `vo_timeline.py`, `stems_windows.py`, `music_sfx.py`,
 `event_sfx.py`, `tighten_vo.py`, `remap_times.py`. Outputs for the references are in `analysis/`; `references/` holds the frame sheets and final QA metrics.
+
+
+---
+
+# Hybrid mode: real photos first, 3D motion graphics as the fallback (no tier chart)
+
+For scripts that are NOT rankings (business stories, explainers, "how X made $Y"): same editing grammar (hard cuts on word boundaries, lowercase
+white captions, name/stat labels, constant music bed, -15 LUFS) but no tier chart/face grid. Each beat gets a licensed PHOTO when a relevant one
+exists; otherwise a three.js 3D scene (numbers, comparisons, quotes, calendars, crowds, gauges...). Measured on the GTA 6 example: 197 shots,
+26 cuts/min, 40 photo shots + 157 3D shots. Worked example: `examples/gta6/` (plan, theme queries, chosen images; no media).
+
+## Pipeline
+```bash
+python3 -I $SK/scripts/setup_3d_project.py $PROJ             # engine (components/engine3d), three.js r170, fonts, css, SFX
+python3 -I $SK/scripts/tighten_vo.py vo_raw.wav $PROJ/assets/vo/vo.wav ; transcribe.py -> vo.transcript.json
+#  align script sentences to word times -> sentences.json  {"sentences":[{"words":[{"w","s","e"}]}]}   (see work/sentences.json in the example)
+python3 -I $SK/scripts/plan_dsl.py compile plan.py sentences.json shots_raw.json --total <vo seconds>
+#  shots.json = shots_raw.json + {"fps": 30, "audio": {"vo","vo_gain","music","music_gain","sfx_gain"}}   (vo_gain: bring VO to -15.2 LUFS; music_gain: bed = VO - 10.3 LU)
+python3 -I $SK/scripts/photo_pool.py search themes.json pool.json        # Openverse, licence-filtered, 3.2 s/request (anon limit 20/min, 200/day)
+python3 -I $SK/scripts/photo_pool.py sheets pool.json sheets/            # LOOK at the numbered sheets; write chosen.json {"theme":[idx,...]}
+python3 -I $SK/scripts/assign_photos.py shots.json pool.json chosen.json $PROJ    # fetch + 1920x1080 prep (cover / inset-on-blur, bottom scrim, optional vignette) + licence log
+python3 -I $SK/scripts/build_3d_composition.py shots.json $PROJ ; (cd $PROJ && npx hyperframes check)
+python3 -I $SK/scripts/render_hybrid.py $PROJ out/ <seconds> --fps 30 --chunk 75   # resumable chunks + audio mix + master; launch with run_in_background (see gotchas)
+```
+
+## plan.py (the visual plan, one line per beat; timed by spoken words)
+`S(si, w, scene, params, bg, ov=[...])` = 3D shot starting at word `w` of sentence `si`; `PH(si, w, theme, cap=..., capw=..., vig=..., ov=[...])` = photo shot;
+`DROP = {(si,w),...}` removes 3D shots a photo replaces. Overlays (timed by word `w` or seconds `at`, optional `dur`): `CAP` bottom caption, `L` label beside a 3D
+anchor, `BADGE` navy stat badge, `QUOTE`, `STAMP`, `YEAR`, `TRACKER(n,title,...)` persistent move tracker. Never two captions at the same time (`check` flags it).
+3D scenes (components/engine3d/scenes_*.js): bigNumber (counting number + coins/confetti), compare (bars), timeline, calendar, priceTag, donut, statement
+(kinetic lines, strike), questions, pedestals, crowd, playButton, gauge, giftBox, claimCard, lock, guide (laptop/book), rumors, quoteSlab, score, shelf,
+fineprint, range, globe, comingLater, funnel, stack, clock24, loop, plus `photo`. Scenes are pure functions of local time (Hyperframes seeks out of order).
+Choose by line type: figures -> bigNumber/compare/gauge/donut; dates -> calendar/timeline; quotes -> quoteSlab + QUOTE; concrete nouns -> PHOTO.
+Photo rules: skip game screenshots/art (derivative of copyrighted work), skip images with their own text/posters, never caption a private person's photo with a
+negative trait (use crowds/objects), prefer objects/places/crowds; cutaways go in the TAIL (>= 2.3 s in) of long 3D shots so the 3D beat lands first;
+move captions of truncated 3D shots onto the photo that covers those words.
+
+## Gotchas learned (GTA 6 build)
+- Software WebGL render cost is ~0.33 s/frame regardless of fps (+~100 s start-up per render): 30 fps ~ 75 min for 7.5 min of video, 60 fps ~ 2.5 h. Default 30 fps here.
+- A render dies when its launcher exits (`render_cancelled_parent_exited`): start renders with the harness `run_in_background`, not `nohup &`; set HYPERFRAMES_RENDER_DETACHED=1.
+- OpenCV must be <5 for face detection; stocksnap/other CDN hosts may be blocked by the network allowlist (pick another candidate instead of asking).
+- Openverse answers 504/timeouts often: photo_pool retries; broad 2-3 word queries work better than specific ones.
+- Music: `make_music.py` writes a licence-free 118 BPM bed (cannot be auditioned here - tell the user it is a placeholder).

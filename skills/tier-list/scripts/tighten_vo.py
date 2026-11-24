@@ -4,6 +4,8 @@ re-adds those deliberately (pause_after on verdicts and [PAUSE] markers) with th
 Run BEFORE transcribe.py.   Usage: python -I tighten_vo.py vo_in.(wav|mp3|m4a) vo_out.wav [--max-gap 0.30] [--to 0.24]"""
 import sys, argparse, subprocess, numpy as np, soundfile as sf, os, tempfile
 ap = argparse.ArgumentParser(); ap.add_argument("src"); ap.add_argument("dst"); ap.add_argument("--max-gap", type=float, default=0.22); ap.add_argument("--to", type=float, default=0.14)
+ap.add_argument("--keep-long", type=float, default=None, help="pauses >= this (s) are sentence/paragraph breaks: shorten to --long-to instead of --to")
+ap.add_argument("--long-to", type=float, default=0.4)
 a = ap.parse_args()
 tmp = tempfile.mktemp(suffix=".wav"); subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-i", a.src, "-ar", "48000", tmp], check=True)
 x, sr = sf.read(tmp, dtype="float32"); os.remove(tmp)
@@ -18,7 +20,7 @@ while i < len(speech):
         while j < len(speech) and not speech[j]: j += 1
         dur = (j - i) * 0.01
         if dur > a.max_gap and i > 0 and j < len(speech):
-            cut = dur - a.to; s0 = int((i * 0.01 + a.to / 2) * sr); keep[s0:s0 + int(cut * sr)] = False; removed += cut; n += 1; cuts.append([round(s0 / sr, 4), round(cut, 4)])
+            tgt = a.long_to if (a.keep_long and dur >= a.keep_long) else a.to; cut = dur - tgt; s0 = int((i * 0.01 + tgt / 2) * sr); keep[s0:s0 + int(cut * sr)] = False; removed += cut; n += 1; cuts.append([round(s0 / sr, 4), round(cut, 4)])
         i = j
     else: i += 1
 y = x[keep]
