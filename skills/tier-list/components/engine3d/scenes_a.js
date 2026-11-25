@@ -33,7 +33,7 @@ A.compare = (p) => {
   const edge = new THREE.Mesh(new THREE.BoxGeometry(total + 2, 0.04, 0.04), basic(C.cyan)); edge.position.set(0, 0.01, 1.5); root.add(edge);
   items.forEach((it, i) => {
     const x = -total / 2 + bw / 2 + i * (bw + gap); const b = bar(bw, bw * 0.9, it.color ?? C.cyan, { metal: it.metal }); b.position.set(x, 0, 0); b.scale.y = 0.001; root.add(b); bars.push(b);
-    const _vw = textRow(it.vlabel ?? "", { size: 1 }).width || 0.01; const tr = textRow(it.vlabel ?? "", { size: Math.min(it.vsize ?? 0.62, (bw + gap) * 0.92 / _vw), mat: mc(0xffffff), depth: 0.2 }); tr.group.position.set(x, 0, bw * 0.45 + 0.1); root.add(tr.group); texts.push(tr.group);
+    const _vw = textRow(it.vlabel ?? "", { size: 1 }).width || 0.01; const tr = textRow(it.vlabel ?? "", { size: Math.min(it.vsize ?? 0.62, (bw + gap) * 0.60 / _vw), mat: mc(0xffffff), depth: 0.2 }); tr.group.position.set(x, 0, bw * 0.45 + 0.1); root.add(tr.group); texts.push(tr.group);
     const top = new THREE.Object3D(); top.position.set(x, 0, bw * 0.5); root.add(top); anchors["top" + i] = top; const bs = new THREE.Object3D(); bs.position.set(x, 0.1, bw * 0.55); root.add(bs); anchors["base" + i] = bs;
     if (it.glow) { const gl = glow(it.color ?? C.cyan, bw * 3.2, 0.35); gl.position.set(x, Hmax * 0.5, -1); root.add(gl); it._gl = gl; }
   });
@@ -41,7 +41,7 @@ A.compare = (p) => {
   return { root, camD: p.camD ?? 15, camH: 3.2, look: [0, Hmax * 0.52, 0], anchors,
     update(t, d) {
       items.forEach((it, i) => { const t0 = 0.15 + i * (p.stagger ?? 0.35), gd = p.grow ?? 0.9; const h = Math.max(0.001, (it.value / max) * Hmax * E.outCubic(clamp((t - t0) / gd)));
-        bars[i].scale.y = h; const tg = texts[i]; tg.position.y = h + 0.55; const sc = E.outBack(clamp((t - t0 - gd * 0.75) / 0.3)); tg.scale.setScalar(Math.max(0.001, sc)); anchors["top" + i].position.y = h + 0.1; if (it._gl) it._gl.position.y = h * 0.6; }); } };
+        bars[i].scale.y = h; const tg = texts[i]; const vs = it.vsize ? it.vsize / 0.62 : 1; tg.position.y = h + 0.25 + 0.3 * vs; const sc = E.outBack(clamp((t - t0 - gd * 0.75) / 0.3)); tg.scale.setScalar(Math.max(0.001, sc) * vs);   /* vsize (optional) shrinks the value label; default keeps the original look */ anchors["top" + i].position.y = h + 0.1; if (it._gl) it._gl.position.y = h * 0.6; }); } };
 };
 
 // ---- 3. timeline with travelling playhead ----
