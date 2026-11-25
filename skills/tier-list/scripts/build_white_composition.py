@@ -10,9 +10,10 @@ if "--window" in sys.argv:
     # Chunk page: only the shots that START inside [a, b) (a and b must be shot boundaries), time-shifted so the page starts at 0 and
     # its duration is b - a. Hyperframes' software capture stalls on a 450 s / 230-shot page, but renders 40-60 s pages fine.
     i = sys.argv.index("--window"); a_, b_ = float(sys.argv[i + 1]), float(sys.argv[i + 2]); WIN = (a_, b_)
-    keep = [x for x in D["shots"] if x["ps"] >= a_ - 1e-4 and x["ps"] < b_ - 1e-4]
+    fa, fb = round(a_ * 60), round(b_ * 60)      # compare on the 60 fps grid: chunk edges are frame-quantised, shot starts are not
+    keep = [x for x in D["shots"] if fa <= round(x["ps"] * 60) < fb]
     for x in keep:
-        x["ps"] = round(x["ps"] - a_, 4); x["pe"] = round(min(x["pe"], b_) - a_, 4)
+        x["ps"] = round(max(x["ps"] - a_, 0.0), 4); x["pe"] = round(min(x["pe"], b_) - a_, 4)
         for o in x.get("ov", []): o["t0"] = round(o["t0"] - a_, 4); o["t1"] = round(min(o["t1"], b_) - a_, 4)
         x["sfx"] = []
     D["shots"] = keep; total = round(b_ - a_, 4)
@@ -84,7 +85,7 @@ def scene(s):
             T(f'tl.fromTo("#{sid}-v{i}", {{x:20, opacity:0}}, {{x:{fw + 24}, opacity:1, duration:0.75, ease:"power3.out"}}, {r3(st + 0.1 + i * 0.18)});')
         h = f'<div class="bars" id="{sid}-bars">{rows}</div>'
     elif k == "calendar":
-        h = (f'<div class="wrap"><div id="{sid}-p" class="pushw"><div id="{sid}-c" class="cal"><div class="top">{esc(p["month"])}</div><div class="day" style="font-size:{int(430 * p.get("daySize", 1.0))}px">{esc(p["day"])}</div>'
+        h = (f'<div class="wrap"><div id="{sid}-p" class="pushw"><div id="{sid}-c" class="cal"><div class="top">{esc(p["month"])}</div><div class="day" style="font-size:{int(380 * p.get("daySize", 1.0))}px">{esc(p["day"])}</div>'
              f'{"<div class=yr>" + esc(p["year"]) + "</div>" if p.get("year") else ""}</div></div></div><div class="vig-w" data-layout-ignore></div>')
         T(f'tl.fromTo("#{sid}-c", {{rotationX:-85, opacity:0, transformPerspective:1400}}, {{rotationX:0, opacity:1, duration:0.4, ease:"power3.out"}}, {r3(st)});'); push(f"#{sid}-p", st, du, 1.0, 1.035)
     elif k == "timeline":
@@ -181,7 +182,7 @@ overlays()
 for j, g in enumerate(D.get("ov", [])):
     if g["kind"] == "tracker":
         oid = f"tr{j}"; els.append(f'<div id="{oid}" class="clip" data-start="{r3(g["t0"])}" data-duration="{r3(g["t1"] - g["t0"])}" data-track-index="3" style="z-index:{z()}"><div id="{oid}-t" class="tracker"><b>move {g["n"]} of 5</b><span>{esc(g["title"])}</span></div></div>')
-        T(f'tl.fromTo("#{oid}-t", {{opacity:0, y:-16}}, {{opacity:1, y:0, duration:0.25, ease:"power2.out"}}, {r3(g["t0"])});')
+        if g["t0"] > 0.02: T(f'tl.fromTo("#{oid}-t", {{opacity:0, y:-16}}, {{opacity:1, y:0, duration:0.25, ease:"power2.out"}}, {r3(g["t0"])});')   # no re-fade at a chunk start
 
 # ---------------- audio ----------------
 if not WIN: audio.append(f'<audio id="vo" class="clip" src="{A["vo"]}" data-start="0" data-duration="{r3(total)}" data-volume="{A.get("vo_gain", 1):.3f}" data-track-index="10" data-audio-group="voiceover"></audio>')
