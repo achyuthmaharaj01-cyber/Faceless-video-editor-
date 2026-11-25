@@ -24,7 +24,7 @@ if a.only in ("all", "audio") and not os.path.exists(AUD):
     for f in os.listdir(os.path.join(P, "assets")):
         if f.endswith((".wav", ".mp3", ".css", ".js")) and os.path.isfile(os.path.join(P, "assets", f)): shutil.copy(os.path.join(P, "assets", f), os.path.join(AP, "assets", f))
     os.symlink(os.path.join(P, "node_modules"), os.path.join(AP, "node_modules")) if os.path.exists(os.path.join(P, "node_modules")) else None
-    h = open(os.path.join(P, "index.html")).read()
+    h = open(os.path.join(P, "audio_index.tpl" if os.path.exists(os.path.join(P, "audio_index.tpl")) else "index.html")).read()
     h = re.sub(r'<script type="module" src="assets/engine/engine.js"></script>', "", h); h = re.sub(r'<canvas id="gl"[^>]*></canvas><div id="ov"></div>', "", h)
     h = re.sub(r'<script id="shots" type="application/json">.*?</script>', "", h, flags=re.S); h = re.sub(r'<script type="importmap">.*?</script>', "", h, flags=re.S)
     open(os.path.join(AP, "index.html"), "w").write(h)

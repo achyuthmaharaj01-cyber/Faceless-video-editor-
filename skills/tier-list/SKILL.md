@@ -1,6 +1,6 @@
 ---
 name: tier-list
-description: Edit a finished "tier list" / ranked-list YouTube video (Jack Pockets-style celebrity/billionaire tier lists and "X who hate each other" story lists) from a SCRIPT and a VOICEOVER file, rendered with Hyperframes. Reproduces the measured editing style - 33 cuts/min, price badges, typewriter name labels, cursor-dragged tier chart with a music dropout on every verdict, VO-off clips with lowercase subtitles, constant un-ducked music bed at -10 LU, -15 LUFS master. Also has a HYBRID mode (real licensed photos first, three.js 3D motion graphics where no image exists) for explainer/business-story scripts that are not rankings. Use when the user supplies a script + voiceover (or asks for a tier list / ranking video "in the tier-list style") and wants the edited MP4.
+description: Edit a finished "tier list" / ranked-list YouTube video (Jack Pockets-style celebrity/billionaire tier lists and "X who hate each other" story lists) from a SCRIPT and a VOICEOVER file, rendered with Hyperframes. Reproduces the measured editing style - 33 cuts/min, price badges, typewriter name labels, cursor-dragged tier chart with a music dropout on every verdict, VO-off clips with lowercase subtitles, constant un-ducked music bed at -10 LU, -15 LUFS master. Also has a WHITE mode (the default for explainer/business-story scripts that are not rankings): white-background pages, real-headline news/filing/social cards, licensed photos and flat white graphics in the same tier-list grammar; the older HYBRID 3D mode (three.js on dark) is kept but only on request. Use when the user supplies a script + voiceover (or asks for a tier list / ranking video "in the tier-list style") and wants the edited MP4.
 ---
 
 # Tier-list video editor
@@ -178,3 +178,39 @@ move captions of truncated 3D shots onto the photo that covers those words.
 - OpenCV must be <5 for face detection; stocksnap/other CDN hosts may be blocked by the network allowlist (pick another candidate instead of asking).
 - Openverse answers 504/timeouts often: photo_pool retries; broad 2-3 word queries work better than specific ones.
 - Music: `make_music.py` writes a licence-free 118 BPM bed (cannot be auditioned here - tell the user it is a placeholder).
+
+---
+
+# WHITE mode (default for non-ranking scripts; the user rejected the dark 3D look)
+
+Look: white pages with a light grey vignette (reference video 4/1 article screens), dark lowercase captions on white, white outlined captions on photos,
+red/yellow marker highlights, navy badges, hard cuts on spoken words, ~30 cuts/min (tier-list grammar; median shot ~1.8 s). No 3D, no dark backgrounds.
+Authentic material first: **real headline cards** (article / SEC filing / social post) + licensed photos; flat graphics only for numbers.
+
+## Rules for the cards (authenticity)
+- Every card's text must be a real headline/quote you FOUND (WebSearch result title, outlet page, filing). Never invent an article, post, date or number.
+  Re-typeset in code: outlet name as plain text (no logos), headline, optional date only if verified, small source domain; no fake body text, no images.
+- Titles reconstructed from a URL slug are marked `# SLUG` in the plan and flagged in SOURCES.md; unverified dates are omitted.
+- Say clearly in the delivery note that cards are recreations (the sandbox cannot screenshot sites and screenshots are third-party content), and list every source (SOURCES.md).
+- Check the script's own claims against search and report mismatches (the GTA 6 run found 3: the Newzoo "two vs ten" figure, 32.5M pre-release copies, exact Zelnick wording).
+
+## Pipeline
+```bash
+python3 -I $SK/scripts/setup_white_project.py $PROJ --vo vo.wav --music bed.wav --nm <dir with node_modules>
+# plan: examples/gta6/plan_white.py  (S/ST/N/BA/CA/TL/PR/LI/TX/QU/PCT/AR/FI/PO/PH helpers; AR = article card from the ART dict, FI = SEC filing, PO = social post, PH = photo)
+python3 -I $SK/scripts/plan_dsl.py compile plan_white.py sentences.json shots_raw.json --total <vo s>      # shots timed to spoken words
+#   shots.json = shots_raw + {"fps": 60, "audio": {"vo","vo_gain","music","music_gain","sfx_gain"}}
+python3 -I $SK/scripts/assign_photos_white.py shots.json pool.json chosen.json $PROJ       # photo_pool.py search/sheets as in hybrid mode
+python3 -I $SK/scripts/build_white_composition.py shots.json $PROJ ; (cd $PROJ && npx hyperframes check)
+python3 -I $SK/scripts/render_white.py shots.json $PROJ out --fps 60 --target 40            # chunked + resumable + audio mix + master; run with run_in_background
+python3 -I $SK/scripts/deliver_white.py shots.json $PROJ examples/gta6/card_sources.json plan_white.py deliver
+```
+Scenes: article | post | filing | bignum | bars | calendar | timeline | statement | quote | pct | price | list | text | photo. Overlays: CAP, L, BADGE, STAMP, YEAR, TRACKER.
+Prefer photo / card / bars over `statement` slides: a plan with more than ~25 % text-only slides reads as a slideshow, not as the reference edit.
+
+## Gotchas learned (white mode)
+- Hyperframes software capture STALLS or crawls (0.6 s/frame, "session_init" hangs) on one 450 s page with ~230 full-frame shots; the same shots as ~40 s chunk pages render at ~0.1 s/frame. Always use render_white.py (chunks aligned to shot starts, retries, resume).
+- `<template>`-less single page is fine; do NOT symlink `assets/` into chunk dirs (404): `cp -al` hard links.
+- Never animate `left/top/width` with GSAP (lint error): use x/y/scale; bar widths are the only width tweens and are allowed by lint (non-text).
+- Hyperframes audio mixing is replaced by mix_audio.py (ffmpeg) so chunk pages carry no audio.
+- Web search tool = the source of truth for cards; `r.jina.ai` readers are rate-blocked per domain, so pages cannot be opened here.

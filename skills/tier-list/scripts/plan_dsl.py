@@ -15,10 +15,10 @@ def S(si, w, scene, p=None, bg="navy", cam=None, ov=None): PLAN.append({"si": si
 def _o(kind, **k): d = {"kind": kind}; d.update({a: b for a, b in k.items() if b is not None}); return d
 def L(text, anchor=None, side="center", w=None, dx=None, dy=None, size=None, at=None, dur=None, x=None, y=None, si=None, color=None, fade=None):
     return _o("label", text=text, anchor=anchor, side=side, w=w, dx=dx, dy=dy, size=size, at=at, dur=dur, x=x, y=y, si=si, color=color, fade=fade)
-def CAP(text, w=None, at=None, dur=None, si=None, size=None): return _o("caption", text=text, w=w, at=at, dur=dur, si=si, size=size)
+def CAP(text, w=None, at=None, dur=None, si=None, size=None, y=None): return _o("caption", text=text, w=w, at=at, dur=dur, si=si, size=size, y=y)
 def BADGE(icon, price, model="", w=None, at=None, dur=None, si=None): return _o("badge", icon=icon, price=price, model=model, w=w, at=at, dur=dur, si=si)
 def QUOTE(text, by=None, w=None, at=None, dur=None, si=None, cps=None): return _o("quote", text=text, by=by, w=w, at=at, dur=dur, si=si, cps=cps)
-def STAMP(text, w=None, at=None, dur=0.9, si=None, rot=None): return _o("stamp", text=text, w=w, at=at, dur=dur, si=si, rot=rot)
+def STAMP(text, w=None, at=None, dur=0.9, si=None, rot=None, x=None, y=None): return _o("stamp", text=text, w=w, at=at, dur=dur, si=si, rot=rot, x=x, y=y)
 def YEAR(text, w=None, at=None, dur=None, si=None): return _o("year", text=text, w=w, at=at, dur=dur, si=si)
 def PH(si, w, theme, cap=None, capw=None, motion=None, vig=False, ov=None, pick=None, bg="night", **p):
     """real-photo shot (tier-list look): a licensed photo from the theme pool fills the frame (slow push/pull), with the same overlays.
