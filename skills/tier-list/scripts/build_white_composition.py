@@ -85,7 +85,7 @@ def scene(s):
             T(f'tl.fromTo("#{sid}-v{i}", {{x:20, opacity:0}}, {{x:{fw + 24}, opacity:1, duration:0.75, ease:"power3.out"}}, {r3(st + 0.1 + i * 0.18)});')
         h = f'<div class="bars" id="{sid}-bars">{rows}</div>'
     elif k == "calendar":
-        h = (f'<div class="wrap"><div id="{sid}-p" class="pushw"><div id="{sid}-c" class="cal"><div class="top">{esc(p["month"])}</div><div class="day" style="font-size:{int(380 * p.get("daySize", 1.0))}px">{esc(p["day"])}</div>'
+        h = (f'<div class="wrap"><div id="{sid}-p" class="pushw"><div id="{sid}-c" class="cal"><div class="top">{esc(p["month"])}</div><div class="day" style="font-size:{380 if len(str(p["day"])) <= 2 else 190}px">{esc(p["day"])}</div>'
              f'{"<div class=yr>" + esc(p["year"]) + "</div>" if p.get("year") else ""}</div></div></div><div class="vig-w" data-layout-ignore></div>')
         T(f'tl.fromTo("#{sid}-c", {{rotationX:-85, opacity:0, transformPerspective:1400}}, {{rotationX:0, opacity:1, duration:0.4, ease:"power3.out"}}, {r3(st)});'); push(f"#{sid}-p", st, du, 1.0, 1.035)
     elif k == "timeline":
@@ -121,7 +121,7 @@ def scene(s):
         c = col(p.get("color", "red")); R = 250; C = 2 * 3.14159265 * R; pct = p["pct"]
         h = (f'<svg width="1920" height="1080" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0"><circle cx="{p.get("cx", 960)}" cy="520" r="{R}" fill="none" stroke="#e9e9e9" stroke-width="120"/>'
              f'<circle id="{sid}-d" cx="{p.get("cx", 960)}" cy="520" r="{R}" fill="none" stroke="{c}" stroke-width="120" stroke-dasharray="{C:.1f}" stroke-dashoffset="{C:.1f}" transform="rotate(-90 {p.get("cx", 960)} 520)"/></svg>'
-             f'<div id="{sid}-b" class="bn" style="top:{520 - 120}px;font-size:240px;left:{p.get("cx", 960) - 960}px"><span id="{sid}-n">0%</span></div>')
+             f'<div id="{sid}-b" class="bn" style="top:{520 - 60}px;font-size:120px;left:{p.get("cx", 960) - 960}px"><span id="{sid}-n">0%</span></div>')
         T(f'tl.fromTo("#{sid}-d", {{strokeDashoffset:{C:.1f}}}, {{strokeDashoffset:{C * (1 - pct / 100):.1f}, duration:1.1, ease:"power3.out"}}, {r3(st + 0.1)});'); counter(sid, st, pct, 0, "", "%", 1.1)
     elif k == "price":
         c = col(p.get("color", "ink"))

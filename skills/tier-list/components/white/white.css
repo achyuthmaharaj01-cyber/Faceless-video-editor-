@@ -64,7 +64,7 @@ html, body { width: 1920px; height: 1080px; overflow: hidden; background: #fff; 
 .tl .ns { position: absolute; width: 520px; margin-left: -260px; text-align: center; font-size: 54px; color: #444; }
 /* ---- statements / quotes / lists ---- */
 .st { position: absolute; left: 0; width: 1920px; text-align: center; font-weight: 700; letter-spacing: -.035em; line-height: 1.05; }
-.strike { position: absolute; height: 14px; background: var(--red); transform-origin: 0 50%; border-radius: 7px; }
+.strike { position: absolute; height: 14px; background: #111; transform-origin: 0 50%; border-radius: 7px; }
 .qt { position: relative; width: 1500px; }
 .qt .mk { font-size: 360px; color: var(--red); line-height: .6; font-weight: 700; height: 150px; }
 .qt .tx { font-size: 84px; line-height: 1.14; font-weight: 700; letter-spacing: -.025em; }
